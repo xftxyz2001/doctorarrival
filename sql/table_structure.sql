@@ -105,7 +105,7 @@ CREATE TABLE `order_info` (
     `department_name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '科室名称',
     `doctor_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '医生名称',
     `doctor_title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '医生职称',
-    `schedule_id` bigint NOT NULLCOMMENT '排班id',
+    `schedule_id` bigint NOT NULL COMMENT '排班id',
     `reserve_date` datetime NULL DEFAULT NULL COMMENT '预约时间',
     `patient_id` bigint NOT NULL COMMENT '就诊人id',
     `patient_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '就诊人名称',
@@ -114,7 +114,8 @@ CREATE TABLE `order_info` (
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除（0:未删除，1:已删除）',
-    PRIMARY KEY (`id`) USING BTREE
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE INDEX `uk_out_trade_no`(`out_trade_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
 -- 付款记录表
 CREATE TABLE `payment_info` (
@@ -132,5 +133,5 @@ CREATE TABLE `payment_info` (
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除（0:未删除，1:已删除）',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `uk_trade_no`(`trade_no`) USING BTREE
+    UNIQUE INDEX `uk_out_trade_no`(`out_trade_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '付款记录表' ROW_FORMAT = Dynamic;
