@@ -17,11 +17,11 @@
     <modules>
         <module>model</module>
         <module>service-parent</module>
+        <module>service-util</module>
     </modules>
     <properties>
         <java.version>21</java.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <lomok.version>1.18.10</lomok.version>
         <swagger.version>2.0.2</swagger.version>
         <alibaba.version>2022.0.0.0</alibaba.version>
         <cloud.version>2022.0.4</cloud.version>
