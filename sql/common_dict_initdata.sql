@@ -1,6 +1,6 @@
 INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (1, 0, '全部分类', 'ROOT');
 INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (2, 1, '行政区划', 'AdministrativeDivisions');
-INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (3, 1, '医院等级', 'Hostype');
+INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (3, 1, '医院等级', 'HospitalType');
 INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (4, 1, '证件类型', 'CertificatesType');
 INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (5, 1, '学历', 'Education');
 INSERT INTO `dict` (`id`, `parent_id`, `value`, `dict_code`) VALUES (9, 1, '民族', 'Nation');

@@ -1,9 +1,6 @@
 package com.xftxyz.doctorarrival.domain.user;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -63,7 +60,7 @@ public class Patient implements Serializable {
      * 是否结婚（0：否，1：是）
      */
     @TableField(value = "is_marry")
-    private Integer isMarry;
+    private Integer marry;
 
     /**
      * 出生日期
@@ -75,7 +72,7 @@ public class Patient implements Serializable {
      * 是否有医保（0：否，1：是）
      */
     @TableField(value = "is_insured")
-    private Integer isInsured;
+    private Integer insured;
 
     /**
      * 就诊卡号
@@ -117,7 +114,8 @@ public class Patient implements Serializable {
      * 逻辑删除（0:未删除，1:已删除）
      */
     @TableField(value = "is_deleted")
-    private Integer isDeleted;
+    @TableLogic
+    private Integer deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
