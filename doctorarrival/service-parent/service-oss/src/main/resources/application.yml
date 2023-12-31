@@ -1,0 +1,22 @@
+server:
+  port: 8260
+
+spring:
+  application:
+    name: service-oss
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+aliyun:
+  oss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: xxx
+    access-key-secret: xxx
+    bucket-name: doctor-arrival

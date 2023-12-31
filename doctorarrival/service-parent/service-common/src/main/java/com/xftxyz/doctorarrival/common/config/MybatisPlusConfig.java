@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @MapperScan("com.xftxyz.doctorarrival.common.mapper")
-public class MyBatisPlusConfig {
+public class MybatisPlusConfig {
     /**
      * 添加分页插件
      */

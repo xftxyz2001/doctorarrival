@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-common</module>
+        <module>service-oss</module>
     </modules>
 
     <properties>

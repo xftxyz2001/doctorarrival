@@ -22,13 +22,12 @@
         <module>service-gateway</module>
     </modules>
     <properties>
-        <java.version>21</java.version>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
         <swagger.version>2.0.2</swagger.version>
         <alibaba.version>2022.0.0.0</alibaba.version>
         <cloud.version>2022.0.4</cloud.version>
-        <loadbalancer.version>4.0.4</loadbalancer.version>
         <jwt.version>4.4.0</jwt.version>
+        <oss.version>3.10.2</oss.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -71,6 +70,13 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${jwt.version}</version>
+            </dependency>
+
+            <!-- 阿里云OSS -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${oss.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
