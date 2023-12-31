@@ -1,12 +1,15 @@
 package com.xftxyz.doctorarrival.oss.controller;
 
-import com.xftxyz.doctorarrival.oss.service.FileService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.xftxyz.doctorarrival.oss.service.FileService;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,10 +24,9 @@ public class FileApiController {
      * @param file 文件
      * @return 文件地址
      */
-    @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String upload(@RequestPart("file") MultipartFile file) {
         return fileService.upload(file);
     }
 
 }
-

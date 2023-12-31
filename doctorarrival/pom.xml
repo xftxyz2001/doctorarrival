@@ -23,7 +23,7 @@
     </modules>
     <properties>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
-        <swagger.version>2.0.2</swagger.version>
+        <swagger.version>2.2.0</swagger.version>
         <alibaba.version>2022.0.0.0</alibaba.version>
         <cloud.version>2022.0.4</cloud.version>
         <jwt.version>4.4.0</jwt.version>

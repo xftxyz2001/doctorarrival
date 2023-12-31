@@ -1,6 +1,8 @@
 package com.xftxyz.doctorarrival.oss.service.impl;
 
+import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.ObjectListing;
 import com.aliyun.oss.model.PutObjectResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -39,7 +41,7 @@ public class FileServiceImpl implements FileService {
 
             ossClient.putObject(ossProperties.getBucketName(), fullFileName, inputStream);
             return fullFileName;
-        } catch (IOException e) {
+        } catch (IOException | OSSException | ClientException e) {
             throw new FileUploadException();
         }
     }
