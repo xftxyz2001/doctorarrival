@@ -16,8 +16,10 @@
     <description>医来——预约挂号统一平台</description>
     <modules>
         <module>model</module>
-        <module>service-parent</module>
+        <module>common-util</module>
         <module>service-util</module>
+        <module>service-parent</module>
+        <module>service-gateway</module>
     </modules>
     <properties>
         <java.version>21</java.version>
@@ -25,6 +27,8 @@
         <swagger.version>2.0.2</swagger.version>
         <alibaba.version>2022.0.0.0</alibaba.version>
         <cloud.version>2022.0.4</cloud.version>
+        <loadbalancer.version>4.0.4</loadbalancer.version>
+        <jwt.version>4.4.0</jwt.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -60,6 +64,13 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- JSON Web Token -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

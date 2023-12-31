@@ -1,0 +1,33 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: service-gateway
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            maxAge: 3600
+
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: service-common
+          uri: lb://service-common
+          predicates:
+            - Path=/*/common/**
+
+admin:
+  authorization: admin
