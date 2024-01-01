@@ -1,4 +1,4 @@
-import { loginApi, getInfoApi, loginOutApi } from '@/api/user'
+import { checkAuthorizationApi } from '@/api/user'
 const state = () => ({
   token: '', // 登录token
   info: {},  // 用户信息
@@ -26,44 +26,51 @@ const actions = {
   // login by login.vue
   login({ commit, dispatch }, params) {
     return new Promise((resolve, reject) => {
-      loginApi(params)
-      .then(res => {
-        commit('tokenChange', res.data.token)
-        dispatch('getInfo', { token: res.data.token })
-        .then(infoRes => {
-          resolve(res.data.token)
-        })
+      // loginApi(params)
+      // .then(res => {
+      //   commit('tokenChange', res.data.token)
+      //   dispatch('getInfo', { token: res.data.token })
+      //   .then(infoRes => {
+      //     resolve(res.data.token)
+      //   })
+      // }).catch(err => {
+      //   reject(err)
+      // })
+      commit('tokenChange', params.password)
+      checkAuthorizationApi().then(res => {
+        commit('infoChange', params)
+        resolve(res)
       }).catch(err => {
         reject(err)
       })
     })
   },
   // get user info after user logined
-  getInfo({ commit }, params) {
-    return new Promise((resolve, reject) => {
-      getInfoApi(params)
-      .then(res => {
-        commit('infoChange', res.data.info)
-        resolve(res.data.info)
-      })
-    })
-  },
+  // getInfo({ commit }, params) {
+  //   return new Promise((resolve, reject) => {
+  //     getInfoApi(params)
+  //     .then(res => {
+  //       commit('infoChange', res.data.info)
+  //       resolve(res.data.info)
+  //     })
+  //   })
+  // },
 
   // login out the system after user click the loginOut button
   loginOut({ commit }) {
-    loginOutApi()
-    .then(res => {
+    // loginOutApi()
+    // .then(res => {
 
-    })
-    .catch(error => {
+    // })
+    // .catch(error => {
 
-    })
-    .finally(() => {
+    // })
+    // .finally(() => {
       localStorage.removeItem('tabs')
       localStorage.removeItem('vuex')
       sessionStorage.removeItem('vuex')
       location.reload()
-    })
+    // })
   }
 }
 

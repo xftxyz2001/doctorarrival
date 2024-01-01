@@ -1,5 +1,15 @@
 import request from '@/utils/system/request'
 
+/** 检查是否有权限 */
+export function checkAuthorizationApi() {
+  return request({
+    url: '/admin/common/check',
+    method: 'post'
+  })
+}
+
+
+// ----------------- 以下为mock接口 -----------------
 /** 登录api */
 export function loginApi(data) {
   return request({

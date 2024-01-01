@@ -13,7 +13,7 @@ service.interceptors.request.use(
   (config) => {
     // JWT鉴权处理
     if (store.getters['user/token']) {
-      config.headers['token'] = store.state.user.token
+      config.headers['Authorization'] = store.state.user.token
     }
     return config
   },
@@ -26,8 +26,8 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data
-    if (res.code === 200) {
-      return res
+    if (res.code === 0) {
+      return res.data
     } else {
       showError(res)
       return Promise.reject(res)
@@ -45,17 +45,22 @@ service.interceptors.response.use(
 // 错误处理
 function showError(error) {
   // token过期，清除本地数据，并跳转至登录页面
-  if (error.code === 403) {
-    // to re-login
-    store.dispatch('user/loginOut')
-  } else {
-    ElMessage({
-      message: error.msg || error.message || '服务异常',
-      type: 'error',
-      duration: 3 * 1000
-    })
-  }
+  // if (error.code === 403) {
+  //   // to re-login
+  //   store.dispatch('user/loginOut')
+  // } else {
+  //   ElMessage({
+  //     message: error.msg || error.message || '服务异常',
+  //     type: 'error',
+  //     duration: 3 * 1000
+  //   })
+  // }
   
+  ElMessage({
+    message: error.msg || error.message || '服务异常',
+    type: 'error',
+    duration: 3 * 1000
+  })
 }
 
 export default service

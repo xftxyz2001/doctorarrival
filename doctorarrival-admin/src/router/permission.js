@@ -9,12 +9,12 @@ import router, { modules } from './index'
 /** 引入vuex实例 */
 import store from '@/store'
 /** 引入后端路由控制器 */
-import { isBackMenu } from '@/config'
+// import { isBackMenu } from '@/config'
 
 /** 引入纯前端路由 */
 import FrontRoutes from './permission/front'
 /** 引入后端路由 */
-import getMenu from './permission/back'
+// import getMenu from './permission/back'
 
 /** 
  * @name 动态路由的权限新增，供登录后调用
@@ -25,17 +25,17 @@ async function addRoutes() {
   // 利用前端路由表模拟后端数据问题
   // 等待后端接口返回数据后再回调出去，防止刷新跳转404
   return new Promise((resolve) => {
-    if (isBackMenu) {
-      getMenu()
-      .then((data) => {
-        data.forEach(item => {
-          modules.push(item)
-          router.addRoute(item)
-        })
-        resolve()
-      })
-      return
-    }    
+    // if (isBackMenu) {
+    //   getMenu()
+    //   .then((data) => {
+    //     data.forEach(item => {
+    //       modules.push(item)
+    //       router.addRoute(item)
+    //     })
+    //     resolve()
+    //   })
+    //   return
+    // }    
     FrontRoutes.forEach(item => {
       modules.push(item)
       router.addRoute(item)

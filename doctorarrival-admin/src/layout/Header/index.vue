@@ -39,6 +39,7 @@
 import { defineComponent, computed, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import FullScreen from './functionList/fullscreen.vue'
 import SizeChange from './functionList/sizeChange.vue'
 import Github from './functionList/github.vue'
@@ -74,7 +75,11 @@ export default defineComponent({
     }
     
     const showPasswordLayer = () => {
-      layer.show = true
+      ElMessage({
+        type: 'warning',
+        message: '请联系管理员修改密码'
+      })
+      // layer.show = true
     }
     return {
       isCollapse,

@@ -17,6 +17,6 @@ spring:
 aliyun:
   oss:
     endpoint: oss-cn-hangzhou.aliyuncs.com
-    access-key-id: xxx
-    access-key-secret: xxx
+    access-key-id: LTAI5tGEH1yN7HdNmbMktvod
+    access-key-secret: LZKjHMNCW7ZCZ4c3g7FN7m4UtJlp7O
     bucket-name: doctor-arrival

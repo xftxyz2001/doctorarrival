@@ -15,6 +15,7 @@
           <el-input
               size="large"
               v-model="form.name"
+              readonly
               placeholder="用户名"
               type="text"
               maxlength="50"
@@ -66,7 +67,7 @@ export default defineComponent({
     const route = useRoute()
     const form = reactive({
       name: 'admin',
-      password: '123456',
+      password: 'admin',
       loading: false
     })
     const passwordType = ref('password')
