@@ -12,7 +12,7 @@
     <artifactId>doctorarrival-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>医来——父工程</name>
+    <name>医来</name>
     <description>医来——预约挂号统一平台</description>
     <modules>
         <module>model</module>

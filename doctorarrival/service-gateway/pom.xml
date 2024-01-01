@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>service-gateway</artifactId>
+    <name>网关服务</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

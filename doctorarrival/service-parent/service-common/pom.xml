@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>service-common</artifactId>
+    <name>数据字典服务</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

@@ -11,6 +11,7 @@
 
     <artifactId>service-parent</artifactId>
     <packaging>pom</packaging>
+    <name>微服务们</name>
     <modules>
         <module>service-common</module>
         <module>service-hospital</module>

@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>service-statistics</artifactId>
+    <name>统计分析服务</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

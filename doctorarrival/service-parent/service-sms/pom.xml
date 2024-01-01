@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>service-sms</artifactId>
+    <name>短信服务</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

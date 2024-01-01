@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>service-task</artifactId>
+    <name>定时任务服务</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
