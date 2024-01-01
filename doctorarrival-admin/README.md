@@ -1,144 +1,117 @@
-<div align="center"> <a href="https://github.com/kailong321200875/vue-element-plus-admin"> <img width="100" src="./public/logo.png"> </a> <br> <br>
+<h1 align="center">vue-admin-box</h1>
+<p align="center">
+    <a href="https://github.com/vuejs/vue-next">
+        <img src="https://img.shields.io/badge/vue3-3.0.5-brightgreen.svg" alt="vue">
+    </a>
+    <a href="https://github.com/element-plus/element-plus">
+        <img src="https://img.shields.io/badge/elementPlus-^2.0.5-brightgreen.svg" alt="element-plus">
+    </a>
+    <a href="https://github.com/vitejs/vite">
+        <img src="https://img.shields.io/badge/vite-^2.8.6-brightgreen.svg" alt="vite">
+    </a>
+    <a href="https://github.com/microsoft/TypeScript">
+        <img src="https://img.shields.io/badge/typescript-4.1.3-brightgreen.svg" alt="typescript">
+    </a>
+    <a href="https://github.com/hsiangleev/element-plus-admin/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+    </a>
+</p>
 
-[![license](https://img.shields.io/github/license/kailong321200875/vue-element-plus-admin.svg)](LICENSE) [![repo-size](https://img.shields.io/github/repo-size/kailong321200875/vue-element-plus-admin.svg)](repo-size) [![last-commit](https://img.shields.io/github/last-commit/kailong321200875/vue-element-plus-admin.svg)](last-commit) [![stars](https://img.shields.io/github/stars/kailong321200875/vue-element-plus-admin.svg)](stars) [![forks](https://img.shields.io/github/forks/kailong321200875/vue-element-plus-admin.svg)](forks) [![release](https://img.shields.io/github/release/kailong321200875/vue-element-plus-admin.svg)](release) [![watchers](https://img.shields.io/github/watchers/kailong321200875/vue-element-plus-admin.svg)](watchers)
+English | [简体中文](./README.zh-CN.md)
 
-<h1>vue-element-plus-admin</h1>
-</div>
+## summary
 
-**English** | [中文](./README.zh-CN.md)
+- [update version](./VERSION.md)
+- After more than three months of iteration, version 1.0 was officially released on August 10, 2021, with four basic templates attached for everyone to use
+- This open source project is developed by individuals and does not restrict any commercial use or personal research. Please click star to encourage me before using it
+- All illegal and pornographic activities involved in this open source project have nothing to do with this source code. Please do not show yourself
+- QQ communication group：735838842，Problems are raised in the group and can be solved in time
+
+## Preview
+if you are not in China, maybe you should download the project to show the demo or use a vpn to visit the online demo.
+- [demo China](https://cmdparkour.gitee.io/vue-admin-box/)
+- [demo World](https://cmdparkour.github.io/vue-admin-box/dist/)
+- [github address](https://github.com/cmdparkour/vue-admin-box)
+- [gitee address](https://gitee.com/cmdparkour/vue-admin-box)
+- It is recommended to use yarn or cnpm for installation in China. NPM installation is prone to problems
+
+## Basic Template
+There are four basic templates, which are suitable for zero development and use, and can be found in [github](https://github.com/cmdparkour/vue-admin-box-template)、[gitee ](https://gitee.com/cmdparkour/vue-admin-box-template)View directly in the warehouse，The template is shown below:
+1. template-ts-i18n template，container ts and internationalization [demo](http://vue-admin-box-template.51weblove.com/ts-i18n/)
+2. template-ts template，container ts，internationalization is not container [demo](http://vue-admin-box-template.51weblove.com/ts)
+3. template-js-i18n template，container js and internationalization [demo](http://vue-admin-box-template.51weblove.com/js-i18n)
+4. template-js template，container js，internationalization is not container [demo](http://vue-admin-box-template.51weblove.com/js)
 
 ## Introduction
 
-vue-element-plus-admin is a free and open source middle and background template based on `element-plus`. Developed using the latest mainstream technologies such as `vue3`, `vite` and `typescript`, the out of the box middle and background front-end solution can be used as the starting template of the project and learning reference. And always pay attention to the latest technological trends and update them as soon as possible.
+**vue-admin-box** is a free and open source background management system template。The latest vue-next, vite, element-plus used in this project. The purpose is to solve the complex configuration of background system in general business。
 
-vue-element-plus-admin is positioned as a background integration scheme, which is not suitable for secondary development as a basic template. Because it integrates many functions that you may not use, it will cause a lot of code redundancy. If your project doesn't pay attention to this problem, you can also directly carry out secondary development based on it.
+#### Characteristic function
 
-If you need a basic template, please switch to the `mini` branch. `mini` simply integrates some common layout functions such as layout and dynamic menu, which is more suitable for developers to carry out secondary development.
+- Routing configuration, state management mechanism (State supports local storage by default), encapsulated and perfect Axios and API management mechanism suitable for middle and background development
+- It is very convenient to expand the theme configuration function, and supports three typical middle and background styles by default
+- Routing configuration, state management mechanism (State supports local storage by default), encapsulated and perfect Axios and API management mechanism suitable for middle and background development
+- For the three typical business tables of adding, deleting and modifying query, please see "CRUD table", "category table" and "tree table" in the "page column" for details
+- The refresh function without route jump supports cache page refresh. At present, most frameworks do not support cache page refresh
+- It is a convenient and extensible internationalization solution, and provides two sets of non internationalized basic templates and two sets of internationalized basic templates (TS version / JS version)
+- Handwritten versions of various custom instructions
+- For table common components and pop-up common components that have been verified by multiple middle and background businesses, please see "crud table", "category table" and "tree table" in the "page column" for details
 
-## Feature
+#### Main technology
 
-- **State of The Art Development**：Use front-end front-end technology development such as Vue3/vite4
-- **TypeScript**: Application-level JavaScript language
-- **Theming**: Configurable themes
-- **International**：Built-in complete internationalization program
-- **Mock Server** Built-in mock data scheme
-- **Authority** Built-in complete dynamic routing permission generation scheme.
-- **Component** Multiple commonly used components are encapsulated twice
-- **Examples** Built-in rich examples
+- MVVM framework：vue v3
+- Engineering Management：vite v2
+- UI framework：element-plus
+- Router manage：vue-router v4
+- State Manage ：vuex v4
+- Data request：axios
+- Utility library：@vueuse/core
 
-## Preview
+## How to use
 
-- [vue-element-plus-admin](https://element-plus-admin.cn/) - Full version of the github site
-- [vue-element-plus-admin](https://kailong110120130.gitee.io/vue-element-plus-admin) - Full version of the gitee site
+1. get the source code project
 
-account: **admin/admin**
+   ```
+   git clone https://github.com/cmdparkour/vue-admin-box.git
+   ```
 
-Online examples do not apply to menu filtering by default, but directly use Static routing
+   
 
-## Documentation
+2. install dependence, you can use cnpm or yarn in China
 
-[Document Github](https://element-plus-admin-doc.cn/)
+   ```
+   npm install
+   ```
 
-[Document Gitee](https://kailong110120130.gitee.io/vue-element-plus-admin-doc)
+   
 
-## Preparation
+3. run in the development
 
-- [node](http://nodejs.org/) and [git](https://git-scm.com/) - Project development environment
-- [Vite](https://vitejs.dev/) - Familiar with vite features
-- [Vue3](https://v3.vuejs.org/) - Familiar with Vue basic syntax
-- [TypeScript](https://www.typescriptlang.org/) - Familiar with the basic syntax of `TypeScript`
-- [Es6+](http://es6.ruanyifeng.com/) - Familiar with es6 basic syntax
-- [Vue-Router-Next](https://next.router.vuejs.org/) - Familiar with the basic use of vue-router
-- [Element-Plus](https://element-plus.org/) - Familiar with the basic use of element-plus
-- [Mock.js](https://github.com/nuysoft/Mock) - mockjs basic syntax
+   ```
+   npm run dev 或 npm run start
+   ```
 
-## Install and use
+   
 
-- Get the project code
+4. build in production
 
-```bash
-git clone https://github.com/kailong321200875/vue-element-plus-admin.git
-```
+   ```
+   npm run build
+   ```
+   
+## Partner project
+* [Thinker-Admin-Box - springboot with vue-admin-box, use java code to generate vue page](https://github.com/yirius/thinker-admin-box)
+* [H5-dooring - a low code project about the mobile website](http://h5.dooring.cn)
+* [ant-simple-pro - a middle website based on Vue3.0, react and angular](https://github.com/lgf196/ant-simple-pro)
+* [vue-vben-admin - a modern vue admin. It is based on Vue3, vite and TypeScript. It's fast！](https://github.com/vbenjs/vue-vben-admin)
 
-- Installation dependencies
 
-```bash
-cd vue-element-plus-admin
+## preview
 
-pnpm install
-
-```
-
-- run
-
-```bash
-pnpm run dev
-```
-
-- build
-
-```bash
-pnpm run build:pro
-```
-
-## Change Log
-
-[CHANGELOG](./CHANGELOG.md)
-
-## How to contribute
-
-You can [Raise an issue](https://github.com/kailong321200875/vue-element-plus-admin/issues/new) Or submit a Pull Request.
-
-**Pull Request:**
-
-1. Fork code
-2. Create your own branch: `git checkout -b feat/xxxx`
-3. Submit your changes: `git commit -am 'feat(function): add xxxxx'`
-4. Push your branch: `git push origin feat/xxxx`
-5. submit `pull request`
-
-## Git Contribution submission specification
-
-- `feat` New features
-- `fix` Fix bugs
-- `docs` document
-- `style` Format and style (changes that do not affect code operation)
-- `refactor` Refactor
-- `perf` Optimize related, such as improving performance and experience
-- `test` Add test
-- `build` Compilation related modifications, changes to project construction or dependencies
-- `ci` Continuous integration modification
-- `chore` Changes in the construction process or auxiliary tools
-- `revert` Rollback to previous version
-- `workflow` Workflow improvement
-- `mod` Uncertain modification classification
-- `wip` Under development
-- `types` type
-
-## Browser support
-
-The `Chrome 80+` browser is recommended for local development
-
-Support modern browsers, not IE
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| :-: | :-: | :-: | :-: | :-: |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## Donate
-
-If you find this project helpful, welcome sponsorship to show your support~
-
-[Paypal Me](https://www.paypal.com/paypalme/ckl94)
-
-<img src="https://github.com/kailong321200875/my-image/raw/master/pay.jpg" />
-
-## Group
-
-If you want to join the technical communication group for discussion, please add me as a friend
-
-<img src="https://github.com/kailong321200875/my-image/raw/master/me.jpg" />
-
-## License
-
-[MIT](./LICENSE)
+<p align="center">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174824.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174848.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174923.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174940.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810175009.png">
+</p>

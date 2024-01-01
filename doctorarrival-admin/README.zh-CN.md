@@ -1,144 +1,117 @@
-<div align="center"> <a href="https://github.com/kailong321200875/vue-element-plus-admin"> <img width="100" src="./public/logo.png"> </a> <br> <br>
+<h1 align="center">vue-admin-box</h1>
+<p align="center">
+    <a href="https://github.com/vuejs/vue-next">
+        <img src="https://img.shields.io/badge/vue3-3.0.5-brightgreen.svg" alt="vue">
+    </a>
+    <a href="https://github.com/element-plus/element-plus">
+        <img src="https://img.shields.io/badge/elementPlus-1.0.2beta.42-brightgreen.svg" alt="element-plus">
+    </a>
+    <a href="https://github.com/vitejs/vite">
+        <img src="https://img.shields.io/badge/vite-2.2.3-brightgreen.svg" alt="vite">
+    </a>
+    <a href="https://github.com/microsoft/TypeScript">
+        <img src="https://img.shields.io/badge/typescript-4.1.3-brightgreen.svg" alt="typescript">
+    </a>
+    <a href="https://github.com/hsiangleev/element-plus-admin/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+    </a>
+</p>
 
-[![license](https://img.shields.io/github/license/kailong321200875/vue-element-plus-admin.svg)](LICENSE) [![repo-size](https://img.shields.io/github/repo-size/kailong321200875/vue-element-plus-admin.svg)](repo-size) [![last-commit](https://img.shields.io/github/last-commit/kailong321200875/vue-element-plus-admin.svg)](last-commit) [![stars](https://img.shields.io/github/stars/kailong321200875/vue-element-plus-admin.svg)](stars) [![forks](https://img.shields.io/github/forks/kailong321200875/vue-element-plus-admin.svg)](forks) [![release](https://img.shields.io/github/release/kailong321200875/vue-element-plus-admin.svg)](release) [![watchers](https://img.shields.io/github/watchers/kailong321200875/vue-element-plus-admin.svg)](watchers)
+[English](./README.md) | 简体中文
 
-<h1>vue-element-plus-admin</h1>
-</div>
+## 简介
 
-[English](./README.md) | **中文**
-
-## 介绍
-
-vue-element-plus-admin 是一个基于 `element-plus` 免费开源的中后台模版。使用了最新的`vue3`，`vite`，`TypeScript`等主流技术开发，开箱即用的中后台前端解决方案，可以用来作为项目的启动模版，也可用于学习参考。并且时刻关注着最新技术动向，尽可能的第一时间更新。
-
-vue-element-plus-admin 的定位是后台集成方案，不太适合当基础模板来进行二次开发。因为集成了很多你可能用不到的功能，会造成不少的代码冗余。如果你的项目不关注这方面的问题，也可以直接基于它进行二次开发。
-
-如需要基础模版，请切换到 `mini` 分支，`mini` 只简单集成了一些如：布局、动态菜单等常用布局功能，更适合开发者进行二次开发。
-
-## 特性
-
-- **最新技术栈**：使用 Vue3/vite4 等前端前沿技术开发
-- **TypeScript**: 应用程序级 JavaScript 的语言
-- **主题**: 可配置的主题
-- **国际化**：内置完善的国际化方案
-- **自定义数据** 内置 Mock 数据方案
-- **权限** 内置完善的动态路由权限生成方案
-- **组件** 二次封装了多个常用的组件
-- **示例** 内置丰富的示例
+- [更新日志](./VERSION.md)
+- 经过三个多月的迭代，于2021年8月10日，1.0版本正式发布，并附四个基础模板供大家使用
+- 此开源项目为个人开发，不限制任何商业使用和个人研究，使用之前请先点个Star对我进行鼓励
+- 利用此开源项目参与的一切违法、色情相关的活动均与本源码无关，请勿以身示法
+- QQ交流群：735838842，有问题群里提，可及时解决
 
 ## 预览
 
-- [vue-element-plus-admin](https://element-plus-admin.cn/) - 完整版 github 站点
-- [vue-element-plus-admin](https://kailong110120130.gitee.io/vue-element-plus-admin) - 完整版 gitee 站点
+- [demo国内](https://cmdparkour.gitee.io/vue-admin-box/)
+- [demo外国](https://cmdparkour.github.io/vue-admin-box/dist/)
+- [github地址](https://github.com/cmdparkour/vue-admin-box)
+- [码云地址](https://gitee.com/cmdparkour/vue-admin-box)
+- 国内推荐使用yarn或者cnpm进行安装，npm安装容易产生问题
 
-帐号：**admin/admin**
+## 基础模板
+共四个基础模板，均适合从零研发使用，可在[github](https://github.com/cmdparkour/vue-admin-box-template)、[码云](https://gitee.com/cmdparkour/vue-admin-box-template)仓库中直接查看，模板如下所示
+1. template-ts-i18n 基础模板，内含ts语法+国际化配置 [demo](http://vue-admin-box-template.51weblove.com/ts-i18n/)
+2. template-ts 基础模板，只含ts语法，国际化已去除 [demo](http://vue-admin-box-template.51weblove.com/ts)
+3. template-js-i18n 基础模板，js语法 + 国际化配置 [demo](http://vue-admin-box-template.51weblove.com/js-i18n)
+4. template-js 基础模板，js语法，国际化已去除 [demo](http://vue-admin-box-template.51weblove.com/js)
 
-在线例子默认不适用菜单过滤，而是直接使用静态路由表
+## 介绍
 
-## 文档
+vue-admin-box是一个免费并且开源的中后台管理系统模板。使用最新版本的vue3+vite+element-plus开发而成，目的是为了解决通用型的业务中后台系统复杂的配置。
 
-[文档地址 Github](https://element-plus-admin-doc.cn/)
+#### 特色功能
 
-[文档地址 Gitee](https://kailong110120130.gitee.io/vue-element-plus-admin-doc)
+- 适合中后台开发的路由配置、状态管理机制（状态默认支持本地存储）、已封装完善的axios及api管理机制
+- 极方便扩展的主题配置功能，默认支持三种典型的中后台风格
+- 简易配置的页面缓存功能，只需配置noCache属性，无需配置其他的任何属性，如组件名称，路由名称等等很多框架需要配置的东西
+- 典型增删改查的三种业务表格，详情请查看“页面栏目”内的“业务表格”、“分类联动表格”、“树联动表格”
+- 无路由跳转的刷新功能，支持缓存页面刷新，目前了解的多数框架都不支持缓存页面的刷新
+- 方便扩展的国际化解决方案，并提供了两套非国际化的基础模板和两套国际化的基础模板（ts版本/js版本）
+- 手写版本的各类自定义指令
+- 已经过多个中后台业务检验过的表格公用组件及弹窗公用组件，详情请查看“页面栏目”内的“业务表格”、“分类联动表格”、“树联动表格”
 
-## 前序准备
+#### 主要技术栈
 
-- [node](http://nodejs.org/) 和 [git](https://git-scm.com/) - 项目开发环境
-- [Vite](https://vitejs.dev/) - 熟悉 vite 特性
-- [Vue3](https://v3.vuejs.org/) - 熟悉 Vue 基础语法
-- [TypeScript](https://www.typescriptlang.org/) - 熟悉 `TypeScript` 基本语法
-- [Es6+](http://es6.ruanyifeng.com/) - 熟悉 es6 基本语法
-- [Vue-Router-Next](https://next.router.vuejs.org/) - 熟悉 vue-router 基本使用
-- [Element-Plus](https://element-plus.org/) - element-plus 基本使用
-- [Mock.js](https://github.com/nuysoft/Mock) - mockjs 基本语法
+- MVVM框架：vue v3
+- 工程化管理：vite v2
+- UI框架：element-plus
+- 路由管理：vue-router v4
+- 状态管理：vuex v4
+- 数据请求：axios
+- 实用工具库：@vueuse/core
 
-## 安装和使用
+## 使用
 
-- 获取代码
+1. 获取源码资源包
 
-```bash
-git clone https://github.com/kailong321200875/vue-element-plus-admin.git
-```
+   ```
+   git clone https://github.com/cmdparkour/vue-admin-box.git
+   ```
 
-- 安装依赖
+   
 
-```bash
-cd vue-element-plus-admin
+2. 安装依赖，国内推荐使用cnpm或tyarn，国外推荐使用npm或yarn
 
-pnpm install
+   ```
+   npm install
+   ```
 
-```
+   
 
-- 运行
+3. 运行
 
-```bash
-pnpm run dev
-```
+   ```
+   npm run dev 或 npm run start
+   ```
 
-- 打包
+   
 
-```bash
-pnpm run build:pro
-```
+4. 打包
 
-## 更新日志
+   ```
+   npm run build
+   ```
+   
+## Partner project
+* [Thinker-Aamin-Box - vue-admin-box的springboot后台，可使用java代码便捷创建vue界面](https://github.com/yirius/thinker-admin-box)
+* [H5-dooring - 一款h5端页面可视化编辑器](http://h5.dooring.cn)
+* [ant-simple-pro - 一款支持vue3.0，react，angular，typescript等多框架支持的中台前端解决方案](https://github.com/lgf196/ant-simple-pro)
+* [vue-vben-admin - 使用了最新的vue3,vite2,TypeScript等主流技术开发，开箱即用的中后台前端解决方案](https://github.com/vbenjs/vue-vben-admin)
 
-[更新日志](./CHANGELOG.md)
 
-## 如何贡献
+## 效果预览
 
-你可以[提一个 issue](https://github.com/kailong321200875/vue-element-plus-admin/issues/new) 或者提交一个 Pull Request。
-
-**Pull Request:**
-
-1. Fork 代码
-2. 创建自己的分支: `git checkout -b feat/xxxx`
-3. 提交你的修改: `git commit -am 'feat(function): add xxxxx'`
-4. 推送您的分支: `git push origin feat/xxxx`
-5. 提交 `pull request`
-
-## Git 贡献提交规范
-
-- `feat` 新功能
-- `fix` 修补 bug
-- `docs` 文档
-- `style` 格式、样式(不影响代码运行的变动)
-- `refactor` 重构(即不是新增功能，也不是修改 BUG 的代码)
-- `perf` 优化相关，比如提升性能、体验
-- `test` 添加测试
-- `build` 编译相关的修改，对项目构建或者依赖的改动
-- `ci` 持续集成修改
-- `chore` 构建过程或辅助工具的变动
-- `revert` 回滚到上一个版本
-- `workflow` 工作流改进
-- `mod` 不确定分类的修改
-- `wip` 开发中
-- `types` 类型
-
-## 浏览器支持
-
-本地开发推荐使用 `Chrome 80+` 浏览器
-
-支持现代浏览器, 不支持 IE
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| :-: | :-: | :-: | :-: | :-: |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## Donate
-
-如果你觉得这个项目有帮助，欢迎赞助以示支持~
-
-[Paypal Me](https://www.paypal.com/paypalme/ckl94)
-
-<img src="https://gitee.com/kailong110120130/my-image/raw/master/pay.jpg" />
-
-## 交流群
-
-如果你想进入技术交流群讨论，请添加我为好友
-
-<img src="https://gitee.com/kailong110120130/my-image/raw/master/me.jpg" />
-
-## 许可证
-
-[MIT](./LICENSE)
+<p align="center">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174824.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174848.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174923.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810174940.png">
+    <img src="http://blog.51weblove.com/wp-content/uploads/2021/08/QQ截图20210810175009.png">
+</p>
