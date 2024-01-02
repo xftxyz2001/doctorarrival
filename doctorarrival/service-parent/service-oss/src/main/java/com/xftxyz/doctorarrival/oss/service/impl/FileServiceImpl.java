@@ -3,9 +3,6 @@ package com.xftxyz.doctorarrival.oss.service.impl;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.ObjectListing;
-import com.aliyun.oss.model.PutObjectResult;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xftxyz.doctorarrival.common.exception.oss.FileUploadException;
 import com.xftxyz.doctorarrival.common.helper.DateTimeHelper;
 import com.xftxyz.doctorarrival.common.helper.FileHelper;
@@ -17,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +26,9 @@ public class FileServiceImpl implements FileService {
     // 文件路径格式
     private static final String FILE_PATH_FORMAT = "yyyy/MM/dd/";
 
+    // 公共读是否开启
+    private static final boolean OSS_PUBLIC_READ = true;
+
     @Override
     public String upload(MultipartFile file) {
         try {
@@ -40,10 +39,18 @@ public class FileServiceImpl implements FileService {
             String fullFileName = DateTimeHelper.getCurrentTime(FILE_PATH_FORMAT) + uuidFileName;
 
             ossClient.putObject(ossProperties.getBucketName(), fullFileName, inputStream);
+            if (OSS_PUBLIC_READ) {
+                fullFileName = "https://" + ossProperties.getBucketName() + "." + ossProperties.getEndpoint() + "/" + fullFileName;
+            }
             return fullFileName;
         } catch (IOException | OSSException | ClientException e) {
             throw new FileUploadException();
         }
+    }
+
+    @Override
+    public String getAdminPath() {
+        return "https://oss.console.aliyun.com/bucket/" + ossProperties.getEndpoint().split("\\.")[0] + "/" + ossProperties.getBucketName() + "/object";
     }
 
 }

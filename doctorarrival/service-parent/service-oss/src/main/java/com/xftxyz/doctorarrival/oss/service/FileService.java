@@ -2,8 +2,6 @@ package com.xftxyz.doctorarrival.oss.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public interface FileService {
 
     /**
@@ -14,4 +12,5 @@ public interface FileService {
      */
     String upload(MultipartFile file);
 
+    String getAdminPath();
 }
