@@ -1,4 +1,4 @@
-import axios , { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
 const baseURL = import.meta.env.VITE_BASE_URL
@@ -25,6 +25,10 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
+    if (response.headers['content-type'] !== 'application/json') {
+      return response
+    }
+    // 统一返回处理
     const res = response.data
     if (res.code === 0) {
       return res.data
@@ -33,7 +37,7 @@ service.interceptors.response.use(
       return Promise.reject(res)
     }
   },
-  (error)=> {
+  (error) => {
     console.log(error) // for debug
     const badMessage = error.message || error
     const code = parseInt(badMessage.toString().replace('Error: Request failed with status code ', ''))
@@ -55,7 +59,7 @@ function showError(error) {
   //     duration: 3 * 1000
   //   })
   // }
-  
+
   ElMessage({
     message: error.msg || error.message || '服务异常',
     type: 'error',

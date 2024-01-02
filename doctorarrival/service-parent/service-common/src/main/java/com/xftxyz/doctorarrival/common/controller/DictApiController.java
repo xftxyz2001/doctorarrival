@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Validated
 @RequiredArgsConstructor
 @RestController
@@ -18,8 +20,18 @@ public class DictApiController {
 
     private final DictService dictService;
 
-    @GetMapping("/by/id/{id}")
+    @GetMapping("/id/{id}")
     public Dict getDictById(@PathVariable("id") @Min(1) Integer id) {
         return dictService.getById(id);
+    }
+
+    @GetMapping("/children/id/{parentId}")
+    public List<Dict> getDictChildrenByParentId(@PathVariable("parentId") @Min(1) Integer parentId) {
+        return dictService.getDictChildrenByParentId(parentId);
+    }
+
+    @GetMapping("/children/code/{dictCode}")
+    public List<Dict> getDictChildrenByDictCode(@PathVariable("dictCode") String dictCode) {
+        return dictService.getDictChildrenByDictCode(dictCode);
     }
 }

@@ -40,6 +40,12 @@ public class Dict implements Serializable {
     @TableField(value = "dict_code")
     private String dictCode;
 
+    /**
+     * 是否包含子节点
+     */
+    @TableField(exist = false)
+    private boolean hasChildren;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

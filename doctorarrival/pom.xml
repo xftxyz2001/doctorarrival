@@ -28,6 +28,7 @@
         <cloud.version>2022.0.4</cloud.version>
         <jwt.version>4.4.0</jwt.version>
         <oss.version>3.10.2</oss.version>
+        <easyexcel.version>3.3.2</easyexcel.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -77,6 +78,13 @@
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
                 <version>${oss.version}</version>
+            </dependency>
+
+            <!-- EasyExcel -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
