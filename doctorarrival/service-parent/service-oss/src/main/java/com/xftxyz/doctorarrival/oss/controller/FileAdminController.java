@@ -1,11 +1,22 @@
 package com.xftxyz.doctorarrival.oss.controller;
 
+import com.aliyun.oss.model.ListObjectsV2Request;
 import com.xftxyz.doctorarrival.oss.service.FileService;
+import com.xftxyz.doctorarrival.vo.oss.OSSObjectSummaryVO;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/oss/file")
@@ -21,7 +32,16 @@ public class FileAdminController {
         return fileService.getAdminPath();
     }
 
-    // 以下接口未来可能会提供实现
+    /**
+     * 上传文件
+     *
+     * @param file 文件
+     * @return 文件地址
+     */
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String upload(@RequestPart("file") @NotNull MultipartFile file) {
+        return fileService.upload(file);
+    }
 
     /**
      * 批量上传文件
@@ -29,26 +49,28 @@ public class FileAdminController {
      * @param files 文件数组
      * @return 文件地址数组
      */
-    // @PostMapping(value = "/upload/batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    // public List<String> uploadBatch(@RequestPart("files") MultipartFile[] files) {
-    //     return fileService.uploadBatch(files);
-    // }
+    @PostMapping(value = "/upload/batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<String> uploadBatch(@RequestPart("files") @NotEmpty MultipartFile[] files) {
+        return fileService.uploadBatch(files);
+    }
 
     /**
      * 下载文件
      *
-     * @param fileUrl 文件地址
+     * @param yyyy
+     * @param MM
+     * @param dd
+     * @param uuidFileName
      * @return 文件
      */
-    // @PostMapping(value = "/download/{fileUrl}")
-    // public ResponseEntity<Resource> download(@PathVariable("fileUrl") String fileUrl) {
-    //     Resource resource = fileService.download(fileUrl);
-    //     return ResponseEntity.ok()
-    //             .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
-    //             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    //             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-    //             .body(resource);
-    // }
+    @GetMapping(value = "/download/{yyyy}/{MM}/{dd}/{uuidFileName}")
+    public ResponseEntity<Resource> download(@PathVariable("yyyy") @NotBlank String yyyy,
+                                             @PathVariable("MM") @NotBlank String MM,
+                                             @PathVariable("dd") @NotBlank String dd,
+                                             @PathVariable("uuidFileName") @NotBlank String uuidFileName) {
+        String fileUrl = yyyy + "/" + MM + "/" + dd + "/" + uuidFileName;
+        return fileService.download(fileUrl);
+    }
 
     /**
      * 批量下载文件
@@ -56,26 +78,28 @@ public class FileAdminController {
      * @param fileUrls 文件地址数组
      * @return 文件
      */
-    // @PostMapping(value = "/download/batch")
-    // public ResponseEntity<Resource> downloadBatch(RequestBody List<String>fileUrls) {
-    //     Resource resource = fileService.downloadBatch(fileUrls);
-    //     return ResponseEntity.ok()
-    //             .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
-    //             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    //             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-    //             .body(resource);
-    // }
+    @GetMapping(value = "/download/batch")
+    public ResponseEntity<Resource> downloadBatch(@RequestBody @NotEmpty List<String> fileUrls) {
+        return fileService.downloadBatch(fileUrls);
+    }
 
     /**
      * 删除文件
      *
-     * @param fileUrl 文件地址
+     * @param yyyy
+     * @param MM
+     * @param dd
+     * @param uuidFileName
      * @return 是否成功
      */
-    // @PostMapping(value = "/delete/{fileUrl}")
-    // public Boolean delete(@PathVariable("fileUrl") String fileUrl) {
-    //     return fileService.delete(fileUrl);
-    // }
+    @DeleteMapping(value = "/delete/{yyyy}/{MM}/{dd}/{uuidFileName}")
+    public Boolean delete(@PathVariable("yyyy") @NotBlank String yyyy,
+                          @PathVariable("MM") @NotBlank String MM,
+                          @PathVariable("dd") @NotBlank String dd,
+                          @PathVariable("uuidFileName") @NotBlank String uuidFileName) {
+        String fileUrl = yyyy + "/" + MM + "/" + dd + "/" + uuidFileName;
+        return fileService.delete(fileUrl);
+    }
 
     /**
      * 批量删除文件
@@ -83,10 +107,10 @@ public class FileAdminController {
      * @param fileUrls 文件地址数组
      * @return 是否成功
      */
-    // @PostMapping(value = "/delete/batch")
-    // public Boolean deleteBatch(RequestBody List<String>fileUrls) {
-    //     return fileService.deleteBatch(fileUrls);
-    // }
+    @DeleteMapping(value = "/delete/batch")
+    public Boolean deleteBatch(@RequestBody @NotEmpty List<String> fileUrls) {
+        return fileService.deleteBatch(fileUrls);
+    }
 
     /**
      * 查看文件列表
@@ -94,9 +118,9 @@ public class FileAdminController {
      * @param listObjectsV2Request 查询条件
      * @return 文件地址数组
      */
-    // @PostMapping("/list")
-    // public List<OSSObjectSummaryVO> list(@RequestBody ListObjectsV2Request listObjectsV2Request) {
-    //     return fileService.list(listObjectsV2Request);
-    // }
+    @GetMapping("/list")
+    public List<OSSObjectSummaryVO> list(@RequestBody ListObjectsV2Request listObjectsV2Request) {
+        return fileService.list(listObjectsV2Request);
+    }
 
 }

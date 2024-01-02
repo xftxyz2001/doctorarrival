@@ -1,17 +1,20 @@
 package com.xftxyz.doctorarrival.common.controller;
 
 import com.xftxyz.doctorarrival.common.service.DictService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/common/dict")
@@ -21,7 +24,7 @@ public class DictAdminController {
 
     // 导入
     @PostMapping("/import")
-    public Boolean importDict(@RequestPart("file") MultipartFile file) {
+    public Boolean importDict(@RequestPart("file") @NotNull MultipartFile file) {
         return dictService.importDict(file);
     }
 

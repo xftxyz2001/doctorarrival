@@ -86,6 +86,9 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict>
     public List<Dict> getDictChildrenByDictCode(String dictCode) {
         LambdaQueryWrapper<Dict> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Dict::getDictCode, dictCode);
+        Dict dict = baseMapper.selectOne(lambdaQueryWrapper);
+        lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getParentId, dict.getId());
         List<Dict> dictList = baseMapper.selectList(lambdaQueryWrapper);
         dictList.forEach(this::fillHasChildren);
         return dictList;
