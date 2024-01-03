@@ -1,15 +1,13 @@
 package com.xftxyz.doctorarrival.oss.service.impl;
 
-import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.ListObjectsV2Request;
 import com.aliyun.oss.model.ListObjectsV2Result;
 import com.aliyun.oss.model.OSSObject;
-import com.xftxyz.doctorarrival.common.exception.oss.FileDownloadException;
-import com.xftxyz.doctorarrival.common.exception.oss.FileUploadException;
+import com.xftxyz.doctorarrival.common.exception.BusinessException;
 import com.xftxyz.doctorarrival.common.helper.DateTimeHelper;
 import com.xftxyz.doctorarrival.common.helper.FileHelper;
+import com.xftxyz.doctorarrival.common.result.ResultEnum;
 import com.xftxyz.doctorarrival.oss.autoconfigure.OssProperties;
 import com.xftxyz.doctorarrival.oss.service.FileService;
 import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
@@ -27,12 +25,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -58,8 +54,8 @@ public class FileServiceImpl implements FileService {
 
             ossClient.putObject(ossProperties.getBucketName(), fullFileName, inputStream);
             return fullFileName;
-        } catch (IOException | OSSException | ClientException e) {
-            throw new FileUploadException();
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FILE_UPLOAD_FAILED);
         }
     }
 
@@ -80,13 +76,17 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public ResponseEntity<Resource> download(String fileUrl) {
-        OSSObject object = ossClient.getObject(ossProperties.getBucketName(), fileUrl);
-        String filename = object.getKey().replace("/", "-");
-        return ResponseEntity.ok()
-                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
-                .body(new InputStreamResource(object.getObjectContent()));
+        try {
+            OSSObject object = ossClient.getObject(ossProperties.getBucketName(), fileUrl);
+            String filename = object.getKey().replace("/", "-");
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .body(new InputStreamResource(object.getObjectContent()));
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FILE_DOWNLOAD_FAILED);
+        }
     }
 
     @Override
@@ -117,15 +117,19 @@ public class FileServiceImpl implements FileService {
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"batch-download.zip\"")
                     .body(resource);
-        } catch (IOException e) {
-            throw new FileDownloadException();
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FILE_DOWNLOAD_FAILED);
         }
     }
 
     @Override
     public Boolean delete(String fileUrl) {
-        ossClient.deleteObject(ossProperties.getBucketName(), fileUrl);
-        return true;
+        try {
+            ossClient.deleteObject(ossProperties.getBucketName(), fileUrl);
+            return true;
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FILE_DELETE_FAILED);
+        }
     }
 
     @Override
@@ -139,29 +143,28 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public ListObjectsResultVO list(String continuationToken, Integer maxKeys) {
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request();
         listObjectsV2Request.setBucketName(ossProperties.getBucketName());
         listObjectsV2Request.setContinuationToken(continuationToken);
         listObjectsV2Request.setMaxKeys(maxKeys);
-        ListObjectsV2Result listObjectsV2Result = ossClient.listObjectsV2(listObjectsV2Request);
+        try {
+            ListObjectsV2Result listObjectsV2Result = ossClient.listObjectsV2(listObjectsV2Request);
 
-        ListObjectsResultVO listObjectsResultVO = new ListObjectsResultVO();
-        listObjectsResultVO.setObjectSummaries(listObjectsV2Result.getObjectSummaries().stream().map(objectSummary -> {
-            OSSObjectSummaryVO ossObjectSummaryVO = new OSSObjectSummaryVO();
-            ossObjectSummaryVO.setName(objectSummary.getKey());
-            ossObjectSummaryVO.setSize(objectSummary.getSize());
-            ossObjectSummaryVO.setLastModified(objectSummary.getLastModified());
-            ossObjectSummaryVO.setType(objectSummary.getType());
-            return ossObjectSummaryVO;
-        }).toList());
-        listObjectsResultVO.setKeyCount(listObjectsV2Result.getKeyCount());
-        listObjectsResultVO.setNextContinuationToken(listObjectsV2Result.getNextContinuationToken());
-        return listObjectsResultVO;
+            ListObjectsResultVO listObjectsResultVO = new ListObjectsResultVO();
+            listObjectsResultVO.setObjectSummaries(listObjectsV2Result.getObjectSummaries().stream().map(objectSummary -> {
+                OSSObjectSummaryVO ossObjectSummaryVO = new OSSObjectSummaryVO();
+                ossObjectSummaryVO.setName(objectSummary.getKey());
+                ossObjectSummaryVO.setSize(objectSummary.getSize());
+                ossObjectSummaryVO.setLastModified(objectSummary.getLastModified());
+                ossObjectSummaryVO.setType(objectSummary.getType());
+                return ossObjectSummaryVO;
+            }).toList());
+            listObjectsResultVO.setKeyCount(listObjectsV2Result.getKeyCount());
+            listObjectsResultVO.setNextContinuationToken(listObjectsV2Result.getNextContinuationToken());
+            return listObjectsResultVO;
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FILE_LIST_FAILED);
+        }
     }
 
 }

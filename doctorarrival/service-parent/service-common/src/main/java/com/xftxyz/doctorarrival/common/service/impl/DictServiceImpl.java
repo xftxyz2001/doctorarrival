@@ -3,8 +3,9 @@ package com.xftxyz.doctorarrival.common.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xftxyz.doctorarrival.common.exception.common.DataImportException;
+import com.xftxyz.doctorarrival.common.exception.BusinessException;
 import com.xftxyz.doctorarrival.common.mapper.DictMapper;
+import com.xftxyz.doctorarrival.common.result.ResultEnum;
 import com.xftxyz.doctorarrival.common.service.DictService;
 import com.xftxyz.doctorarrival.domain.common.Dict;
 import com.xftxyz.doctorarrival.vo.common.DictExcelVO;
@@ -48,33 +49,37 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict>
             // 保存
             return saveBatch(dictList);
         } catch (Exception e) {
-            throw new DataImportException();
+            throw new BusinessException(ResultEnum.DATA_IMPORT_FAILED);
         }
     }
 
     @Override
     public Resource exportDict() {
-        // 查询数据
-        List<Dict> dictList = baseMapper.selectList(null);
+        try {
+            // 查询数据
+            List<Dict> dictList = baseMapper.selectList(null);
 
-        // 转为DictExcelVO
-        List<DictExcelVO> dictExcelVOList = dictList.stream().map(dict -> {
-            DictExcelVO dictExcelVO = new DictExcelVO();
-            dictExcelVO.setId(dict.getId());
-            dictExcelVO.setParentId(dict.getParentId());
-            dictExcelVO.setValue(dict.getValue());
-            dictExcelVO.setDictCode(dict.getDictCode());
-            return dictExcelVO;
-        }).toList();
+            // 转为DictExcelVO
+            List<DictExcelVO> dictExcelVOList = dictList.stream().map(dict -> {
+                DictExcelVO dictExcelVO = new DictExcelVO();
+                dictExcelVO.setId(dict.getId());
+                dictExcelVO.setParentId(dict.getParentId());
+                dictExcelVO.setValue(dict.getValue());
+                dictExcelVO.setDictCode(dict.getDictCode());
+                return dictExcelVO;
+            }).toList();
 
-        // 写出
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        EasyExcel.write(outputStream, DictExcelVO.class).sheet("dict").doWrite(dictExcelVOList);
-        return new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
+            // 写出
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            EasyExcel.write(outputStream, DictExcelVO.class).sheet("dict").doWrite(dictExcelVOList);
+            return new InputStreamResource(new ByteArrayInputStream(outputStream.toByteArray()));
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.DATA_EXPORT_FAILED);
+        }
     }
 
     @Override
-    public List<Dict> getDictChildrenByParentId(Integer parentId) {
+    public List<Dict> getDictChildrenByParentId(Long parentId) {
         LambdaQueryWrapper<Dict> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Dict::getParentId, parentId);
         List<Dict> dictList = baseMapper.selectList(lambdaQueryWrapper);

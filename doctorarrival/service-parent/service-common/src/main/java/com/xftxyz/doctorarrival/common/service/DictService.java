@@ -29,7 +29,7 @@ public interface DictService extends IService<Dict> {
      */
     Resource exportDict();
 
-    List<Dict> getDictChildrenByParentId(Integer parentId);
+    List<Dict> getDictChildrenByParentId(Long parentId);
 
     List<Dict> getDictChildrenByDictCode(String dictCode);
 }

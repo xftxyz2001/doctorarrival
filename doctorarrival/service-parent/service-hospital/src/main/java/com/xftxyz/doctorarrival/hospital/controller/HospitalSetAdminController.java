@@ -24,31 +24,31 @@ public class HospitalSetAdminController {
     // 新增医院设置
     @PostMapping("/save")
     public Boolean save(@RequestBody HospitalSet hospitalSet) {
-        return hospitalSetService.save(hospitalSet);
+        return hospitalSetService.saveWarp(hospitalSet);
     }
 
     // 修改医院设置
     @PutMapping("/update")
     public Boolean update(@RequestBody HospitalSet hospitalSet) {
-        return hospitalSetService.updateById(hospitalSet);
+        return hospitalSetService.updateByIdWarp(hospitalSet);
     }
 
     // 删除医院设置
     @DeleteMapping("/remove/{id}")
     public Boolean remove(@PathVariable("id") @Min(1) Long id) {
-        return hospitalSetService.removeById(id);
+        return hospitalSetService.removeByIdWarp(id);
     }
 
     // 批量删除医院设置
     @DeleteMapping("/remove/batch")
     public Boolean removeBatch(@RequestBody @NotEmpty List<Long> idList) {
-        return hospitalSetService.removeByIds(idList);
+        return hospitalSetService.removeByIdsWarp(idList);
     }
 
     // 根据id查询医院设置
     @GetMapping("/id/{id}")
     public HospitalSet getById(@PathVariable("id") @Min(1) Long id) {
-        return hospitalSetService.getById(id);
+        return hospitalSetService.getByIdWarp(id);
     }
 
     // 条件查询医院设置

@@ -21,12 +21,12 @@ public class DictApiController {
     private final DictService dictService;
 
     @GetMapping("/id/{id}")
-    public Dict getDictById(@PathVariable("id") @Min(1) Integer id) {
+    public Dict getDictById(@PathVariable("id") @Min(1) Long id) {
         return dictService.getById(id);
     }
 
     @GetMapping("/children/id/{parentId}")
-    public List<Dict> getDictChildrenByParentId(@PathVariable("parentId") @Min(1) Integer parentId) {
+    public List<Dict> getDictChildrenByParentId(@PathVariable("parentId") @Min(1) Long parentId) {
         return dictService.getDictChildrenByParentId(parentId);
     }
 

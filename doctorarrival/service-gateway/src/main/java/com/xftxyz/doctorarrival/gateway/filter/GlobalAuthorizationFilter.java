@@ -1,7 +1,6 @@
 package com.xftxyz.doctorarrival.gateway.filter;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xftxyz.doctorarrival.common.helper.JwtHelper;
@@ -62,7 +61,7 @@ public class GlobalAuthorizationFilter implements GlobalFilter {
         // 管理员接口需要管理员权限
         if (antPathMatcher.match("/admin/**", path)) {
             if (!StringUtils.hasLength(authorization) || !authorization.equals(adminAuthorization)) {
-                return failed(response, ResultEnum.PERMISSION_DENIED);
+                return failed(response, ResultEnum.TOKEN_EXPIRED);
             }
         }
 
@@ -75,10 +74,8 @@ public class GlobalAuthorizationFilter implements GlobalFilter {
             }
             try {
                 uesrId = JwtHelper.parseToken(authorization);
-            } catch (TokenExpiredException e) {
-                return failed(response, ResultEnum.TOKEN_EXPIRED);
             } catch (JWTVerificationException e) {
-                return failed(response, ResultEnum.PERMISSION_DENIED);
+                return failed(response, ResultEnum.TOKEN_EXPIRED);
             }
         }
 
