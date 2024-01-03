@@ -34,7 +34,7 @@ public class HospitalSetAdminController {
     }
 
     // 删除医院设置
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("/remove/id/{id}")
     public Boolean remove(@PathVariable("id") @Min(1) Long id) {
         return hospitalSetService.removeByIdWarp(id);
     }
@@ -54,8 +54,8 @@ public class HospitalSetAdminController {
     // 条件查询医院设置
     @PostMapping("/find")
     public IPage<HospitalSet> find(@RequestBody HospitalSetQueryVO hospitalSetQueryVO,
-                                   @RequestParam(value = "current", defaultValue = "1") Long current,
-                                   @RequestParam(value = "size", defaultValue = "20") Long size) {
+                                   @RequestParam(value = "current", defaultValue = "1") @Min(1) Long current,
+                                   @RequestParam(value = "size", defaultValue = "20") @Min(1) Long size) {
         return hospitalSetService.find(hospitalSetQueryVO, current, size);
     }
 

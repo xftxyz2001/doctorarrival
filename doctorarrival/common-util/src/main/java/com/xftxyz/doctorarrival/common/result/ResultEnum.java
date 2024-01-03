@@ -26,6 +26,11 @@ public enum ResultEnum {
     USER_NOT_LOGIN(300, "用户未登录"),
     TOKEN_EXPIRED(301, "token已过期"),
     PERMISSION_DENIED(310, "权限不足"),
+    USER_ALREADY_EXIST(311, "用户已存在"),
+    USER_SAVE_FAILED(312, "用户保存失败"),
+    USER_DELETE_FAILED(313, "用户删除失败"),
+    USER_NOT_EXIST(314, "用户不存在"),
+    USER_UPDATE_FAILED(315, "用户更新失败"),
 
     // 参数错误
     PARAM_ERROR(400, "非法参数"),
@@ -41,4 +46,4 @@ public enum ResultEnum {
     private final Integer code;
     private final String message;
 
-}
+    }

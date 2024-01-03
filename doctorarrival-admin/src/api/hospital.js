@@ -18,7 +18,7 @@ export function updateApi(data) {
 
 export function removeApi(id) {
   return request({
-    url: `/admin/hospital/set/remove/${id}`,
+    url: `/admin/hospital/set/remove/id/${id}`,
     method: 'delete'
   })
 }
