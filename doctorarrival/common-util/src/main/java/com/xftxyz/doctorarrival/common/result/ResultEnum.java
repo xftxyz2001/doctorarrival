@@ -14,6 +14,9 @@ public enum ResultEnum {
     // 公共模块
     DATA_IMPORT_FAILED(111, "数据导入失败"),
 
+    // 医院相关
+    HOSPITAL_NOT_EXIST(200, "医院设置不存在"),
+
     // 用户相关
     USER_NOT_LOGIN(300, "用户未登录"),
     TOKEN_EXPIRED(301, "token已过期"),
