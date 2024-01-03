@@ -43,6 +43,7 @@ import { exportDictApi, importDictApi, getDictChildrenByParentIdApi } from '@/ap
 import { ref, reactive, onBeforeMount } from 'vue'
 import { Download, Upload } from '@element-plus/icons-vue'
 import Layer from '@/components/layer/index.vue'
+import { ElMessage } from 'element-plus'
 
 function handleExport() {
   exportDictApi().then(res => {
@@ -64,7 +65,6 @@ const tableData = ref([])
 function getDictList(parentId) {
   getDictChildrenByParentIdApi(parentId).then(res => {
     tableData.value = res
-    console.log(tableData.value)
   })
 }
 
@@ -102,6 +102,10 @@ function submit() {
   formData.append('file', selectFile.raw)
   importDictApi(formData).then(res => {
     layer.show = false
+    ElMessage({
+      message: '导入成功',
+      type: 'success'
+    })
     getDictList(1)
   })
 }

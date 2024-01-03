@@ -77,14 +77,14 @@ export default defineComponent({
     const checkForm = () => {
       return new Promise((resolve, reject) => {
         if (form.name === '') {
-          ElMessage.warning({
+          ElMessage({
             message: '用户名不能为空',
             type: 'warning'
           });
           return;
         }
         if (form.password === '') {
-          ElMessage.warning({
+          ElMessage({
             message: '密码不能为空',
             type: 'warning'
           })
@@ -103,11 +103,9 @@ export default defineComponent({
         }
         store.dispatch('user/login', params)
         .then(async () => {
-          ElMessage.success({
+          ElMessage({
             message: '登录成功',
-            type: 'success',
-            showClose: true,
-            duration: 1000
+            type: 'success'
           })
           location.reload()
           // await getAuthRoutes()

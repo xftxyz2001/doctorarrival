@@ -1,8 +1,7 @@
 package com.xftxyz.doctorarrival.oss.controller;
 
-import com.aliyun.oss.model.ListObjectsV2Request;
 import com.xftxyz.doctorarrival.oss.service.FileService;
-import com.xftxyz.doctorarrival.vo.oss.OSSObjectSummaryVO;
+import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -78,7 +77,7 @@ public class FileAdminController {
      * @param fileUrls 文件地址数组
      * @return 文件
      */
-    @GetMapping(value = "/download/batch")
+    @PostMapping(value = "/download/batch")
     public ResponseEntity<Resource> downloadBatch(@RequestBody @NotEmpty List<String> fileUrls) {
         return fileService.downloadBatch(fileUrls);
     }
@@ -113,14 +112,17 @@ public class FileAdminController {
     }
 
     /**
-     * 查看文件列表
+     * 获取文件列表
      *
-     * @param listObjectsV2Request 查询条件
-     * @return 文件地址数组
+     * @param continuationToken
+     * @param maxKeys
+     * @return 文件列表
      */
     @GetMapping("/list")
-    public List<OSSObjectSummaryVO> list(@RequestBody ListObjectsV2Request listObjectsV2Request) {
-        return fileService.list(listObjectsV2Request);
+    public ListObjectsResultVO list(
+            @RequestParam(value = "continuationToken", required = false) String continuationToken,
+            @RequestParam(value = "maxKeys", required = false, defaultValue = "20") Integer maxKeys) {
+        return fileService.list(continuationToken, maxKeys);
     }
 
 }

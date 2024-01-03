@@ -1,6 +1,7 @@
 package com.xftxyz.doctorarrival.oss.service;
 
 import com.aliyun.oss.model.ListObjectsV2Request;
+import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
 import com.xftxyz.doctorarrival.vo.oss.OSSObjectSummaryVO;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +31,5 @@ public interface FileService {
 
     Boolean deleteBatch(List<String> fileUrls);
 
-    List<OSSObjectSummaryVO> list(ListObjectsV2Request listObjectsV2Request);
+    ListObjectsResultVO list(String continuationToken, Integer maxKeys);
 }

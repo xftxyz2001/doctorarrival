@@ -4,6 +4,7 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.ListObjectsV2Request;
+import com.aliyun.oss.model.ListObjectsV2Result;
 import com.aliyun.oss.model.OSSObject;
 import com.xftxyz.doctorarrival.common.exception.oss.FileDownloadException;
 import com.xftxyz.doctorarrival.common.exception.oss.FileUploadException;
@@ -11,6 +12,7 @@ import com.xftxyz.doctorarrival.common.helper.DateTimeHelper;
 import com.xftxyz.doctorarrival.common.helper.FileHelper;
 import com.xftxyz.doctorarrival.oss.autoconfigure.OssProperties;
 import com.xftxyz.doctorarrival.oss.service.FileService;
+import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
 import com.xftxyz.doctorarrival.vo.oss.OSSObjectSummaryVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -30,6 +32,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -135,15 +138,30 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<OSSObjectSummaryVO> list(ListObjectsV2Request listObjectsV2Request) {
-        return ossClient.listObjectsV2(listObjectsV2Request).getObjectSummaries().stream().map(objectSummary -> {
+    public ListObjectsResultVO list(String continuationToken, Integer maxKeys) {
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request();
+        listObjectsV2Request.setBucketName(ossProperties.getBucketName());
+        listObjectsV2Request.setContinuationToken(continuationToken);
+        listObjectsV2Request.setMaxKeys(maxKeys);
+        ListObjectsV2Result listObjectsV2Result = ossClient.listObjectsV2(listObjectsV2Request);
+
+        ListObjectsResultVO listObjectsResultVO = new ListObjectsResultVO();
+        listObjectsResultVO.setObjectSummaries(listObjectsV2Result.getObjectSummaries().stream().map(objectSummary -> {
             OSSObjectSummaryVO ossObjectSummaryVO = new OSSObjectSummaryVO();
             ossObjectSummaryVO.setName(objectSummary.getKey());
             ossObjectSummaryVO.setSize(objectSummary.getSize());
             ossObjectSummaryVO.setLastModified(objectSummary.getLastModified());
             ossObjectSummaryVO.setType(objectSummary.getType());
             return ossObjectSummaryVO;
-        }).toList();
+        }).toList());
+        listObjectsResultVO.setKeyCount(listObjectsV2Result.getKeyCount());
+        listObjectsResultVO.setNextContinuationToken(listObjectsV2Result.getNextContinuationToken());
+        return listObjectsResultVO;
     }
 
 }
