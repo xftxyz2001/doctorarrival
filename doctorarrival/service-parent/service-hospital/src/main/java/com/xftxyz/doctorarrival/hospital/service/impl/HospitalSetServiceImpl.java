@@ -5,11 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
-import com.xftxyz.doctorarrival.hospital.service.HospitalSetService;
 import com.xftxyz.doctorarrival.hospital.mapper.HospitalSetMapper;
+import com.xftxyz.doctorarrival.hospital.service.HospitalSetService;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalSetQueryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @author 25810
@@ -22,9 +23,13 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
 
     @Override
     public IPage<HospitalSet> find(HospitalSetQueryVO hospitalSetQueryVO, Long current, Long size) {
+
         LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(!ObjectUtils.isEmpty(hospitalSetQueryVO.getHospitalCode()), HospitalSet::getHospitalCode, hospitalSetQueryVO.getHospitalCode());
-        lambdaQueryWrapper.like(!ObjectUtils.isEmpty(hospitalSetQueryVO.getHospitalName()), HospitalSet::getHospitalName, hospitalSetQueryVO.getHospitalName());
+        lambdaQueryWrapper.like(StringUtils.hasText(hospitalSetQueryVO.getHospitalCode()), HospitalSet::getHospitalCode,
+                hospitalSetQueryVO.getHospitalCode());
+        lambdaQueryWrapper.like(StringUtils.hasText(hospitalSetQueryVO.getHospitalName()), HospitalSet::getHospitalName,
+                hospitalSetQueryVO.getHospitalName());
+
         lambdaQueryWrapper.between(!ObjectUtils.isEmpty(hospitalSetQueryVO.getCreateTimeFrom()) && !ObjectUtils.isEmpty(hospitalSetQueryVO.getCreateTimeTo()),
                 HospitalSet::getCreateTime, hospitalSetQueryVO.getCreateTimeFrom(), hospitalSetQueryVO.getCreateTimeTo());
         return baseMapper.selectPage(new Page<>(current, size), lambdaQueryWrapper);
