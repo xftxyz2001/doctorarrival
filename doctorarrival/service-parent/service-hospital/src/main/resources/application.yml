@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: service-hospital
+  profiles:
+    active: dev
 
   cloud:
     nacos:
@@ -16,7 +18,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.98.114.154:3306/doctorarrival_hospital?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://<<数据库地址>>/doctorarrival_hospital?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: <<数据库用户名>>
+    password: <<数据库密码>>
 

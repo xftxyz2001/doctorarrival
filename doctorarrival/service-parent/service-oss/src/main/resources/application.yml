@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: service-oss
+  profiles:
+    active: dev
 
   cloud:
     nacos:
@@ -21,7 +23,7 @@ spring:
 
 aliyun:
   oss:
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    access-key-id: LTAI5tGEH1yN7HdNmbMktvod
-    access-key-secret: LZKjHMNCW7ZCZ4c3g7FN7m4UtJlp7O
-    bucket-name: doctor-arrival
+    endpoint: <<your endpoint>>
+    access-key-id: <<your access-key-id>>
+    access-key-secret: <<your access-key-secret>>
+    bucket-name: <<your bucket-name>>

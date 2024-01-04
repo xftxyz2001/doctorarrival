@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: service-statistics
+  profiles:
+    active: dev
 
   cloud:
     nacos:
