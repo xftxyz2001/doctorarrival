@@ -81,12 +81,12 @@
 </template>
 
 <script setup>
-import { saveApi, updateApi, removeApi, removeBatchApi, getByIdApi, findApi, setStatusApi } from '@/api/hospital'
-import { ref, reactive, onBeforeMount } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Plus, Delete, Search } from '@element-plus/icons'
-import Table from '@/components/table/index.vue'
+import { findApi, getByIdApi, removeApi, removeBatchApi, saveApi, setStatusApi, updateApi } from '@/api/hospital'
 import Layer from '@/components/layer/index.vue'
+import Table from '@/components/table/index.vue'
+import { Delete, Plus, Search } from '@element-plus/icons'
+import { ElMessage } from 'element-plus'
+import { onBeforeMount, reactive, ref } from 'vue'
 
 // 搜索相关
 const query = reactive({

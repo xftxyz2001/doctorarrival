@@ -28,12 +28,6 @@ public class OrderInfo implements Serializable {
     private Long userId;
 
     /**
-     * 订单交易号
-     */
-    @TableField(value = "out_trade_no")
-    private String outTradeNo;
-
-    /**
      * 医院编号
      */
     @TableField(value = "hospital_code")
@@ -100,7 +94,13 @@ public class OrderInfo implements Serializable {
     private String patientPhone;
 
     /**
-     * 订单状态（0：支付中，1：已支付，3：已完成
+     * 订单金额（分）
+     */
+    @TableField(value = "amount")
+    private Integer amount;
+
+    /**
+     * 订单状态（-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）
      */
     @TableField(value = "order_status")
     private Integer orderStatus;

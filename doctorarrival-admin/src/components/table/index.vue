@@ -8,6 +8,7 @@
       height="100%"
       :data="data"
       @selection-change="handleSelectionChange"
+      table-layout="auto"
     >
       <el-table-column type="selection" align="center" width="50" v-if="showSelection" />
       <el-table-column label="序号" width="60" align="center" v-if="showIndex">

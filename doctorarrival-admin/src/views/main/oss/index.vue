@@ -69,11 +69,11 @@
 </template>
 
 <script setup>
-import { getAdminPathApi, uploadApi, uploadBatchApi, downloadApi, downloadBatchApi, deleteApi, deleteBatchApi, listApi } from "@/api/oss"
-import { ref, reactive, onBeforeMount } from 'vue'
-import { Download, Upload, Delete } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { deleteApi, deleteBatchApi, downloadApi, downloadBatchApi, getAdminPathApi, listApi, uploadBatchApi } from "@/api/oss"
 import Layer from '@/components/layer/index.vue'
+import { Delete, Download, Upload } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import { onBeforeMount, reactive, ref } from 'vue'
 
 // 表格数据
 const tableData = ref([])

@@ -25,7 +25,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
-    if (response.headers['content-type'] !== 'application/json') {
+    if (response.headers['content-type'].indexOf('application/json') === -1) {
       return response
     }
     // 统一返回处理
@@ -49,10 +49,11 @@ service.interceptors.response.use(
 // 错误处理
 function showError(error) {
   // token过期，清除本地数据，并跳转至登录页面
-  // if (error.code === 403) {
-  //   // to re-login
-  //   store.dispatch('user/loginOut')
-  // } else {
+  if (error.code === 301) {
+    // to re-login
+    store.dispatch('user/loginOut')
+  }
+  // else {
   //   ElMessage({
   //     message: error.msg || error.message || '服务异常',
   //     type: 'error',

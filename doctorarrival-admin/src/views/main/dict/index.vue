@@ -39,11 +39,11 @@
 </template>
 
 <script setup>
-import { exportDictApi, importDictApi, getDictChildrenByParentIdApi } from '@/api/dict'
-import { ref, reactive, onBeforeMount } from 'vue'
-import { Download, Upload } from '@element-plus/icons-vue'
+import { exportDictApi, getDictChildrenByParentIdApi, importDictApi } from '@/api/dict'
 import Layer from '@/components/layer/index.vue'
+import { Download, Upload } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import { onBeforeMount, reactive, ref } from 'vue'
 
 function handleExport() {
   exportDictApi().then(res => {
