@@ -41,6 +41,15 @@ public enum ResultEnum {
     FILE_DOWNLOAD_FAILED(601, "文件下载失败"),
     FILE_DELETE_FAILED(602, "文件删除失败"),
     FILE_LIST_FAILED(603, "文件列表获取失败"),
+
+    // 订单相关
+    ORDER_NOT_EXIST(700, "订单不存在"),
+    ORDER_ALREADY_EXIST(701, "订单已存在"), //
+    ORDER_SAVE_FAILED(702, "订单保存失败"),
+    ORDER_DELETE_FAILED(703, "订单删除失败"),
+    ORDER_UPDATE_FAILED(704, "订单更新失败"),
+    ORDER_STATUS_UPDATE_FAILED(705, "订单状态更新失败"),
+    ORDER_STATUS_NOT_ALLOW(706, "订单状态不允许"),
     ;
 
     private final Integer code;

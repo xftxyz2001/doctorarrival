@@ -32,7 +32,7 @@ CREATE TABLE `hospital_set` (
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除（0:未删除，1:已删除）',
     PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `uk_hospital_code`(`hospital_code`) USING BTREE
+    INDEX `idx_hospital_code`(`hospital_code` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '医院设置表' ROW_FORMAT = Dynamic;
 -- 
 -- 用户模块
@@ -98,7 +98,6 @@ USE `doctorarrival_order`;
 CREATE TABLE `order_info` (
     `id` bigint NOT NULL COMMENT 'id',
     `user_id` bigint NOT NULL COMMENT '用户id',
-    `out_trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单交易号',
     `hospital_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '医院编号',
     `hospital_name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '医院名称',
     `department_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '科室编号',
@@ -110,28 +109,10 @@ CREATE TABLE `order_info` (
     `patient_id` bigint NOT NULL COMMENT '就诊人id',
     `patient_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '就诊人名称',
     `patient_phone` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '就诊人手机',
-    `order_status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态（0：支付中，1：已支付，3：已完成',
+    `amount` int NULL DEFAULT NULL COMMENT '订单金额（分）',
+    `order_status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态（-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除（0:未删除，1:已删除）',
-    PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `uk_out_trade_no`(`out_trade_no`) USING BTREE
+    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
--- 付款记录表
-CREATE TABLE `payment_info` (
-    `id` bigint NOT NULL COMMENT 'id',
-    `out_trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '订单交易号',
-    `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '商品描述',
-    `payment_type` tinyint NOT NULL DEFAULT 1 COMMENT '支付类型（1：微信，2：支付宝）',
-    `trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '交易流水号（第三方平台订单号）',
-    `total_amount` int NULL DEFAULT NULL COMMENT '支付金额（分）',
-    `refund_amount` int NULL DEFAULT NULL COMMENT '退款金额（分）',
-    `payment_status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态（0：未支付，1：已支付，2：已取消，3：已完成，4：退款中，5：已退款）',
-    `callback_time` datetime NULL DEFAULT NULL COMMENT '回调时间',
-    `callback_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '回调内容',
-    `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除（0:未删除，1:已删除）',
-    PRIMARY KEY (`id`) USING BTREE,
-    UNIQUE INDEX `uk_out_trade_no`(`out_trade_no`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '付款记录表' ROW_FORMAT = Dynamic;

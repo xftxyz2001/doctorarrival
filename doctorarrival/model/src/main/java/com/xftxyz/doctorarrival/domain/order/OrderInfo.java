@@ -1,23 +1,24 @@
 package com.xftxyz.doctorarrival.domain.order;
 
-import com.baomidou.mybatisplus.annotation.*;
-import lombok.Data;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 订单表
- *
  * @TableName order_info
  */
-@TableName(value = "order_info")
+@TableName(value ="order_info")
 @Data
 public class OrderInfo implements Serializable {
     /**
      * id
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableId(value = "id")
     private Long id;
 
     /**
@@ -120,8 +121,7 @@ public class OrderInfo implements Serializable {
      * 逻辑删除（0:未删除，1:已删除）
      */
     @TableField(value = "is_deleted")
-    @TableLogic
-    private Integer deleted;
+    private Integer isDeleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
