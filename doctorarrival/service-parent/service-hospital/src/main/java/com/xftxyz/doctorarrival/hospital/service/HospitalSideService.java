@@ -1,8 +1,8 @@
 package com.xftxyz.doctorarrival.hospital.service;
 
-import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
+
+import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 
 public interface HospitalSideService {
     Resource join(HospitalJoinVO hospitalJoinVO);

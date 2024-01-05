@@ -1,6 +1,5 @@
 package com.xftxyz.doctorarrival.vo.hospital;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

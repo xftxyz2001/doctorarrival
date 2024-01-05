@@ -1,13 +1,12 @@
 package com.xftxyz.doctorarrival.oss.service;
 
-import com.aliyun.oss.model.ListObjectsV2Request;
-import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
-import com.xftxyz.doctorarrival.vo.oss.OSSObjectSummaryVO;
+import java.util.List;
+
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
 
 public interface FileService {
 

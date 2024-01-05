@@ -1,9 +1,5 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
-import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
-import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
-import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,6 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
+import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
+
+import lombok.RequiredArgsConstructor;
 
 @Validated
 @RestController

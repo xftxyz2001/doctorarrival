@@ -1,5 +1,7 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
-import java.util.Date;
+import org.springframework.core.io.Resource;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xftxyz.doctorarrival.common.constant.Constants;
@@ -9,11 +11,8 @@ import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
 import com.xftxyz.doctorarrival.hospital.mapper.HospitalSetMapper;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
