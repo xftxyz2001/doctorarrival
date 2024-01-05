@@ -12,3 +12,17 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
+  data:
+    redis:
+      host: <<redis地址>>
+      password: <<redis密码>>
+
+aliyun:
+  sms:
+    endpoint: <<your endpoint>>
+    access-key-id: <<your access-key-id>>
+    access-key-secret: <<your access-key-secret>>
+    region: <<your region>>
+    sign-name: <<your sign-name>>
+    template-code-for-verification-code: <<your template-code-for-verification-code>>
+    template-code-for-appointment-reminder: <<your template-code-for-appointment-reminder>>

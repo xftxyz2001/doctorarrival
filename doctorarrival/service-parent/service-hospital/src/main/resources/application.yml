@@ -22,3 +22,7 @@ spring:
     username: <<数据库用户名>>
     password: <<数据库密码>>
 
+  data:
+    redis:
+      host: <<redis地址>>
+      password: <<redis密码>>

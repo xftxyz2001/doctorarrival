@@ -14,6 +14,12 @@ import java.util.Date;
 @TableName(value = "hospital_set")
 @Data
 public class HospitalSet implements Serializable {
+
+    // 可用
+    public static final Integer STATUS_ENABLE = 1;
+    // 不可用
+    public static final Integer STATUS_DISABLE = 0;
+
     /**
      * id
      */
