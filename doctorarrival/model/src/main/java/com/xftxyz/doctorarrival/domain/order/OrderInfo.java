@@ -15,6 +15,14 @@ import lombok.Data;
 @TableName(value ="order_info")
 @Data
 public class OrderInfo implements Serializable {
+    // （-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）
+    public static final Integer ORDER_STATUS_CLOSED = -1;
+    public static final Integer ORDER_STATUS_UNPAID = 0;
+    public static final Integer ORDER_STATUS_PAID = 1;
+    public static final Integer ORDER_STATUS_REFUNDING = 2;
+    public static final Integer ORDER_STATUS_REFUNDED = 3;
+    public static final Integer ORDER_STATUS_COMPLETED = 4;
+
     /**
      * id
      */
@@ -104,6 +112,12 @@ public class OrderInfo implements Serializable {
      */
     @TableField(value = "order_status")
     private Integer orderStatus;
+
+    /**
+     * 备注
+     */
+    @TableField(value = "remark")
+    private String remark;
 
     /**
      * 创建时间

@@ -111,6 +111,7 @@ CREATE TABLE `order_info` (
     `patient_phone` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '就诊人手机',
     `amount` int NULL DEFAULT NULL COMMENT '订单金额（分）',
     `order_status` tinyint NOT NULL DEFAULT 0 COMMENT '订单状态（-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）',
+    `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
     `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除（0:未删除，1:已删除）',

@@ -20,6 +20,8 @@
         <module>service-util</module>
         <module>service-parent</module>
         <module>service-gateway</module>
+        <module>model4sdk</module>
+        <module>sdk</module>
     </modules>
     <properties>
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>

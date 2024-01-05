@@ -1,21 +1,15 @@
-package com.xftxyz.doctorarrival.domain.hospital;
+package com.xftxyz.doctorarrival.sdk.vo.api;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 排班
+ * 更新排班请求
  */
 @Data
-@Document("Schedule")
-public class Schedule {
-
+public class UpdateScheduleRequest {
     // 停诊
     public static final Integer STATUS_STOP = -1;
     // 停约
@@ -24,36 +18,8 @@ public class Schedule {
     public static final Integer STATUS_ENABLE = 1;
 
     /**
-     * id
-     */
-    @Id
-    private String id;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    /**
-     * 逻辑删除（0：未删除，1：已删除）
-     */
-    // private Integer isDeleted;
-
-    /**
-     * 医院编号
-     */
-    @Indexed // 普通索引
-    private String hospitalCode;
-
-    /**
      * 科室编号
      */
-    @Indexed // 普通索引
     private String departmentCode;
 
     /**
@@ -74,7 +40,6 @@ public class Schedule {
     /**
      * 排班日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date workDate;
 
     /**
@@ -105,7 +70,5 @@ public class Schedule {
     /**
      * 排班编号（医院自己的排班主键）
      */
-    @Indexed // 普通索引
     private String hospitalScheduleId;
-
 }

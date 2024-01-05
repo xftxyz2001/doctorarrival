@@ -90,7 +90,7 @@ public class Hospital {
     /**
      * 状态 0：未上线 1：已上线
      */
-    private Integer status;
+    // private Integer status;
 
     /**
      * 预约规则

@@ -1,4 +1,7 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
+import com.xftxyz.doctorarrival.common.helper.Base64Helper;
+import com.xftxyz.doctorarrival.common.helper.KeyPairHelper;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,10 @@ import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 
 import lombok.RequiredArgsConstructor;
+
+import java.io.ByteArrayInputStream;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 @RequiredArgsConstructor
@@ -35,17 +42,25 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         }
         // 检查医院是否已经加入
         LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(HospitalSet::getHospitalName, hospitalJoinVO.getHospitalName());
+        lambdaQueryWrapper.eq(HospitalSet::getHospitalCode, hospitalJoinVO.getHospitalCode());
         if (hospitalSetMapper.selectCount(lambdaQueryWrapper) > 0) {
             throw new BusinessException(ResultEnum.HOSPITAL_ALREADY_EXIST);
         }
-        // TODO 生成签名秘钥
+        // 生成签名秘钥
+        KeyPair keyPair = null;
+        try {
+            keyPair = KeyPairHelper.generateKeyPair();
+        } catch (NoSuchAlgorithmException e) {
+            throw new BusinessException(ResultEnum.HOSPITAL_SET_SAVE_FAILED);
+        }
+        String base64PublicKey = Base64Helper.encodeToString(keyPair.getPublic().getEncoded());
 
         // 添加
         HospitalSet hospitalSet = new HospitalSet();
         hospitalSet.setHospitalCode(hospitalJoinVO.getHospitalCode());
         hospitalSet.setHospitalName(hospitalJoinVO.getHospitalName());
         hospitalSet.setApiUrl(hospitalJoinVO.getApiUrl());
+        hospitalSet.setSignKey(base64PublicKey);
         hospitalSet.setContactsName(hospitalJoinVO.getContactsName());
         hospitalSet.setContactsPhone(hospitalJoinVO.getContactsPhone());
         hospitalSet.setStatus(HospitalSet.STATUS_DISABLE);
@@ -53,6 +68,6 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         if (hospitalSetMapper.insert(hospitalSet) <= 0) {
             throw new BusinessException(ResultEnum.HOSPITAL_SET_SAVE_FAILED);
         }
-        return null;
+        return new InputStreamResource(new ByteArrayInputStream(keyPair.getPrivate().getEncoded()));
     }
 }
