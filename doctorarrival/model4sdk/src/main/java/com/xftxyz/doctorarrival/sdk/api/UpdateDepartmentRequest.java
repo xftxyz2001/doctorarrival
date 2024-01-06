@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.sdk.vo.api;
+package com.xftxyz.doctorarrival.sdk.api;
 
 import lombok.Data;
 

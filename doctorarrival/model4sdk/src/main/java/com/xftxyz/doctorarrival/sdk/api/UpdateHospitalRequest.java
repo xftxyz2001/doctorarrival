@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.sdk.vo.api;
+package com.xftxyz.doctorarrival.sdk.api;
 
 import lombok.Data;
 
@@ -55,6 +55,7 @@ public class UpdateHospitalRequest {
      */
     private BookingRule bookingRule;
 
+    @Data
     public static class BookingRule {
 
         /**

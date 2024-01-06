@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.sdk.vo.callback;
+package com.xftxyz.doctorarrival.sdk.callback;
 
 import java.util.Date;
 

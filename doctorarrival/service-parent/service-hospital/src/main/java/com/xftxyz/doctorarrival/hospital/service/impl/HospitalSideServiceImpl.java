@@ -1,25 +1,33 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
-import com.xftxyz.doctorarrival.common.helper.Base64Helper;
-import com.xftxyz.doctorarrival.common.helper.KeyPairHelper;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xftxyz.doctorarrival.common.constant.Constants;
 import com.xftxyz.doctorarrival.common.exception.BusinessException;
+import com.xftxyz.doctorarrival.common.helper.Base64Helper;
+import com.xftxyz.doctorarrival.common.helper.KeyPairHelper;
+import com.xftxyz.doctorarrival.common.processor.EncryptionRequestProcessor;
 import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
+import com.xftxyz.doctorarrival.domain.hospital.Hospital;
 import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
 import com.xftxyz.doctorarrival.hospital.mapper.HospitalSetMapper;
+import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
+import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
+import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.io.ByteArrayInputStream;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +36,8 @@ public class HospitalSideServiceImpl implements HospitalSideService {
     private final StringRedisTemplate stringRedisTemplate;
 
     private final HospitalSetMapper hospitalSetMapper;
+
+    private final HospitalRepository hospitalRepository;
 
     @Override
     public Resource join(HospitalJoinVO hospitalJoinVO) {
@@ -69,5 +79,59 @@ public class HospitalSideServiceImpl implements HospitalSideService {
             throw new BusinessException(ResultEnum.HOSPITAL_SET_SAVE_FAILED);
         }
         return new InputStreamResource(new ByteArrayInputStream(keyPair.getPrivate().getEncoded()));
+    }
+
+    private EncryptionRequestProcessor getEncryptionRequestProcessor(String hospitalCode) {
+        LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(HospitalSet::getHospitalCode, hospitalCode);
+        HospitalSet hospitalSet = hospitalSetMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(hospitalSet)) {
+            throw new BusinessException(ResultEnum.HOSPITAL_NOT_EXIST);
+        }
+        try {
+            return new EncryptionRequestProcessor(hospitalSet.getSignKey());
+        } catch (InvalidKeySpecException e) {
+            throw new BusinessException(ResultEnum.HOSPITAL_SIGN_ERROR);
+        }
+    }
+
+    @Override
+    public Boolean updateHospital(EncryptionRequest encryptionRequest) {
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+        UpdateHospitalRequest request = null;
+        try {
+            request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateHospitalRequest.class);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalCode);
+        Hospital hospital = null;
+        if (hospitalOptional.isPresent()) {
+            hospital = hospitalOptional.get();
+        } else {
+            hospital = new Hospital();
+            hospital.setHospitalCode(hospitalCode);
+        }
+        hospital.setHospitalName(request.getHospitalName());
+        hospital.setHospitalType(request.getHospitalType());
+        hospital.setProvinceCode(request.getProvinceCode());
+        hospital.setCityCode(request.getCityCode());
+        hospital.setDistrictCode(request.getDistrictCode());
+        hospital.setAddress(request.getAddress());
+        hospital.setLogoData(request.getLogoData());
+        hospital.setIntro(request.getIntro());
+        hospital.setRoute(request.getRoute());
+        UpdateHospitalRequest.BookingRule requestBookingRule = request.getBookingRule();
+        BookingRule bookingRule = ObjectUtils.isEmpty(hospital.getBookingRule()) ? new BookingRule() : hospital.getBookingRule();
+        if (!ObjectUtils.isEmpty(requestBookingRule)) {
+            bookingRule.setCycle(requestBookingRule.getCycle());
+            bookingRule.setReleaseTime(requestBookingRule.getReleaseTime());
+            bookingRule.setStopTime(requestBookingRule.getStopTime());
+            bookingRule.setQuitDay(requestBookingRule.getQuitDay());
+            bookingRule.setQuitTime(requestBookingRule.getQuitTime());
+            bookingRule.setRule(requestBookingRule.getRule());
+        }
+        return true;
     }
 }

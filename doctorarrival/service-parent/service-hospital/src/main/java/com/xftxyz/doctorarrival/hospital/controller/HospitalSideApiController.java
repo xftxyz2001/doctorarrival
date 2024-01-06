@@ -1,14 +1,13 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
+import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
@@ -32,5 +31,11 @@ public class HospitalSideApiController {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"private.key\"")
                 .body(resource);
+    }
+
+    // 更新医院信息
+    @PostMapping("/hospital")
+    public Boolean updateHospital(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.updateHospital(encryptionRequest);
     }
 }

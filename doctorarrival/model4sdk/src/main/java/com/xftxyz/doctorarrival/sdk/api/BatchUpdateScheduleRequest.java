@@ -1,6 +1,4 @@
-package com.xftxyz.doctorarrival.sdk.vo.api;
-
-import lombok.Data;
+package com.xftxyz.doctorarrival.sdk.api;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -157,94 +155,6 @@ public class BatchUpdateScheduleRequest implements List<UpdateScheduleRequest>{
     @Override
     public Spliterator<UpdateScheduleRequest> spliterator() {
         return updateScheduleRequests.spliterator();
-    }
-
-    @Override
-    public void addFirst(UpdateScheduleRequest updateScheduleRequest) {
-        updateScheduleRequests.addFirst(updateScheduleRequest);
-    }
-
-    @Override
-    public void addLast(UpdateScheduleRequest updateScheduleRequest) {
-        updateScheduleRequests.addLast(updateScheduleRequest);
-    }
-
-    @Override
-    public UpdateScheduleRequest getFirst() {
-        return updateScheduleRequests.getFirst();
-    }
-
-    @Override
-    public UpdateScheduleRequest getLast() {
-        return updateScheduleRequests.getLast();
-    }
-
-    @Override
-    public UpdateScheduleRequest removeFirst() {
-        return updateScheduleRequests.removeFirst();
-    }
-
-    @Override
-    public UpdateScheduleRequest removeLast() {
-        return updateScheduleRequests.removeLast();
-    }
-
-    @Override
-    public List<UpdateScheduleRequest> reversed() {
-        return updateScheduleRequests.reversed();
-    }
-
-    public static <E> List<E> of() {
-        return List.of();
-    }
-
-    public static <E> List<E> of(E e1) {
-        return List.of(e1);
-    }
-
-    public static <E> List<E> of(E e1, E e2) {
-        return List.of(e1, e2);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3) {
-        return List.of(e1, e2, e3);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4) {
-        return List.of(e1, e2, e3, e4);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4, E e5) {
-        return List.of(e1, e2, e3, e4, e5);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4, E e5, E e6) {
-        return List.of(e1, e2, e3, e4, e5, e6);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7) {
-        return List.of(e1, e2, e3, e4, e5, e6, e7);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) {
-        return List.of(e1, e2, e3, e4, e5, e6, e7, e8);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) {
-        return List.of(e1, e2, e3, e4, e5, e6, e7, e8, e9);
-    }
-
-    public static <E> List<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10) {
-        return List.of(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10);
-    }
-
-    @SafeVarargs
-    public static <E> List<E> of(E... elements) {
-        return List.of(elements);
-    }
-
-    public static <E> List<E> copyOf(Collection<? extends E> coll) {
-        return List.copyOf(coll);
     }
 
     @Override

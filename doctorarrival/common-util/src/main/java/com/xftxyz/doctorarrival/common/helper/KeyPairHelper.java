@@ -10,8 +10,14 @@ public class KeyPairHelper {
     // 加密算法
     public static final String ALGORITHM = "RSA";
 
+    // 填充方式
+    public static final String PADDING = "RSA/ECB/PKCS1Padding";
+
     // 密钥长度
     public static final int KEY_SIZE = 1024;
+
+    // 块大小
+    public static final int BLOCK_SIZE = 64; // < KEY_SIZE / 8
 
     private static final KeyPairGenerator keyPairGenerator;
 
@@ -39,7 +45,7 @@ public class KeyPairHelper {
     }
 
     // 获取私钥
-    public static PublicKey getPrivateKey(byte[] privateKeyEncoded) throws InvalidKeySpecException {
-        return keyFactory.generatePublic(new PKCS8EncodedKeySpec(privateKeyEncoded));
+    public static PrivateKey getPrivateKey(byte[] privateKeyEncoded) throws InvalidKeySpecException {
+        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyEncoded));
     }
 }

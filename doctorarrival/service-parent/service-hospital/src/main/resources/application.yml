@@ -26,3 +26,9 @@ spring:
     redis:
       host: <<redis地址>>
       password: <<redis密码>>
+
+    mongodb:
+      host: <<mongodb地址>>
+      database: doctorarrival_hospital
+      username: <<mongodb用户名>>
+      password: <<mongodb密码>>

@@ -21,6 +21,9 @@ public enum ResultEnum {
     HOSPITAL_SET_SAVE_FAILED(202, "医院设置保存失败"),
     HOSPITAL_SET_UPDATE_FAILED(203, "医院设置更新失败"),
     HOSPITAL_SET_DELETE_FAILED(204, "医院设置删除失败"),
+    HOSPITAL_SIGN_ERROR(205, "签名错误"),
+    REQUEST_ERROR(206, "请求错误"),
+    RESPONSE_ERROR(207, "响应错误"),
 
     // 3用户相关
     USER_NOT_LOGIN(300, "用户未登录"),
