@@ -2,13 +2,24 @@ package com.xftxyz.doctorarrival.common.constant;
 
 public interface Constants {
 
+    // 加密算法
+    public static final String ALGORITHM_RSA = "RSA";
+    public static final String ALGORITHM_AES = "AES";
+
+    // 密钥长度
+    public static final int RSA_KEY_SIZE = 2048;
+    public static final int AES_KEY_SIZE = 128;
+
     // 短信验证码 Redis key 前缀
-    String SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX = "sms_verification_code_";
+    String SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX = "sms_verification_code_"; // +手机号
     // 短信验证码 Redis key 过期时间（秒）
     long SMS_VERIFICATION_CODE_REDIS_KEY_EXPIRE = 300L; // 5分钟
     // 验证码请求间隔时间（秒）
     long SMS_VERIFICATION_CODE_REQUEST_INTERVAL = 60L; // 1分钟
     // 短信验证码位数
     int SMS_VERIFICATION_CODE_LENGTH = 6;
+
+    // 医院接口对称加密密钥 Redis key 前缀
+    String HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX = "hospital_api_aes_key_";// +医院code
 
 }

@@ -5,6 +5,9 @@ public interface ApiUrls {
     // 基础URL
     String BASE_URL = "http://localhost/api/hospital/side";
 
+    // 获取密钥
+    String UPDATE_SECRET_KEY = BASE_URL + "/key/"; // + hospitalCode
+
     // 更新医院信息
     String UPDATE_HOSPITAL = BASE_URL + "/hospital";
 

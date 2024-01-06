@@ -64,4 +64,4 @@ public enum ResultEnum {
     private final Integer code;
     private final String message;
 
-    }
+}

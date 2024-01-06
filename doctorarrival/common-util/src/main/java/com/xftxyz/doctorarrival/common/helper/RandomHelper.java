@@ -1,8 +1,8 @@
 package com.xftxyz.doctorarrival.common.helper;
 
-import com.xftxyz.doctorarrival.common.constant.Constants;
-
 import java.util.Random;
+
+import com.xftxyz.doctorarrival.common.constant.Constants;
 
 public class RandomHelper {
 
