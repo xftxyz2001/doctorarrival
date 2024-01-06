@@ -3,12 +3,12 @@ package com.xftxyz.doctorarrival.common.constant;
 public interface Constants {
 
     // 加密算法
-    public static final String ALGORITHM_RSA = "RSA";
-    public static final String ALGORITHM_AES = "AES";
+    String ALGORITHM_RSA = "RSA";
+    String ALGORITHM_AES = "AES";
 
     // 密钥长度
-    public static final int RSA_KEY_SIZE = 2048;
-    public static final int AES_KEY_SIZE = 128;
+    int RSA_KEY_SIZE = 2048;
+    int AES_KEY_SIZE = 128;
 
     // 短信验证码 Redis key 前缀
     String SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX = "sms_verification_code_"; // +手机号

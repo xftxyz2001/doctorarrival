@@ -2,9 +2,12 @@ package com.xftxyz.doctorarrival.sdk.callback;
 
 import java.util.Date;
 
+import lombok.Data;
+
 /**
  * 下单
  */
+@Data
 public class UpdateOrderRequest {
     public static final Integer ORDER_STATUS_CLOSED = -1;
     public static final Integer ORDER_STATUS_UNPAID = 0;

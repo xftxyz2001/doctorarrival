@@ -6,7 +6,7 @@ import com.xftxyz.doctorarrival.common.helper.CipherHelper;
 import com.xftxyz.doctorarrival.common.helper.KeyHelper;
 import com.xftxyz.doctorarrival.common.result.Result;
 import com.xftxyz.doctorarrival.common.result.ResultEnum;
-import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest;
+import com.xftxyz.doctorarrival.sdk.api.*;
 import com.xftxyz.doctorarrival.sdk.constant.ApiUrls;
 import com.xftxyz.doctorarrival.sdk.processor.EncryptionRequestProcessor;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
@@ -59,7 +59,7 @@ public class DoctorarrivalService {
         encryptionRequestProcessor = new EncryptionRequestProcessor(secretKey);
     }
 
-    private <T> T sendPost(String url, Object request, Class<T> clazz) {
+    private EncryptionRequest beforeRequest(Object request) {
         EncryptionRequest encryptionRequest = new EncryptionRequest();
         encryptionRequest.setHospitalCode(hospitalCode);
         String encryptedRequestData = null;
@@ -69,13 +69,20 @@ public class DoctorarrivalService {
             throw new RuntimeException("请求加密失败");
         }
         encryptionRequest.setData(encryptedRequestData);
-        Result result = restTemplate.postForObject(url, encryptionRequest, Result.class);
+        return encryptionRequest;
+    }
+
+    private <T> T afterResponse(Result result, Class<T> clazz) {
         if (ObjectUtils.isEmpty(result)) {
-            throw new RuntimeException("请求发送失败");
+            throw new RuntimeException("响应接受失败");
         } else if (!ResultEnum.SUCCESS.getCode().equals(result.getCode())) {
             throw new RuntimeException(result.getMessage());
         }
-        String encryptedResponseData = result.getData().toString();
+        Object data = result.getData();
+        if (ObjectUtils.isEmpty(data)) {
+            return null;
+        }
+        String encryptedResponseData = data.toString();
         try {
             return encryptionRequestProcessor.decrypt(encryptedResponseData, clazz);
         } catch (IOException e) {
@@ -83,8 +90,55 @@ public class DoctorarrivalService {
         }
     }
 
+    private <T> T sendPost(String url, Object request, Class<T> clazz) {
+        EncryptionRequest encryptionRequest = beforeRequest(request);
+        Result result = restTemplate.postForObject(url, encryptionRequest, Result.class);
+        return afterResponse(result, clazz);
+    }
+
     // 更新医院信息
     public Boolean updateHospital(UpdateHospitalRequest updateHospitalRequest) {
         return sendPost(ApiUrls.UPDATE_HOSPITAL, updateHospitalRequest, Boolean.class);
     }
+
+    // 更新科室信息
+    public Boolean updateDepartment(UpdateDepartmentRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.UPDATE_DEPARTMENT, updateHospitalRequest, Boolean.class);
+    }
+
+    // 更新排班信息
+    public Boolean updateSchedule(UpdateScheduleRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.UPDATE_SCHEDULE, updateHospitalRequest, Boolean.class);
+    }
+
+    // 删除科室信息
+    public Boolean deleteDepartment(UpdateDepartmentRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.DELETE_DEPARTMENT, updateHospitalRequest, Boolean.class);
+    }
+
+    // 删除排班信息
+    public Boolean deleteSchedule(UpdateScheduleRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.DELETE_SCHEDULE, updateHospitalRequest, Boolean.class);
+    }
+
+    // 批量更新科室信息
+    public Boolean updateDepartments(BatchUpdateDepartmentRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.UPDATE_DEPARTMENTS, updateHospitalRequest, Boolean.class);
+    }
+
+    // 批量更新排班信息
+    public Boolean updateSchedules(BatchUpdateScheduleRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.UPDATE_SCHEDULES, updateHospitalRequest, Boolean.class);
+    }
+
+    // 批量删除科室信息
+    public Boolean deleteDepartments(BatchUpdateDepartmentRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.DELETE_DEPARTMENTS, updateHospitalRequest, Boolean.class);
+    }
+
+    // 批量删除排班信息
+    public Boolean deleteSchedules(BatchUpdateScheduleRequest updateHospitalRequest) {
+        return sendPost(ApiUrls.DELETE_SCHEDULES, updateHospitalRequest, Boolean.class);
+    }
+
 }

@@ -5,12 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
@@ -48,5 +43,53 @@ public class HospitalSideApiController {
     @PostMapping("/hospital")
     public String updateHospital(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
         return hospitalSideService.updateHospital(encryptionRequest);
+    }
+
+    // 更新科室信息
+    @PostMapping("/department")
+    public String updateDepartment(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.updateDepartment(encryptionRequest);
+    }
+
+    // 更新排班信息
+    @PostMapping("/schedule")
+    public String updateSchedule(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.updateSchedule(encryptionRequest);
+    }
+
+    // 删除科室信息
+    @PostMapping("/remove/department")
+    public String deleteDepartment(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.deleteDepartment(encryptionRequest);
+    }
+
+    // 删除排班信息
+    @PostMapping("/remove/schedule")
+    public String deleteSchedule(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.deleteSchedule(encryptionRequest);
+    }
+
+    // 批量更新科室信息
+    @PostMapping("/departments")
+    public String updateDepartments(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.updateDepartments(encryptionRequest);
+    }
+
+    // 批量更新排班信息
+    @PostMapping("/schedules")
+    public String updateSchedules(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.updateSchedules(encryptionRequest);
+    }
+
+    // 批量删除科室信息
+    @PostMapping("/remove/departments")
+    public String deleteDepartments(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.deleteDepartments(encryptionRequest);
+    }
+
+    // 批量删除排班信息
+    @PostMapping("/remove/schedules")
+    public String deleteSchedules(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
+        return hospitalSideService.deleteSchedules(encryptionRequest);
     }
 }

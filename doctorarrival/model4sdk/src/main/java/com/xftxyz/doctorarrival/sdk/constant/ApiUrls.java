@@ -17,12 +17,30 @@ public interface ApiUrls {
     // 更新排班信息
     String UPDATE_SCHEDULE = BASE_URL + "/schedule";
 
+    // 删除科室信息
+    String DELETE_DEPARTMENT = BASE_URL + "/remove/department";
+
+    // 删除排班信息
+    String DELETE_SCHEDULE = BASE_URL + "/remove/schedule";
+
+    // 批量更新科室信息
+    String UPDATE_DEPARTMENTS = BASE_URL + "/departments";
+
+    // 批量更新排班信息
+    String UPDATE_SCHEDULES = BASE_URL + "/schedules";
+
+    // 批量删除科室信息
+    String DELETE_DEPARTMENTS = BASE_URL + "/remove/departments";
+
+    // 批量删除排班信息
+    String DELETE_SCHEDULES = BASE_URL + "/remove/schedules";
+
     // ----------
 
     // 下单
-    String ORDER = BASE_URL + "/order";
+    String ORDER = "/order";
 
     // 更新订单状态
-    String UPDATE_ORDER_STATUS = BASE_URL + "/order/status";
+    String UPDATE_ORDER_STATUS = "/order/status";
 
 }

@@ -1,21 +1,5 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
 
-import static com.xftxyz.doctorarrival.common.constant.Constants.HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX;
-import static com.xftxyz.doctorarrival.common.constant.Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX;
-
-import java.io.ByteArrayInputStream;
-import java.security.KeyPair;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Optional;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xftxyz.doctorarrival.common.exception.BusinessException;
 import com.xftxyz.doctorarrival.common.helper.Base64Helper;
@@ -23,27 +7,44 @@ import com.xftxyz.doctorarrival.common.helper.CipherHelper;
 import com.xftxyz.doctorarrival.common.helper.KeyHelper;
 import com.xftxyz.doctorarrival.common.processor.EncryptionRequestProcessor;
 import com.xftxyz.doctorarrival.common.result.ResultEnum;
-import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
-import com.xftxyz.doctorarrival.domain.hospital.Hospital;
-import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
+import com.xftxyz.doctorarrival.domain.hospital.*;
 import com.xftxyz.doctorarrival.hospital.mapper.HospitalSetMapper;
+import com.xftxyz.doctorarrival.hospital.repository.DepartmentRepository;
 import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
+import com.xftxyz.doctorarrival.hospital.repository.ScheduleRepository;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
-import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest;
+import com.xftxyz.doctorarrival.sdk.api.*;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.io.ByteArrayInputStream;
+import java.security.KeyPair;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+
+import static com.xftxyz.doctorarrival.common.constant.Constants.HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX;
+import static com.xftxyz.doctorarrival.common.constant.Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX;
 
 @Service
 @RequiredArgsConstructor
 public class HospitalSideServiceImpl implements HospitalSideService {
 
+    // RedisTemplate
     private final StringRedisTemplate stringRedisTemplate;
 
+    // MyBatisPlusMapper
     private final HospitalSetMapper hospitalSetMapper;
 
+    // MongoDBRepository
     private final HospitalRepository hospitalRepository;
+    private final DepartmentRepository departmentRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Override
     public Resource join(HospitalJoinVO hospitalJoinVO) {
@@ -122,19 +123,23 @@ public class HospitalSideServiceImpl implements HospitalSideService {
 
     @Override
     public String updateHospital(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
         String hospitalCode = encryptionRequest.getHospitalCode();
         EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
-        UpdateHospitalRequest request = null;
+
         try {
-            request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateHospitalRequest.class);
+            UpdateHospitalRequest request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateHospitalRequest.class);
+            updateHospitalInternal(hospitalCode, request);
+            return encryptionRequestProcessor.encrypt(true);
         } catch (Exception e) {
             throw new BusinessException(ResultEnum.REQUEST_ERROR);
         }
-        Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalCode);
-        Hospital hospital = null;
-        if (hospitalOptional.isPresent()) {
-            hospital = hospitalOptional.get();
-        } else {
+    }
+
+    // 更新医院信息
+    private void updateHospitalInternal(String hospitalCode, UpdateHospitalRequest request) {
+        Hospital hospital = hospitalRepository.findByHospitalCode(hospitalCode);
+        if (ObjectUtils.isEmpty(hospital)) {
             hospital = new Hospital();
             hospital.setHospitalCode(hospitalCode);
         }
@@ -158,11 +163,180 @@ public class HospitalSideServiceImpl implements HospitalSideService {
             bookingRule.setQuitTime(requestBookingRule.getQuitTime());
             bookingRule.setRule(requestBookingRule.getRule());
         }
+
+        hospitalRepository.save(hospital);
+    }
+
+    @Override
+    public String updateDepartment(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
         try {
-            hospitalRepository.save(hospital);
+            UpdateDepartmentRequest request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateDepartmentRequest.class);
+            updateDepartmentInternal(hospitalCode, request);
             return encryptionRequestProcessor.encrypt(true);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    // 更新科室信息
+    private void updateDepartmentInternal(String hospitalCode, UpdateDepartmentRequest request) {
+        Department department = departmentRepository.findByHospitalCodeAndDepartmentCode(hospitalCode, request.getDepartmentCode());
+        if (ObjectUtils.isEmpty(department)) {
+            department = new Department();
+            department.setHospitalCode(hospitalCode);
+            department.setDepartmentCode(request.getDepartmentCode());
+        }
+        department.setDepartmentName(request.getDepartmentName());
+        department.setIntro(request.getIntro());
+        department.setPrimaryDepartmentCode(request.getPrimaryDepartmentCode());
+        department.setPrimaryDepartmentName(request.getPrimaryDepartmentName());
+
+        departmentRepository.save(department);
+    }
+
+    @Override
+    public String updateSchedule(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            UpdateScheduleRequest request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateScheduleRequest.class);
+            updateScheduleInternal(hospitalCode, request);
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    // 更新排班信息
+    private void updateScheduleInternal(String hospitalCode, UpdateScheduleRequest request) {
+
+        // 更新排班信息
+        Schedule schedule = scheduleRepository.findByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode,
+                request.getDepartmentCode(), request.getHospitalScheduleId());
+        if (ObjectUtils.isEmpty(schedule)) {
+            schedule = new Schedule();
+            schedule.setHospitalCode(hospitalCode);
+            schedule.setDepartmentCode(request.getDepartmentCode());
+            schedule.setHospitalScheduleId(request.getHospitalScheduleId());
+        }
+        schedule.setDoctorTitle(request.getDoctorTitle());
+        schedule.setDoctorName(request.getDoctorName());
+        schedule.setSkill(request.getSkill());
+        schedule.setWorkDate(request.getWorkDate());
+        schedule.setWorkTime(request.getWorkTime());
+        schedule.setReservedNumber(request.getReservedNumber());
+        schedule.setAvailableNumber(request.getAvailableNumber());
+        schedule.setAmount(request.getAmount());
+        schedule.setStatus(request.getStatus());
+
+        scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public String deleteDepartment(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            UpdateDepartmentRequest request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateDepartmentRequest.class);
+            departmentRepository.deleteByHospitalCodeAndDepartmentCode(hospitalCode, request.getDepartmentCode());
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    @Override
+    public String deleteSchedule(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            UpdateScheduleRequest request = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), UpdateScheduleRequest.class);
+            scheduleRepository.deleteByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode, request.getDepartmentCode(), request.getHospitalScheduleId());
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    @Override
+    public String updateDepartments(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            BatchUpdateDepartmentRequest requests = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), BatchUpdateDepartmentRequest.class);
+            // 更新科室信息
+            for (UpdateDepartmentRequest request : requests) {
+                updateDepartmentInternal(hospitalCode, request);
+            }
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    @Override
+    public String updateSchedules(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            BatchUpdateScheduleRequest requests = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), BatchUpdateScheduleRequest.class);
+            // 更新排班信息
+            for (UpdateScheduleRequest request : requests) {
+                updateScheduleInternal(hospitalCode, request);
+            }
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    @Override
+    public String deleteDepartments(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            BatchUpdateDepartmentRequest requests = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), BatchUpdateDepartmentRequest.class);
+            // 删除科室信息
+            for (UpdateDepartmentRequest request : requests) {
+                departmentRepository.deleteByHospitalCodeAndDepartmentCode(hospitalCode, request.getDepartmentCode());
+            }
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
+        }
+    }
+
+    @Override
+    public String deleteSchedules(EncryptionRequest encryptionRequest) {
+        // 获取医院编码，解密请求数据
+        String hospitalCode = encryptionRequest.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        try {
+            BatchUpdateScheduleRequest requests = encryptionRequestProcessor.decrypt(encryptionRequest.getData(), BatchUpdateScheduleRequest.class);
+            // 删除排班信息
+            for (UpdateScheduleRequest request : requests) {
+                scheduleRepository.deleteByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode, request.getDepartmentCode(), request.getHospitalScheduleId());
+            }
+            return encryptionRequestProcessor.encrypt(true);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.REQUEST_ERROR);
         }
     }
 
