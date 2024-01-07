@@ -11,15 +11,17 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 @Configuration
 public class JacksonConfig {
+
+    // 解决long类型精度丢失问题
     @Bean
     @Primary
     @ConditionalOnMissingBean(ObjectMapper.class)
-    public ObjectMapper abc(Jackson2ObjectMapperBuilder builder) {
+    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper objectMapper = builder.createXmlMapper(false).build();
 
         // 全局配置序列化返回 JSON 处理
         SimpleModule simpleModule = new SimpleModule();
-        //JSON Long ==> String
+        // JSON Long ==> String
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
         return objectMapper;

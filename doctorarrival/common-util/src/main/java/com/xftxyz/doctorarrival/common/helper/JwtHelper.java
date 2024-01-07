@@ -7,9 +7,9 @@ public class JwtHelper {
     // 用户id
     public static final String X_USER_ID = "x-user-id";
 
-    // 过期时间
-    private static final String SECRET_KEY = "doctor-arrival-secret-key";
     // 密钥
+    private static final String SECRET_KEY = "doctor-arrival-secret-key";
+    // 过期时间
     private static final long EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000; // 7天
 
     // 生成token
