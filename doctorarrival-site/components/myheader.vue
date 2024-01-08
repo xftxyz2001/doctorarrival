@@ -22,13 +22,11 @@
         </div>
       </div>
 
-      {{ aaa }}
     </div>
   </div>
 </template>
 
 <script setup>
-import { getDictById, getDictChildrenByParentId, getDictChildrenByDictCode } from '@/api/dict'
 const queryString = ref('')
 
 function searchHospitalForSuggestion(queryString, callback) {
@@ -42,10 +40,10 @@ function handleSelectedHospital(selectedHospital) {
   console.log(selectedHospital);
 }
 
-const aaa = ref('aaa')
 function searchButtonClick() {
-  getDictById(1).then(res => {
-    aaa.value = res.data
+  ElMessage({
+    message: '在下拉框中选择医院后，即可跳转到医院详情页',
+    type: 'info'
   })
 }
 </script>
