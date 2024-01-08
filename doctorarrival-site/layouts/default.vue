@@ -1,15 +1,16 @@
 <template>
-  <div class="body">
-    <PageHeader />
-    <main class="container">
-      <slot />
-    </main>
-    <PageFooter />
+  <div class="app-container">
+    <div id="main">
+      <!-- 公共头 -->
+      <myheader />
+      <div class="main-container">
+        <el-scrollbar class="page-component__scroll">
+          <!-- 内容区域 -->
+          <slot />
+        </el-scrollbar>
+      </div>
+      <!-- 公共底 -->
+      <myfooter />
+    </div>
   </div>
 </template>
-
-<style>
-.body {
-  @apply bg-gray-100 flex flex-col min-h-screen min-w-1000px;
-}
-</style>

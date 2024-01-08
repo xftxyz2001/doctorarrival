@@ -1,29 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // devtools: { enabled: true },
   css: [
-    "@/assets/main.css",
+    "assets/css/app.css",
+    "assets/css/chunk.css",
+    "assets/css/hospital_personal.css",
+    "assets/css/hospital.css",
+    "assets/css/iconfont.css",
+    "assets/css/index.css",
+    "assets/css/main.css",
+    "assets/css/personal.css",
+    "assets/css/reset.css",
   ],
+  devtools: { enabled: true },
   modules: [
-    'nuxt-windicss',
+    '@element-plus/nuxt'
   ],
-  build: {
-    transpile:
-      process.env.NODE_ENV === 'production'
-        ? [
-          'naive-ui',
-          'vueuc',
-          '@css-render/vue3-ssr',
-          '@juggle/resize-observer'
-        ]
-        : ['@juggle/resize-observer']
-  },
-  vite: {
-    optimizeDeps: {
-      include:
-        process.env.NODE_ENV === 'development'
-          ? ['naive-ui', 'vueuc', 'date-fns-tz/formatInTimeZone']
-          : []
-    }
-  },
 })

@@ -1,11 +1,7 @@
 <template>
-  <NConfigProvider inline-theme-disabled>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </NConfigProvider>
+  <div>
+    <nuxt-layout>
+      <nuxt-page />
+    </nuxt-layout>
+  </div>
 </template>
-
-<script setup>
-import { NConfigProvider } from 'naive-ui'
-</script>

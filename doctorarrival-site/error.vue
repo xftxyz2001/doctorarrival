@@ -1,17 +1,18 @@
 <template>
-  <NResult status="500" title="错误提示" :description="error.message" class="pt-10">
-    <template #footer>
-      <NButton @click="handleError" type="primary">返回首页</NButton>
+  <el-result icon="error" title="错误提示" :sub-title="error.message">
+    <template #extra>
+      <el-button type="primary" @click="handleError">Back</el-button>
     </template>
-  </NResult>
+  </el-result>
 </template>
 
 <script setup>
-import { NResult, NButton } from 'naive-ui'
-
 const props = defineProps({
   error: Object
 })
+
+// for debug
+console.error(props.error)
 
 const handleError = () => clearError({ redirect: '/' })
 </script>
