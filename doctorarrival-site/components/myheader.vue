@@ -15,17 +15,20 @@
               :fetch-suggestions="searchHospitalForSuggestion" :trigger-on-focus="false" @select="handleSelectedHospital"
               placeholder="点击输入医院名称">
               <template v-slot:suffix>
-                <span class="search-btn v-link highlight clickable selected">搜索</span>
+                <span class="search-btn v-link highlight clickable selected" @click="searchButtonClick">搜索</span>
               </template>
             </el-autocomplete>
           </div>
         </div>
       </div>
+
+      {{ aaa }}
     </div>
   </div>
 </template>
 
 <script setup>
+import { getDictById, getDictChildrenByParentId, getDictChildrenByDictCode } from '@/api/dict'
 const queryString = ref('')
 
 function searchHospitalForSuggestion(queryString, callback) {
@@ -37,5 +40,12 @@ function searchHospitalForSuggestion(queryString, callback) {
 }
 function handleSelectedHospital(selectedHospital) {
   console.log(selectedHospital);
+}
+
+const aaa = ref('aaa')
+function searchButtonClick() {
+  getDictById(1).then(res => {
+    aaa.value = res.data
+  })
 }
 </script>
