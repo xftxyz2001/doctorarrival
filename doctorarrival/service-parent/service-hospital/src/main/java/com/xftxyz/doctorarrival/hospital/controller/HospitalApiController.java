@@ -1,0 +1,43 @@
+package com.xftxyz.doctorarrival.hospital.controller;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.domain.hospital.Hospital;
+import com.xftxyz.doctorarrival.hospital.service.HospitalService;
+import com.xftxyz.doctorarrival.vo.hospital.HospitalQueryVO;
+import jakarta.validation.constraints.Min;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/hospital/find")
+public class HospitalApiController {
+
+    private final HospitalService hospitalService;
+
+    // 根据医院名称返回医院列表
+    @GetMapping("/name")
+    public List<Hospital> findHospitalByHospitalName(@RequestParam("hospitalName") String hospitalName) {
+        return hospitalService.findHospitalByHospitalName(hospitalName);
+    }
+
+    // 根据医院编号返回医院
+    @GetMapping("/code/{hospitalCode}")
+    public Hospital findHospitalByHospitalCode(@PathVariable("hospitalCode") String hospitalCode) {
+        return hospitalService.findHospitalByHospitalCode(hospitalCode);
+    }
+
+    // 条件查询带分页
+    @PostMapping("/page")
+    public IPage<Hospital> findHospitalPage(@RequestBody HospitalQueryVO hospitalQueryVO,
+                                            @RequestParam(value = "current", defaultValue = "1") @Min(1) Long current,
+                                            @RequestParam(value = "size", defaultValue = "20") @Min(1) Long size) {
+        return hospitalService.findHospitalPage(hospitalQueryVO, current, size);
+    }
+
+
+}
