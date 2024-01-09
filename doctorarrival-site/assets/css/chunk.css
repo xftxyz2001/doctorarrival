@@ -3653,7 +3653,7 @@ div#driver-highlighted-element-stage {
     content: "";
     height: 6px;
     display: block;
-    margin: 0 -20px;
+    /* margin: 0 -20px; */
     background-color: #fff
 }
 

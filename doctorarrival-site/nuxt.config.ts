@@ -1,5 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      script: [
+        // http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js
+        { src: "http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" },
+      ]
+    }
+  },
   css: [
     "assets/css/app.css",
     "assets/css/chunk.css",
