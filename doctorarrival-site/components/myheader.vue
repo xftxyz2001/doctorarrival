@@ -133,6 +133,7 @@
 <script setup>
 import { findHospitalByHospitalName } from '@/api/hospital'
 import { sendVerificationCode } from '@/api/sms'
+import { getWxLoginQrCodeParam } from '@/api/user'
 
 // 登录弹出层默认属性值
 const defaultDialogAtrr = {
@@ -313,20 +314,24 @@ function sendButtonClick() {
 // 微信登录
 function weixinLogin() {
   dialogAtrr.value.showLoginType = 'weixin'
-  const obj = new WxLogin({
-    self_redirect: true,
-    id: "wxlogin_container",
-    appid: "", // appid
-    scope: "snsapi_login",
-    redirect_uri: "", // 登录成功后的回调地址
-    state: "", // 用于保持请求和回调的状态，授权请求后原样带回给第三方。
-    style: "black",
-    href: ""
+  getWxLoginQrCodeParam().then(res => {
+    const obj = new WxLogin(res)
   })
 }
 
 // 手机号登录
 function phoneLogin() {
   dialogAtrr.value.showLoginType = 'phone'
+}
+
+// 监听微信扫码回调
+if (window) {
+  addEventListener("message", (e) => {
+    if (e.origin === location.origin) {
+      const { token } = e.data
+      // 保存token
+      console.log("登录成功，token为："+token);
+    }
+  })
 }
 </script>

@@ -22,3 +22,9 @@ spring:
     username: <<数据库用户名>>
     password: <<数据库密码>>
 
+wx:
+  open:
+    app-id: <<your app-id>>
+    app-secret: <<your app-secret>>
+    redirect-uri: <<your redirect-uri>>
+    site-origin: <<your site-origin>>
