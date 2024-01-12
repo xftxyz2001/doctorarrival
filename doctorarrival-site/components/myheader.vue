@@ -91,7 +91,7 @@
         <div class="operate-view" v-show="dialogAtrr.showLoginType === 'weixin'">
           <div class="wrapper wechat" style="height: 400px">
             <div>
-              <div id="wxlogin_container">这是一段标志</div>
+              <div id="wxlogin_container">正在加载微信登录二维码...</div>
             </div>
             <div class="bottom wechat" style="margin-top: -80px">
               <div class="phone-container">
@@ -131,9 +131,10 @@
 </template>
 
 <script setup>
+import Cookies from "js-cookie"
 import { findHospitalByHospitalName } from '@/api/hospital'
 import { sendVerificationCode } from '@/api/sms'
-import { getWxLoginQrCodeParam } from '@/api/user'
+import { login, getUserInfoBasic, getWxLoginQrCodeParam } from '@/api/user'
 
 // 登录弹出层默认属性值
 const defaultDialogAtrr = {
@@ -287,6 +288,18 @@ function getVerificationCode() {
   // })
 }
 
+// 登陆成功
+function loginSuccess(token) {
+  // 保存token
+  useToken().value = token
+  // 获取用户基本信息
+  getUserInfoBasic().then(res => {
+    nickName.value = res.nickName
+  })
+  // 关闭登录弹出层
+  closeLoginDialog()
+}
+
 // 点击发送验证码或登录按钮
 function sendButtonClick() {
   if (dialogAtrr.value.loginBtn === '获取验证码') {
@@ -306,7 +319,18 @@ function sendButtonClick() {
       })
       return
     }
-    // TODO 执行验证码登录
+    // 执行验证码登录
+    login({ phoneNumber, verificationCode }).then(res => {
+      if (res) {
+        loginSuccess(res.token)
+      } else {
+        // 登录失败
+        ElMessage({
+          message: '登录失败',
+          type: 'error'
+        })
+      }
+    })
 
   }
 }
@@ -329,8 +353,7 @@ if (window) {
   addEventListener("message", (e) => {
     if (e.origin === location.origin) {
       const { token } = e.data
-      // 保存token
-      console.log("登录成功，token为："+token);
+      loginSuccess(token)
     }
   })
 }

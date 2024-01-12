@@ -4,12 +4,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xftxyz.doctorarrival.common.constant.Constants;
 import com.xftxyz.doctorarrival.common.exception.BusinessException;
+import com.xftxyz.doctorarrival.common.helper.JwtHelper;
 import com.xftxyz.doctorarrival.common.result.ResultEnum;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.user.mapper.UserInfoMapper;
 import com.xftxyz.doctorarrival.user.service.UserInfoService;
+import com.xftxyz.doctorarrival.vo.user.LoginParam;
+import com.xftxyz.doctorarrival.vo.user.LoginResponse;
+import com.xftxyz.doctorarrival.vo.user.UserInfoBasic;
 import com.xftxyz.doctorarrival.vo.user.UserInfoQueryVO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -17,13 +24,16 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 /**
-* @author 25810
-* @description 针对表【user_info(用户信息表)】的数据库操作Service实现
-* @createDate 2024-01-03 23:44:16
-*/
+ * @author 25810
+ * @description 针对表【user_info(用户信息表)】的数据库操作Service实现
+ * @createDate 2024-01-03 23:44:16
+ */
 @Service
+@RequiredArgsConstructor
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
-    implements UserInfoService{
+        implements UserInfoService {
+
+    private final StringRedisTemplate stringRedisTemplate;
 
     @Override
     public Boolean saveWarp(UserInfo userInfo) {
@@ -102,8 +112,64 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
                 UserInfo::getCreateTime, userInfoQueryVO.getCreateTimeFrom(), userInfoQueryVO.getCreateTimeTo());
         return baseMapper.selectPage(new Page<>(current, size), lambdaQueryWrapper);
     }
+
+    @Override
+    public LoginResponse login(LoginParam loginParam) {
+        String phoneNumber = loginParam.getPhoneNumber();
+        String verificationCode = loginParam.getVerificationCode();
+
+        // 检查验证码
+        // Redis对应的key
+        String redisKey = Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX + phoneNumber;
+        if (Boolean.FALSE.equals(stringRedisTemplate.hasKey(redisKey))) {
+            throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_EXPIRED);
+        }
+        String redisCode = stringRedisTemplate.opsForValue().get(redisKey);
+        if (!verificationCode.equals(redisCode)) {
+            throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_ERROR);
+        }
+        // 删除验证码
+        stringRedisTemplate.delete(redisKey);
+
+        // 根据手机号查询用户信息
+        LambdaQueryWrapper<UserInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserInfo::getPhone, phoneNumber);
+        UserInfo userInfo = baseMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(userInfo)) {
+            // 用户不存在，创建用户
+            userInfo = new UserInfo();
+            userInfo.setPhone(phoneNumber);
+            userInfo.setNickName(phoneNumber);
+            baseMapper.insert(userInfo);
+        }
+
+        // 生成token
+        String token = JwtHelper.generateToken(userInfo.getId());
+        // 响应
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(token);
+        return loginResponse;
+    }
+
+    @Override
+    public UserInfoBasic getUserInfoBasic(String userId) {
+        UserInfo userInfo = baseMapper.selectById(userId);
+        if (ObjectUtils.isEmpty(userInfo)) {
+            throw new BusinessException(ResultEnum.USER_NOT_EXIST);
+        }
+        UserInfoBasic userInfoBasic = new UserInfoBasic();
+        userInfoBasic.setPhone(userInfo.getPhone());
+        userInfoBasic.setOpenid(userInfo.getOpenid());
+        userInfoBasic.setNickName(userInfo.getNickName());
+        return userInfoBasic;
+    }
+
+    @Override
+    public UserInfo getUserInfoDetail(String userId) {
+        UserInfo userInfo = baseMapper.selectById(userId);
+        if (ObjectUtils.isEmpty(userInfo)) {
+            throw new BusinessException(ResultEnum.USER_NOT_EXIST);
+        }
+        return userInfo;
+    }
 }
-
-
-
-
