@@ -15,7 +15,7 @@ export function findHospitalByHospitalCode(hospitalCode) {
 
 export function findHospitalPage(searchObj, current, size) {
   return request({
-    url: '/api/hospital/find/page/',
+    url: '/api/hospital/find/page',
     method: 'post',
     prams: { current, size },
     data: searchObj

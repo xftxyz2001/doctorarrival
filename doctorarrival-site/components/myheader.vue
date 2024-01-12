@@ -131,7 +131,6 @@
 </template>
 
 <script setup>
-import Cookies from "js-cookie"
 import { findHospitalByHospitalName } from '@/api/hospital'
 import { sendVerificationCode } from '@/api/sms'
 import { login, getUserInfoBasic, getWxLoginQrCodeParam } from '@/api/user'
@@ -167,7 +166,12 @@ function searchHospitalForSuggestion(queryString, callback) {
 
 // 选择医院
 function handleSelectedHospital(selectedHospital) {
-  console.log(selectedHospital);
+  gotoHospital(selectedHospital.hospitalCode)
+}
+
+// 跳转到医院页面
+function gotoHospital(hospitalCode) {
+  console.log("前往" + hospitalCode);
 }
 
 // 点击搜索按钮
@@ -288,14 +292,24 @@ function getVerificationCode() {
   // })
 }
 
+// 尝试获取昵称
+function tryGetNickName() {
+  // 检查token
+  if (!useToken().value) {
+    return
+  }
+  getUserInfoBasic().then(res => {
+    nickName.value = res.nickName
+  })
+}
+tryGetNickName()
+
 // 登陆成功
 function loginSuccess(token) {
   // 保存token
   useToken().value = token
   // 获取用户基本信息
-  getUserInfoBasic().then(res => {
-    nickName.value = res.nickName
-  })
+  tryGetNickName()
   // 关闭登录弹出层
   closeLoginDialog()
 }
