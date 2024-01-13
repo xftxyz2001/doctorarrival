@@ -118,10 +118,74 @@
           </div>
         </div>
 
-        <!-- TODO: 平台公告 -->
+        <!-- 平台公告 -->
+        <div class="space">
+          <div class="header-wrapper">
+            <div class="title-wrapper">
+              <div class="icon-wrapper">
+                <span class="iconfont title-icon"></span>
+              </div>
+              <span class="title">平台公告</span>
+            </div>
+            <div class="all-wrapper">
+              <span>全部</span>
+              <span class="iconfont icon"></span>
+            </div>
+          </div>
+          <div class="content-wrapper">
+            <div class="notice-wrapper">
+              <div class="point"></div>
+              <span class="notice v-link clickable dark">关于延长北京大学国际医院放假的通知
+              </span>
+            </div>
+            <div class="notice-wrapper">
+              <div class="point"></div>
+              <span class="notice v-link clickable dark">北京中医药大学东方医院部分科室医生门诊医
+              </span>
+            </div>
+            <div class="notice-wrapper">
+              <div class="point"></div>
+              <span class="notice v-link clickable dark">
+                武警总医院号源暂停更新通知
+              </span>
+            </div>
+          </div>
+        </div>
 
-        <!-- TODO: 停诊公告 -->
-
+        <!-- 停诊公告 -->
+        <div class="suspend-notice-list space">
+          <div class="header-wrapper">
+            <div class="title-wrapper">
+              <div class="icon-wrapper">
+                <span class="iconfont title-icon"></span>
+              </div>
+              <span class="title">停诊公告</span>
+            </div>
+            <div class="all-wrapper">
+              <span>全部</span>
+              <span class="iconfont icon"></span>
+            </div>
+          </div>
+          <div class="content-wrapper">
+            <div class="notice-wrapper">
+              <div class="point"></div>
+              <span class="notice v-link clickable dark">
+                中国人民解放军总医院第六医学中心(原海军总医院)呼吸内科门诊停诊公告
+              </span>
+            </div>
+            <div class="notice-wrapper">
+              <div class="point"></div>
+              <span class="notice v-link clickable dark">
+                首都医科大学附属北京潞河医院老年医学科门诊停诊公告
+              </span>
+            </div>
+            <div class="notice-wrapper">
+              <div class="point"></div>
+              <span class="notice v-link clickable dark">中日友好医院中西医结合心内科门诊停诊公告
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -144,6 +208,9 @@ const hospitalList = ref([]) // 医院列表
 
 // 自动补全
 function searchHospitalForSuggestion(queryString, callback) {
+  if (!queryString) {
+    return
+  }
   findHospitalByHospitalName(queryString).then(res => {
     callback(res)
   })
@@ -248,6 +315,9 @@ getHospitalList()
 
 // 跳转到医院页面
 function gotoHospital(hospitalCode) {
-  console.log("前往" + hospitalCode);
+  ElMessage({
+    message: "前往" + hospitalCode,
+    type: "warning"
+  })
 }
 </script>

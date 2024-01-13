@@ -159,6 +159,9 @@ let phoneNumber = '' // 上次发送验证码的手机号（用于重新发送�
 
 // 自动补全
 function searchHospitalForSuggestion(queryString, callback) {
+  if (!queryString) {
+    return
+  }
   findHospitalByHospitalName(queryString).then(res => {
     callback(res)
   })
@@ -171,7 +174,10 @@ function handleSelectedHospital(selectedHospital) {
 
 // 跳转到医院页面
 function gotoHospital(hospitalCode) {
-  console.log("前往" + hospitalCode);
+  ElMessage({
+    message: "前往" + hospitalCode,
+    type: "warning"
+  })
 }
 
 // 点击搜索按钮
