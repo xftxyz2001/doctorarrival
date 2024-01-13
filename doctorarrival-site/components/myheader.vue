@@ -8,18 +8,10 @@
       </div>
 
       <!-- 搜索框 -->
-      <div class="search-wrapper">
+      <div class="search-wrapper" v-show="$route.path !== '/'">
         <div class="hospital-search animation-show">
           <div id="search" style="display: block;width: 100%;">
-            <client-only>
-              <el-autocomplete class="search-input" :prefix-icon="ElIconSearch" v-model="queryString"
-                value-key="hospitalName" :fetch-suggestions="searchHospitalForSuggestion" @select="handleSelectedHospital"
-                placeholder="点击输入医院名称">
-                <template v-slot:suffix>
-                  <span class="search-btn v-link highlight clickable selected" @click="searchButtonClick">搜索</span>
-                </template>
-              </el-autocomplete>
-            </client-only>
+            <hospitalsearcher />
           </div>
         </div>
       </div>
@@ -131,7 +123,6 @@
 </template>
 
 <script setup>
-import { findHospitalByHospitalName } from '@/api/hospital'
 import { sendVerificationCode } from '@/api/sms'
 import { login, getUserInfoBasic, getWxLoginQrCodeParam } from '@/api/user'
 
@@ -150,54 +141,12 @@ const defaultDialogAtrr = {
   second: -1, // 倒计时间  second>0 : 显示倒计时 second=0 ：重新发送 second=-1 ：什么都不显示
 }
 
-const queryString = ref('')
 const dialogUserFormVisible = ref(false) // 登录弹出层
 const nickName = ref('') // 昵称
 const dialogAtrr = ref(JSON.parse(JSON.stringify(defaultDialogAtrr))) // 登录弹出层属性
 let clearSmsTime = null // 倒计时定时任务引用 关闭登录层清除定时任务
 let phoneNumber = '' // 上次发送验证码的手机号（用于重新发送验证码）
 
-// 自动补全
-function searchHospitalForSuggestion(queryString, callback) {
-  if (!queryString) {
-    return
-  }
-  findHospitalByHospitalName(queryString).then(res => {
-    callback(res)
-  })
-}
-
-// 选择医院
-function handleSelectedHospital(selectedHospital) {
-  gotoHospital(selectedHospital.hospitalCode)
-}
-
-// 跳转到医院页面
-function gotoHospital(hospitalCode) {
-  ElMessage({
-    message: "前往" + hospitalCode,
-    type: "warning"
-  })
-}
-
-// 点击搜索按钮
-function searchButtonClick() {
-  findHospitalByHospitalName(queryString.value).then(res => {
-    if (res.length === 0) {
-      ElMessage({
-        message: '没有找到医院，请重新输入',
-        type: 'error'
-      })
-    } else if (res.length === 1) {
-      handleSelectedHospital(res[0])
-    } else {
-      ElMessage({
-        message: '找到多个医院，请在下拉框中选择',
-        type: 'warning'
-      })
-    }
-  })
-}
 
 // 初始化登录弹出层属性
 function initDialogAtrr() {

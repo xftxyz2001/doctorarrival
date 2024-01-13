@@ -11,15 +11,7 @@
     <div class="search-container">
       <div class="search-wrapper">
         <div class="hospital-search">
-          <client-only>
-            <el-autocomplete class="search-input" :prefix-icon="ElIconSearch" v-model="queryString"
-              value-key="hospitalName" :fetch-suggestions="searchHospitalForSuggestion" @select="handleSelectedHospital"
-              placeholder="点击输入医院名称">
-              <template v-slot:suffix>
-                <span class="search-btn v-link highlight clickable selected" @click="searchButtonClick">搜索</span>
-              </template>
-            </el-autocomplete>
-          </client-only>
+          <hospitalsearcher />
         </div>
       </div>
     </div>
@@ -192,10 +184,8 @@
 </template>
 
 <script setup>
-import { findHospitalByHospitalName, findHospitalPage } from '@/api/hospital'
-import { getDictChildrenByDictCode, getDictChildrenByParentId } from '@/api/dict'
-
-const queryString = ref('') // 搜索框输入的内容
+import { getDictChildrenByDictCode, getDictChildrenByParentId } from '@/api/dict';
+import { findHospitalPage } from '@/api/hospital';
 
 const hospitalQueryObj = ref({}) // 医院查询对象
 
@@ -205,40 +195,6 @@ const cityList = ref([]) // 城市列表
 const districtList = ref([]) // 地区列表
 
 const hospitalList = ref([]) // 医院列表
-
-// 自动补全
-function searchHospitalForSuggestion(queryString, callback) {
-  if (!queryString) {
-    return
-  }
-  findHospitalByHospitalName(queryString).then(res => {
-    callback(res)
-  })
-}
-
-// 选择医院
-function handleSelectedHospital(selectedHospital) {
-  gotoHospital(selectedHospital.hospitalCode)
-}
-
-// 点击搜索按钮
-function searchButtonClick() {
-  findHospitalByHospitalName(queryString.value).then(res => {
-    if (res.length === 0) {
-      ElMessage({
-        message: '没有找到医院，请重新输入',
-        type: 'error'
-      })
-    } else if (res.length === 1) {
-      handleSelectedHospital(res[0])
-    } else {
-      ElMessage({
-        message: '找到多个医院，请在下拉框中选择',
-        type: 'warning'
-      })
-    }
-  })
-}
 
 // 获取医院类型列表
 function getHospitalTypeList() {
@@ -251,6 +207,7 @@ getHospitalTypeList()
 // 医院类型选择
 function hospitalTypeSelect(item) {
   hospitalQueryObj.value.hospitalType = item.id
+  getHospitalList()
 }
 
 // 获取省份列表
@@ -314,10 +271,8 @@ function getHospitalList() {
 getHospitalList()
 
 // 跳转到医院页面
+const router = useRouter()
 function gotoHospital(hospitalCode) {
-  ElMessage({
-    message: "前往" + hospitalCode,
-    type: "warning"
-  })
+  router.push(`/hospital/${hospitalCode}`)
 }
 </script>
