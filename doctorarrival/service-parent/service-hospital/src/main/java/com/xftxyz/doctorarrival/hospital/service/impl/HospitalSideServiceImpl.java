@@ -163,6 +163,7 @@ public class HospitalSideServiceImpl implements HospitalSideService {
             bookingRule.setQuitTime(requestBookingRule.getQuitTime());
             bookingRule.setRule(requestBookingRule.getRule());
         }
+        hospital.setBookingRule(bookingRule);
 
         hospitalRepository.save(hospital);
     }
