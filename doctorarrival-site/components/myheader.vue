@@ -2,7 +2,7 @@
   <div class="header-container">
     <div class="wrapper">
       <!-- logo -->
-      <div class="left-wrapper v-link selected">
+      <div class="left-wrapper v-link selected" @click="$router.push('/')">
         <img style="width: 50px; height: 50px;" src="assets/images/logo.png" />
         <span class="text">“医来” 预约挂号统一平台</span>
       </div>

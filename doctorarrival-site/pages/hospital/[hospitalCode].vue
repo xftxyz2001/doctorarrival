@@ -20,13 +20,101 @@
     </div>
 
     <!-- 右侧 内容 -->
+    <div class="page-container" :key="componentKey">
+      <div class="hospital-home">
+        <!-- 医院名称/类型 -->
+        <div class="common-header">
+          <div class="title-wrapper">
+            <span class="hospital-title">{{ hospital.hospitalName }}</span>
+            <div class="icon-wrapper">
+              <span class="iconfont"></span>{{ hospital.hospitalType }}
+            </div>
+          </div>
+        </div>
+
+        <!-- 医院信息/挂号规则 -->
+        <div class="info-wrapper">
+          <img class="hospital-img" :src="hospital.logoData" :alt="hospital.hospitalName" />
+          <div class="content-wrapper">
+            <div>挂号规则</div>
+            <div class="line">
+              <div>
+                <span class="label">预约周期：</span><span>{{ hospitalBookingRule.cycle }}天</span>
+              </div>
+              <div class="space">
+                <span class="label">放号时间：</span><span>{{ hospitalBookingRule.releaseTime }}</span>
+              </div>
+              <div class="space">
+                <span class="label">停挂时间：</span><span>{{ hospitalBookingRule.stopTime }}</span>
+              </div>
+            </div>
+            <div class="line">
+              <span class="label">退号时间：</span>
+              <span v-if="hospitalBookingRule.quitDay == -1">就诊前一工作日{{ hospitalBookingRule.quitTime }}前取消</span>
+              <span v-if="hospitalBookingRule.quitDay == 0">就诊前当天{{ hospitalBookingRule.quitTime }}前取消</span>
+            </div>
+            <div style="margin-top: 20px">医院预约规则</div>
+            <div class="rule-wrapper">
+              <ol>
+                <li v-for="item in hospitalBookingRule.rule" :key="item">{{ item }}</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- 科室 -->
+        <div class="title select-title">选择科室</div>
+        <div class="select-dept-wrapper">
+          <!-- 大科室导航 -->
+          <div class="department-wrapper">
+            <div class="hospital-department">
+              <div class="dept-list-wrapper el-scrollbar" style="height: 100%">
+                <div class="dept-list el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px">
+                  <div class="el-scrollbar__view">
+                    <!-- 展示区 -->
+                  </div>
+                </div>
+                <div class="el-scrollbar__bar is-horizontal">
+                  <div class="el-scrollbar__thumb" style="transform: translateX(0%)"></div>
+                </div>
+                <div class="el-scrollbar__bar is-vertical">
+                  <div class="el-scrollbar__thumb" style="transform: translateY(0%); height: 91.4761%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 科室展示 -->
+          <div class="sub-dept-container">
+            <!-- 展示区 -->
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
 
 <script setup>
-import 'assets/css/hospital_personal.css'
-import 'assets/css/hospital.css'
+import { findHospitalByHospitalCode } from '@/api/hospital'
+
+const componentKey = ref(0)
+
+const route = useRoute()
+const hospitalCode = route.params.hospitalCode
+
+const hospital = ref({})
+const hospitalBookingRule = ref({})
+
+// 获取医院信息
+function initHospital() {
+  findHospitalByHospitalCode(hospitalCode).then(res => {
+    hospital.value = res
+    hospitalBookingRule.value = res.bookingRule
+    componentKey.value++ // 重新渲染页面
+  })
+}
+initHospital()
 
 // 路由
 function gotoHospital() {
@@ -51,3 +139,8 @@ function gotoHospitalNotice() {
 }
 
 </script>
+
+<style scoped>
+@import 'assets/css/hospital_personal.css';
+@import 'assets/css/hospital.css';
+</style>
