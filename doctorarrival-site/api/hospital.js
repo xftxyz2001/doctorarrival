@@ -30,3 +30,20 @@ export function getDepartmentByHospitalCode(hospitalCode) {
     method: 'get'
   })
 }
+
+export function getDepartmentByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode) {
+  return request({
+    url: `/api/hospital/department/hospital/department/code`,
+    method: 'get',
+    params: { hospitalCode, departmentCode }
+  })
+}
+
+// 排班
+export function getScheduleByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode) {
+  return request({
+    url: `/api/hospital/schedule/hospital/department/code`,
+    method: 'get',
+    params: { hospitalCode, departmentCode }
+  })
+}

@@ -531,7 +531,8 @@
 }
 
 .hospital-home .select-dept-wrapper .department-wrapper {
-    max-height: 460px;
+    /* max-height: 460px; */
+    max-height: 80vh;
     position: -webkit-sticky;
     position: sticky;
     top: 82px

@@ -72,9 +72,11 @@
                 <div class="dept-list el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px">
                   <div class="el-scrollbar__view">
                     <!-- 展示区 -->
-                    <div class="sub-item" v-for="(item, index) in departmentList" :key="item.departmentCode">
-                      <!-- :class="index == activeIndex ? 'selected' : ''" @click="move(index, item.depcode)"> -->
-                      {{ item.departmentName }}
+                    <div class="sub-item" v-for="primaryDepartment in departmentList"
+                      :key="primaryDepartment.departmentCode"
+                      :class="primaryDepartment.departmentCode === activePrimaryDepartment.departmentCode ? 'selected' : ''"
+                      @click="scrollto(primaryDepartment)">
+                      {{ primaryDepartment.departmentName }}
                     </div>
                   </div>
                 </div>
@@ -91,17 +93,16 @@
           <!-- 科室展示 -->
           <div class="sub-dept-container">
             <!-- 展示区 -->
-            <div v-for="(primaryDepartment, index) in departmentList" :key="primaryDepartment.departmentCode"
-              class="sub-dept-wrapper" :id="primaryDepartment.departmentCode">
-              <!-- :class="index == 0 ? 'selected' : ''"> -->
+            <div v-for="primaryDepartment in departmentList" :key="primaryDepartment.departmentCode"
+              class="sub-dept-wrapper" :id="primaryDepartment.departmentCode"
+              :class="primaryDepartment.departmentCode === activePrimaryDepartment.departmentCode ? 'selected' : ''">
               <div class="sub-title">
                 <div class="block selected"></div>
                 {{ primaryDepartment.departmentName }}
               </div>
               <div class="sub-item-wrapper">
                 <div v-for="childrenDepartment in primaryDepartment.children" :key="childrenDepartment.departmentCode"
-                  class="sub-item">
-                  <!-- @click="schedule(it.depcode)"> -->
+                  class="sub-item" @click="gotoSchedule(childrenDepartment)">
                   <span class="v-link clickable">{{ childrenDepartment.departmentName }} </span>
                 </div>
               </div>
@@ -120,12 +121,14 @@ import { findHospitalByHospitalCode, getDepartmentByHospitalCode } from '@/api/h
 const componentKey = ref(0)
 
 const route = useRoute()
+const router = useRouter()
 const hospitalCode = route.params.hospitalCode
 
 const hospital = ref({})
 const hospitalBookingRule = ref({})
 
 const departmentList = ref([])
+const activePrimaryDepartment = ref({})
 
 // 获取医院信息
 function initHospital() {
@@ -141,9 +144,30 @@ initHospital()
 function initDepartment() {
   getDepartmentByHospitalCode(hospitalCode).then(res => {
     departmentList.value = res
+    activePrimaryDepartment.value = res[0]
   })
 }
 initDepartment()
+
+// 滚动到指定位置
+function scrollto(primaryDepartment) {
+  const el = document.getElementById(primaryDepartment.departmentCode)
+  el.scrollIntoView({
+    behavior: 'smooth'
+  })
+  activePrimaryDepartment.value = primaryDepartment
+}
+
+// 前往排班页面
+function gotoSchedule(department) {
+  router.push({
+    path: `/hospital/schedule`,
+    query: {
+      hospitalCode: hospitalCode,
+      departmentCode: department.departmentCode,
+    }
+  })
+}
 
 // 路由
 function gotoHospital() {

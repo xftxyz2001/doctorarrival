@@ -26,6 +26,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return wrapDepartmentList(departmentList);
     }
 
+    @Override
+    public Department findDepartmentByHospitalCodeAndDepartmentCode(String hospitalCode, String departmentCode) {
+        return departmentRepository.findByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode);
+    }
+
     private List<DepartmentVO> wrapDepartmentList(List<Department> departmentList) {
         // 分组
         Map<String, List<DepartmentVO>> groupedDepartments = departmentList.stream()
