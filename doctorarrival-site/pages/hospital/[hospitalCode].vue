@@ -72,6 +72,10 @@
                 <div class="dept-list el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px">
                   <div class="el-scrollbar__view">
                     <!-- 展示区 -->
+                    <div class="sub-item" v-for="(item, index) in departmentList" :key="item.departmentCode">
+                      <!-- :class="index == activeIndex ? 'selected' : ''" @click="move(index, item.depcode)"> -->
+                      {{ item.departmentName }}
+                    </div>
                   </div>
                 </div>
                 <div class="el-scrollbar__bar is-horizontal">
@@ -87,6 +91,21 @@
           <!-- 科室展示 -->
           <div class="sub-dept-container">
             <!-- 展示区 -->
+            <div v-for="(primaryDepartment, index) in departmentList" :key="primaryDepartment.departmentCode"
+              class="sub-dept-wrapper" :id="primaryDepartment.departmentCode">
+              <!-- :class="index == 0 ? 'selected' : ''"> -->
+              <div class="sub-title">
+                <div class="block selected"></div>
+                {{ primaryDepartment.departmentName }}
+              </div>
+              <div class="sub-item-wrapper">
+                <div v-for="childrenDepartment in primaryDepartment.children" :key="childrenDepartment.departmentCode"
+                  class="sub-item">
+                  <!-- @click="schedule(it.depcode)"> -->
+                  <span class="v-link clickable">{{ childrenDepartment.departmentName }} </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -96,7 +115,7 @@
 </template>
 
 <script setup>
-import { findHospitalByHospitalCode } from '@/api/hospital'
+import { findHospitalByHospitalCode, getDepartmentByHospitalCode } from '@/api/hospital'
 
 const componentKey = ref(0)
 
@@ -105,6 +124,8 @@ const hospitalCode = route.params.hospitalCode
 
 const hospital = ref({})
 const hospitalBookingRule = ref({})
+
+const departmentList = ref([])
 
 // 获取医院信息
 function initHospital() {
@@ -115,6 +136,14 @@ function initHospital() {
   })
 }
 initHospital()
+
+// 获取科室信息
+function initDepartment() {
+  getDepartmentByHospitalCode(hospitalCode).then(res => {
+    departmentList.value = res
+  })
+}
+initDepartment()
 
 // 路由
 function gotoHospital() {
