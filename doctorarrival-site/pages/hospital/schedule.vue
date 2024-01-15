@@ -32,8 +32,7 @@
 
         <!-- 号源列表 -->
         <div class="mt60">
-          <!-- <div class="title-wrapper">{{ scheduleList.records[0].workDate }} —— {{
-            scheduleList.records[scheduleList.records.length - 1].workDate }}</div> -->
+          <div class="title-wrapper">{{ workDateTips }}</div>
           <!-- 日期 号源 -->
           <div class="calendar-list-wrapper">
             <div class="calendar-item space" style="width: 124px" v-for="schedule in scheduleList.records"
@@ -53,8 +52,9 @@
           </div>
 
           <!-- 分页 -->
-          <el-pagination class="pagination" layout="prev, pager, next" :current-page="scheduleList.current"
-            :total="scheduleList.total" :page-size="scheduleList.size" @current-change="getSchedulePageList">
+          <el-pagination class="pagination" style="justify-content: center;" layout="prev, pager, next"
+            :current-page="scheduleList.current" :total="scheduleList.total" :page-size="scheduleList.size"
+            @current-change="getSchedulePageList">
           </el-pagination>
         </div>
 
@@ -180,6 +180,13 @@ function getSchedulePageList(page = 1) {
   })
 }
 getSchedulePageList()
+
+// 计算属性 {{ scheduleList.records[0].workDate }} —— {{ scheduleList.records[scheduleList.records.length - 1].workDate }}
+const workDateTips = computed(() => {
+  if (scheduleList.value.records) {
+    return `${scheduleList.value.records[0].workDate} —— ${scheduleList.value.records[scheduleList.value.records.length - 1].workDate}`
+  }
+})
 
 // 选择日期
 function selectDate(schedule) {
