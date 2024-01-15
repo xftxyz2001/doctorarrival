@@ -36,3 +36,18 @@ export function saveRealName(data) {
     data
   })
 }
+
+// 获取就诊人列表
+export function getPatientList() {
+  return request({
+    url: '/api/user/patient/auth/list',
+    method: 'get'
+  })
+}
+
+export function getPatientDetail(patientId) {
+  return request({
+    url: `/api/user/patient/auth/detail/${patientId}`,
+    method: 'get'
+  })
+}
