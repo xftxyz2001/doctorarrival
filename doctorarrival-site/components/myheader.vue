@@ -126,6 +126,8 @@
 import { sendVerificationCode } from '@/api/sms'
 import { login, getUserInfoBasic, getWxLoginQrCodeParam } from '@/api/user'
 
+const router = useRouter()
+
 // 登录弹出层默认属性值
 const defaultDialogAtrr = {
   showLoginType: 'phone', // 控制手机登录（phone）与微信登录（weixin）切换
@@ -170,9 +172,16 @@ function closeLoginDialog() {
 // 用户菜单
 function loginUserMenu(command) {
   if (command === '/user') {
+    router.push('/user/info')
   } else if (command === '/patient') {
+    router.push('/user/patient')
   } else if (command === '/order') {
+    router.push('/user/order')
   } else if (command === '/logout') {
+    // 清除token
+    useToken().value = ''
+    // 清除昵称
+    nickName.value = ''
   }
 }
 

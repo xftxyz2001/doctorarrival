@@ -24,7 +24,7 @@
       <div class="hospital-source-list">
         <!-- 医院名称 / 大科室 / 科室名 -->
         <div class="header-wrapper" style="justify-content: normal">
-          <span class="v-link clickable" @click="gotoHospital(hospital.hospitalCode)">{{ hospital.hospitalName }}</span>
+          <span class="v-link clickable" @click="gotoHospital">{{ hospital.hospitalName }}</span>
           <div class="split"></div>
           <div>{{ department.primaryDepartmentName }}</div>
         </div>
@@ -160,7 +160,7 @@ function initHospital() {
 initHospital()
 
 // 回到医院页面
-function gotoHospital(hospitalCode) {
+function gotoHospital() {
   router.push(`/hospital/${hospitalCode}`)
 }
 
@@ -198,10 +198,16 @@ function selectDate(schedule) {
 }
 
 // 预约挂号
-function booking(item) {
+function booking(schedule) {
   ElMessage({
-    message: `正在预约 ${item.id}...`,
+    message: `正在预约 ${schedule.doctorName}...`,
     type: 'success'
+  })
+  router.push({
+    path: `/hospital/booking`,
+    query: {
+      scheduleId: schedule.id,
+    }
   })
 }
 </script>
