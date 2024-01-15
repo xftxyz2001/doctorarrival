@@ -3,10 +3,7 @@ package com.xftxyz.doctorarrival.user.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xftxyz.doctorarrival.vo.user.LoginParam;
-import com.xftxyz.doctorarrival.vo.user.LoginResponse;
-import com.xftxyz.doctorarrival.vo.user.UserInfoBasic;
-import com.xftxyz.doctorarrival.vo.user.UserInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.user.*;
 
 import java.util.List;
 
@@ -36,4 +33,6 @@ public interface UserInfoService extends IService<UserInfo> {
     UserInfoBasic getUserInfoBasic(String userId);
 
     UserInfo getUserInfoDetail(String userId);
+
+    Boolean saveRealName(String userId, RealNameParam realNameParam);
 }

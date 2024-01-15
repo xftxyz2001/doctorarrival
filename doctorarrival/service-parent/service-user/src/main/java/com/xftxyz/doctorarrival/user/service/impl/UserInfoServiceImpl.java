@@ -11,10 +11,7 @@ import com.xftxyz.doctorarrival.common.result.ResultEnum;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.user.mapper.UserInfoMapper;
 import com.xftxyz.doctorarrival.user.service.UserInfoService;
-import com.xftxyz.doctorarrival.vo.user.LoginParam;
-import com.xftxyz.doctorarrival.vo.user.LoginResponse;
-import com.xftxyz.doctorarrival.vo.user.UserInfoBasic;
-import com.xftxyz.doctorarrival.vo.user.UserInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -171,5 +168,23 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
             throw new BusinessException(ResultEnum.USER_NOT_EXIST);
         }
         return userInfo;
+    }
+
+    @Override
+    public Boolean saveRealName(String userId, RealNameParam realNameParam) {
+        // 根据id查询用户信息
+        UserInfo userInfo = baseMapper.selectById(userId);
+        if (ObjectUtils.isEmpty(userInfo)) {
+            throw new BusinessException(ResultEnum.USER_NOT_EXIST);
+        }
+        userInfo.setName(realNameParam.getName());
+        userInfo.setCertificatesType(realNameParam.getCertificatesType());
+        userInfo.setCertificatesNo(realNameParam.getCertificatesNo());
+        userInfo.setCertificatesUrl(realNameParam.getCertificatesUrl());
+        userInfo.setAuthStatus(UserInfo.AUTH_STATUS_AUTHING); // 认证中
+        if (baseMapper.updateById(userInfo) <= 0) {
+            throw new BusinessException(ResultEnum.USER_UPDATE_FAILED);
+        }
+        return true;
     }
 }

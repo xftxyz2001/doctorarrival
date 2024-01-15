@@ -37,8 +37,8 @@
           完成实名认证后才能添加就诊人，正常进行挂号，为了不影响后续步骤，建议提前实名认证。
         </div>
 
-        <!-- 未认证 -->
-        <div class="form-wrapper" v-if="userInfo.authStatus === 0">
+        <!-- 未认证/认证失败 -->
+        <div class="form-wrapper" v-if="userInfo.authStatus === 0 || userInfo.authStatus === -1">
           <div>
             <!-- 认证信息表单 -->
             <el-form :model="formModel" label-width="110px" label-position="left">
@@ -77,9 +77,7 @@
                   <img src="assets/images/auth_example.png" class="example" />
                 </div>
               </el-form-item>
-
             </el-form>
-
 
             <!-- 提交按钮 -->
             <div class="bottom-wrapper">
@@ -92,6 +90,25 @@
           </div>
         </div>
 
+        <!-- 认证成功 -->
+        <div class="context-container" v-if="userInfo.authStatus === 2">
+          <div>
+            <el-form :model="userInfo" label-width="110px" label-position="right">
+              <el-form-item prop="name" label="姓名：" class="form-normal">
+                <div class="name-input">
+                  {{ userInfo.name }}
+                </div>
+              </el-form-item>
+              <el-form-item prop="certificatesType" label="证件类型：">
+                {{ certificatesTypeString }}
+              </el-form-item>
+              <el-form-item prop="certificatesNo" label="证件号码：">
+                {{ userInfo.certificatesNo }}
+              </el-form-item>
+            </el-form>
+          </div>
+        </div>
+
 
       </div>
     </div>
@@ -101,7 +118,7 @@
 <script setup>
 import { getDictChildrenByDictCode } from '@/api/dict';
 import { uploadCertificates } from '@/api/oss';
-import { getUserInfoDetail } from '@/api/user';
+import { getUserInfoDetail, saveRealName } from '@/api/user';
 
 const componentKey = ref(0)
 
@@ -126,6 +143,18 @@ const submitButtonText = ref('提交')
 function initUserInfo() {
   getUserInfoDetail().then(res => {
     userInfo.value = res
+
+    // 如果是认证失败
+    if (userInfo.value.authStatus === -1) {
+      // 回填表单
+      formModel.value.name = userInfo.value.name
+      formModel.value.certificatesType = userInfo.value.certificatesType
+      formModel.value.certificatesNo = userInfo.value.certificatesNo
+      // formModel.value.certificatesUrl = userInfo.value.certificatesUrl
+      // 按钮
+      submitButtonText.value = '更新'
+    }
+    // 重新渲染
     componentKey.value++
   })
 }
@@ -162,7 +191,54 @@ function handleCacheHeadersUpload(file) {
   reader.readAsDataURL(realFile)
 }
 
-// 计算属性：authStatusString
+// 保存认证信息
+function saveUserAuth() {
+  // 校验
+  const { name, certificatesType, certificatesNo, certificatesUrl } = formModel.value
+  if (!name) {
+    ElMessage({
+      message: '请输入联系人姓名全称',
+      type: 'warning',
+    })
+    return
+  }
+  if (!certificatesType) {
+    ElMessage({
+      message: '请选择证件类型',
+      type: 'warning',
+    })
+    return
+  }
+  if (!certificatesNo) {
+    ElMessage({
+      message: '请输入联系人证件号码',
+      type: 'warning',
+    })
+    return
+  }
+  if (!certificatesUrl) {
+    ElMessage({
+      message: '请上传证件合照',
+      type: 'warning',
+    })
+    return
+  }
+
+  // 提交
+  submitButtonText.value = '正在提交...'
+  const params = {
+    name,
+    certificatesType,
+    certificatesNo,
+    certificatesUrl,
+  }
+  saveRealName(params).then(res => {
+    // submitButtonText.value = '提交'
+    initUserInfo()
+  })
+}
+
+// 计算属性
 const authStatusString = computed(() => {
   switch (userInfo.value.authStatus) {
     case 0:
@@ -176,6 +252,11 @@ const authStatusString = computed(() => {
     default:
       return '未认证'
   }
+})
+
+const certificatesTypeString = computed(() => {
+  const certificatesType = certificatesTypeList.value.find(item => item.id === userInfo.value.certificatesType)
+  return certificatesType ? certificatesType.value : '未知'
 })
 </script>
 

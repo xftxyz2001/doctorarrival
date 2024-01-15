@@ -27,3 +27,12 @@ export function getWxLoginQrCodeParam() {
     method: 'get'
   })
 }
+
+// 保存实名信息
+export function saveRealName(data) {
+  return request({
+    url: '/api/user/info/auth/realname',
+    method: 'post',
+    data
+  })
+}
