@@ -40,10 +40,18 @@ export function getDepartmentByHospitalCodeAndDepartmentCode(hospitalCode, depar
 }
 
 // 排班
-export function getScheduleByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode) {
+export function getSchedulePage(hospitalCode, departmentCode, current = 1, size = 7) {
   return request({
-    url: `/api/hospital/schedule/hospital/department/code`,
+    url: `/api/hospital/schedule/page`,
     method: 'get',
-    params: { hospitalCode, departmentCode }
+    params: { hospitalCode, departmentCode, current, size }
+  })
+}
+
+export function getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCode, departmentCode, workDate) {
+  return request({
+    url: `/api/hospital/schedule/hospital/department/date`,
+    method: 'get',
+    params: { hospitalCode, departmentCode, workDate }
   })
 }

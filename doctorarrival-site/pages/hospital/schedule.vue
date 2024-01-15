@@ -32,9 +32,97 @@
 
         <!-- 号源列表 -->
         <div class="mt60">
-          <div class="title-wrapper">号源列表</div>
+          <!-- <div class="title-wrapper">{{ scheduleList.records[0].workDate }} —— {{
+            scheduleList.records[scheduleList.records.length - 1].workDate }}</div> -->
+          <!-- 日期 号源 -->
           <div class="calendar-list-wrapper">
-            <!-- 日期 号源 -->
+            <div class="calendar-item space" style="width: 124px" v-for="schedule in scheduleList.records"
+              :key="schedule.workDate"
+              :class="{ 'gray': schedule.status < 1, 'selected': schedule.workDate == activeSchedule.workDate }"
+              @click="selectDate(schedule)">
+              <div class="date-wrapper">
+                <span>{{ schedule.workDate }}</span><span class="week">{{ schedule.dayOfWeek }}</span>
+              </div>
+              <div class="status-wrapper" v-if="schedule.status === 1">
+                {{ schedule.availableNumber }} / {{ schedule.reservedNumber }}
+              </div>
+              <div class="status-wrapper" v-if="schedule.status === 0">停约</div>
+              <div class="status-wrapper" v-if="schedule.status === -1">停诊</div>
+
+            </div>
+          </div>
+
+          <!-- 分页 -->
+          <el-pagination class="pagination" layout="prev, pager, next" :current-page="scheduleList.current"
+            :total="scheduleList.total" :page-size="scheduleList.size" @current-change="getSchedulePageList">
+          </el-pagination>
+        </div>
+
+        <!-- TODO 即将放号 -->
+
+        <!-- 上午号源 -->
+        <div class="mt60" v-if="activeScheduleDetail">
+          <div class="">
+            <div class="list-title">
+              <div class="block"></div>
+              上午号源
+            </div>
+            <template v-for="item in activeScheduleDetail">
+              <div v-if="item.workTime == 0">
+                <div class="list-item">
+                  <div class="item-wrapper">
+                    <div class="title-wrapper">
+                      <div class="title">{{ item.doctorTitle }}</div>
+                      <div class="split"></div>
+                      <div class="name">{{ item.doctorName }}</div>
+                    </div>
+                    <div class="special-wrapper">{{ item.skill }}</div>
+                  </div>
+                  <div class="right-wrapper">
+                    <div class="fee">￥{{ item.amount }}</div>
+                    <div class="button-wrapper">
+                      <div class="v-button" @click="booking(item)"
+                        :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''">
+                        <span>剩余<span class="number">{{ item.availableNumber }}</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- 下午号源 -->
+        <div class="mt60" v-if="activeScheduleDetail">
+          <div class="">
+            <div class="list-title">
+              <div class="block"></div>
+              下午号源
+            </div>
+            <template v-for="item in activeScheduleDetail">
+              <div v-if="item.workTime == 1">
+                <div class="list-item">
+                  <div class="item-wrapper">
+                    <div class="title-wrapper">
+                      <div class="title">{{ item.doctorTitle }}</div>
+                      <div class="split"></div>
+                      <div class="name">{{ item.doctorName }}</div>
+                    </div>
+                    <div class="special-wrapper">{{ item.skill }}</div>
+                  </div>
+                  <div class="right-wrapper">
+                    <div class="fee">￥{{ item.amount }}</div>
+                    <div class="button-wrapper">
+                      <div class="v-button" @click="booking(item)"
+                        :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''">
+                        <span>剩余<span class="number">{{ item.availableNumber }}</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -44,7 +132,12 @@
 </template>
 
 <script setup>
-import { findHospitalByHospitalCode, getDepartmentByHospitalCodeAndDepartmentCode, getScheduleByHospitalCodeAndDepartmentCode } from '@/api/hospital'
+import {
+  findHospitalByHospitalCode,
+  getDepartmentByHospitalCodeAndDepartmentCode,
+  getSchedulePage,
+  getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate
+} from '@/api/hospital'
 
 const route = useRoute()
 const router = useRouter()
@@ -52,7 +145,11 @@ const { hospitalCode, departmentCode } = route.query
 
 const hospital = ref({})
 const department = ref({})
+
 const scheduleList = ref([])
+const activeSchedule = ref({})
+
+const activeScheduleDetail = ref({})
 
 // 获取医院信息
 function initHospital() {
@@ -76,12 +173,30 @@ function initDepartment() {
 initDepartment()
 
 // 获取号源信息
-function initSchedule() {
-  getScheduleByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode).then(res => {
+function getSchedulePageList(page = 1) {
+  getSchedulePage(hospitalCode, departmentCode, page).then(res => {
     scheduleList.value = res
+    selectDate(res.records[0])
   })
 }
-initSchedule()
+getSchedulePageList()
+
+// 选择日期
+function selectDate(schedule) {
+  activeSchedule.value = schedule
+  const { hospitalCode, departmentCode, workDate } = schedule
+  getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCode, departmentCode, workDate).then(res => {
+    activeScheduleDetail.value = res
+  })
+}
+
+// 预约挂号
+function booking(item) {
+  ElMessage({
+    message: `正在预约 ${item.id}...`,
+    type: 'success'
+  })
+}
 </script>
 
 <style scoped>

@@ -22,4 +22,10 @@ public interface Constants {
     // 医院接口对称加密密钥 Redis key 前缀
     String HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX = "hospital_api_aes_key_";// +医院code
 
+    // 毫秒表示的秒/分/时/天
+    long SECOND_IN_MILLIS = 1000L;
+    long MINUTE_IN_MILLIS = 60 * SECOND_IN_MILLIS;
+    long HOUR_IN_MILLIS = 60 * MINUTE_IN_MILLIS;
+    long DAY_IN_MILLIS = 24 * HOUR_IN_MILLIS;
+
 }
