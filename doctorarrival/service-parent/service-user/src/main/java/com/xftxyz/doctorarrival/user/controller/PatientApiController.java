@@ -27,4 +27,10 @@ public class PatientApiController {
                                     @PathVariable("patientId") String patientId) {
         return patientService.getPatientDetail(userId, patientId);
     }
+
+    @DeleteMapping("/auth/remove/{patientId}")
+    public Boolean removePatient(@RequestHeader(JwtHelper.X_USER_ID) String userId,
+                                 @PathVariable("patientId") String patientId) {
+        return patientService.removePatient(userId, patientId);
+    }
 }

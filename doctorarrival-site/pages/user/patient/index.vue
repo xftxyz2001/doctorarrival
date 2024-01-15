@@ -28,7 +28,7 @@
 
         <div class="content-wrapper">
           <!-- 展示就诊人 -->
-          <el-card class="patient-card" shadow="always" v-for="patient in patientList" :key="patient.id">
+          <el-card class="patient-card" shadow="always" v-for="patient in patientListFix" :key="patient.id">
             <template v-slot:header>
               <div class="clearfix">
                 <div>
@@ -95,6 +95,17 @@ function initPatientList() {
 }
 initPatientList()
 
+// 修正证件类型
+const patientListFix = computed(() => {
+  return patientList.value.map(item => {
+    const certificatesType = certificatesTypeList.value.find(type => type.id === item.certificatesType)
+    return {
+      ...item,
+      certificatesType: certificatesType ? certificatesType.value : ''
+    }
+  })
+})
+
 // 查看就诊人详情
 function gotoPatientDetail(id) {
   router.push({
@@ -107,7 +118,7 @@ function gotoPatientDetail(id) {
 
 function addPatient() {
   router.push({
-    path: '/user/patient/add'
+    path: '/user/patient/edit'
   })
 }
 </script>

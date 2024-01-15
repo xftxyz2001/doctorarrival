@@ -39,6 +39,21 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient>
         }
         return patient;
     }
+
+    @Override
+    public Boolean removePatient(String userId, String patientId) {
+        LambdaQueryWrapper<Patient> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Patient::getUserId, userId);
+        lambdaQueryWrapper.eq(Patient::getId, patientId);
+        Patient patient = baseMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(patient)) {
+            throw new BusinessException(ResultEnum.PATIENT_NOT_EXIST);
+        }
+        if (baseMapper.deleteById(patient.getId()) <= 0) {
+            throw new BusinessException(ResultEnum.PATIENT_REMOVE_FAIL);
+        }
+        return true;
+    }
 }
 
 

@@ -51,3 +51,10 @@ export function getPatientDetail(patientId) {
     method: 'get'
   })
 }
+
+export function removePatient(patientId) {
+  return request({
+    url: `/api/user/patient/auth/remove/${patientId}`,
+    method: 'delete'
+  })
+}

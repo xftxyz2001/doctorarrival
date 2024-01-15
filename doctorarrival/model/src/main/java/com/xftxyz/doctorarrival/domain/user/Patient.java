@@ -1,6 +1,7 @@
 package com.xftxyz.doctorarrival.domain.user;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -66,6 +67,7 @@ public class Patient implements Serializable {
      * 出生日期
      */
     @TableField(value = "birthday")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     /**

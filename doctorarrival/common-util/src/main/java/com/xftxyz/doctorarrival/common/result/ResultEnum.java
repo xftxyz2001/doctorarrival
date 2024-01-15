@@ -36,6 +36,8 @@ public enum ResultEnum {
     USER_UPDATE_FAILED(315, "用户更新失败"),
 
     PATIENT_NOT_EXIST(320, "就诊人不存在"),
+    PATIENT_REMOVE_FAIL(321, "就诊人删除失败"),
+
 
     // 4参数错误
     PARAM_ERROR(400, "非法参数"),
