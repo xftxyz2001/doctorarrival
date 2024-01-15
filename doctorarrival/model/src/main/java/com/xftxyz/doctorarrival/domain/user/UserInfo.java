@@ -14,6 +14,12 @@ import java.util.Date;
 @TableName(value = "user_info")
 @Data
 public class UserInfo implements Serializable {
+    // （0：未认证，1：认证中，2：认证成功，-1：认证失败）
+    public static final Integer AUTH_STATUS_UNAUTH = 0;
+    public static final Integer AUTH_STATUS_AUTHING = 1;
+    public static final Integer AUTH_STATUS_AUTHED = 2;
+    public static final Integer AUTH_STATUS_AUTH_FAIL = -1;
+
     /**
      * id
      */
@@ -45,7 +51,7 @@ public class UserInfo implements Serializable {
     private String name;
 
     /**
-     * 证件类型（1：身份证，2：军官证，3：护照）
+     * 证件类型（1：身份证，2：户口本）
      */
     @TableField(value = "certificates_type")
     private Integer certificatesType;

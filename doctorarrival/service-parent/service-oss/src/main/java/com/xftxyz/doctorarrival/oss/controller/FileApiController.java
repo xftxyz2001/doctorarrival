@@ -4,11 +4,9 @@ import com.xftxyz.doctorarrival.oss.service.FileService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Validated
@@ -29,5 +27,15 @@ public class FileApiController {
     public String upload(@RequestPart("file") @NotNull MultipartFile file) {
         return fileService.upload(file);
     }
+
+    @GetMapping("/preview/{yyyy}/{MM}/{dd}/{uuidFileName}")
+    public ResponseEntity<byte[]> preview(@PathVariable("yyyy") String yyyy,
+                                          @PathVariable("MM") String MM,
+                                          @PathVariable("dd") String dd,
+                                          @PathVariable("uuidFileName") String uuidFileName) {
+        String fileUrl = yyyy + "/" + MM + "/" + dd + "/" + uuidFileName;
+        return fileService.preview(fileUrl);
+    }
+
 
 }

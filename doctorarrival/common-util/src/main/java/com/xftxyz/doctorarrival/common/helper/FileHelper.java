@@ -19,4 +19,15 @@ public class FileHelper {
         String uuidWithoutDash = UUID.randomUUID().toString();
         return uuidWithoutDash + suffix;
     }
+
+    /**
+     * 获取文件后缀名
+     *
+     * @param fileName 文件名
+     * @return 文件后缀名
+     */
+    public static String getSuffix(String fileName) {
+        int lastIndexOfDot = fileName == null ? -1 : fileName.lastIndexOf(".");
+        return lastIndexOfDot == -1 ? "" : fileName.substring(lastIndexOfDot);
+    }
 }

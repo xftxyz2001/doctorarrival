@@ -167,4 +167,28 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    @Override
+    public ResponseEntity<byte[]> preview(String fileUrl) {
+        try {
+            OSSObject object = ossClient.getObject(ossProperties.getBucketName(), fileUrl);
+            // 获取文件后缀名以确定响应头
+            String suffix = FileHelper.getSuffix(object.getKey());
+            byte[] imageData = IOUtils.toByteArray(object.getObjectContent());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, getContentType(suffix))
+                    .body(imageData);
+        } catch (Exception e) {
+            throw new BusinessException(ResultEnum.FILE_DOWNLOAD_FAILED);
+        }
+    }
+
+    private String getContentType(String suffix) {
+        return switch (suffix) {
+            case ".jpg", ".jpeg" -> MediaType.IMAGE_JPEG_VALUE;
+            case ".png" -> MediaType.IMAGE_PNG_VALUE;
+            case ".gif" -> MediaType.IMAGE_GIF_VALUE;
+            default -> MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        };
+    }
+
 }

@@ -31,4 +31,6 @@ public interface FileService {
     Boolean deleteBatch(List<String> fileUrls);
 
     ListObjectsResultVO list(String continuationToken, Integer maxKeys);
+
+    ResponseEntity<byte[]> preview(String fileUrl);
 }
