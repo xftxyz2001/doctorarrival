@@ -99,15 +99,18 @@
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from '@/api/dict'
-import { getUserInfoDetail } from '@/api/user'
-import { uploadCertificates, previewCertificate } from '@/api/oss'
+import { getDictChildrenByDictCode } from '@/api/dict';
+import { uploadCertificates } from '@/api/oss';
+import { getUserInfoDetail } from '@/api/user';
 
 const componentKey = ref(0)
 
 const userInfo = ref({})
 
 const certificatesTypeList = ref([])
+
+// 证件照片预览
+const certificatesFilePreview = ref('')
 
 // 表单
 const formModel = ref({
@@ -142,12 +145,21 @@ initCertificatesTypeList()
 
 // 上传证件照片
 function handleCacheHeadersUpload(file) {
+  const realFile = file.file
+
+  // 上传
   const formData = new FormData()
   formData.append('file', file.file)
   uploadCertificates(formData).then(res => {
-    formModel.certificatesUrl = res
-    certificatesFilePreview.value
+    formModel.value.certificatesUrl = res
   })
+
+  // 预览
+  const reader = new FileReader()
+  reader.onload = e => {
+    certificatesFilePreview.value = e.target.result
+  }
+  reader.readAsDataURL(realFile)
 }
 
 // 计算属性：authStatusString
@@ -164,13 +176,6 @@ const authStatusString = computed(() => {
     default:
       return '未认证'
   }
-})
-
-// 计算属性：certificatesFilePreview
-const certificatesFilePreview = computed(() => {
-  previewCertificate(formModel.certificatesUrl).then(res => {
-    return res
-  })
 })
 </script>
 
