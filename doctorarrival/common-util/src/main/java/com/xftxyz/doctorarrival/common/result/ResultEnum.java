@@ -34,6 +34,7 @@ public enum ResultEnum {
     USER_DELETE_FAILED(313, "用户删除失败"),
     USER_NOT_EXIST(314, "用户不存在"),
     USER_UPDATE_FAILED(315, "用户更新失败"),
+    PHONE_ALREADY_EXIST(316, "手机号已存在"),
 
     PATIENT_NOT_EXIST(320, "就诊人不存在"),
     PATIENT_REMOVE_FAIL(321, "就诊人删除失败"),

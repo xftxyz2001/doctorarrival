@@ -20,6 +20,24 @@ export function getUserInfoDetail() {
   })
 }
 
+export function updatePhone(data) {
+  return request({
+    url: '/api/user/info/auth/phone',
+    method: 'post',
+    data
+  })
+}
+
+export function updateNickname(nickName) {
+  return request({
+    url: '/api/user/info/auth/nickname',
+    method: 'post',
+    params: {
+      nickName
+    }
+  })
+}
+
 // 微信扫码登录参数
 export function getWxLoginQrCodeParam() {
   return request({

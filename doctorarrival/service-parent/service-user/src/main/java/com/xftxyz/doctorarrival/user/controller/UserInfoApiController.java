@@ -8,6 +8,7 @@ import com.xftxyz.doctorarrival.vo.user.LoginParam;
 import com.xftxyz.doctorarrival.vo.user.LoginResponse;
 import com.xftxyz.doctorarrival.vo.user.RealNameParam;
 import com.xftxyz.doctorarrival.vo.user.UserInfoBasic;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -44,4 +45,17 @@ public class UserInfoApiController {
     public Boolean saveRealName(@RequestHeader(JwtHelper.X_USER_ID) String userId, @RequestBody @NotNull RealNameParam realNameParam) {
         return userInfoService.saveRealName(userId, realNameParam);
     }
+
+    // 更新手机号
+    @PostMapping("/auth/phone")
+    public Boolean updatePhone(@RequestHeader(JwtHelper.X_USER_ID) String userId, @RequestBody @NotNull LoginParam loginParam) {
+        return userInfoService.updatePhone(userId, loginParam);
+    }
+
+    // 更新昵称
+    @PostMapping("/auth/nickname")
+    public Boolean updateNickname(@RequestHeader(JwtHelper.X_USER_ID) String userId, @RequestParam("nickName") @NotBlank String nickName) {
+        return userInfoService.updateNickname(userId, nickName);
+    }
+
 }

@@ -35,4 +35,8 @@ public interface UserInfoService extends IService<UserInfo> {
     UserInfo getUserInfoDetail(String userId);
 
     Boolean saveRealName(String userId, RealNameParam realNameParam);
+
+    Boolean updatePhone(String userId, LoginParam loginParam);
+
+    Boolean updateNickname(String userId, String nickName);
 }

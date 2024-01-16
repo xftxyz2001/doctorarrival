@@ -182,6 +182,7 @@ function loginUserMenu(command) {
     useToken().value = ''
     // 清除昵称
     nickName.value = ''
+    router.push('/')
   }
 }
 

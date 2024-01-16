@@ -110,11 +110,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         return baseMapper.selectPage(new Page<>(current, size), lambdaQueryWrapper);
     }
 
-    @Override
-    public LoginResponse login(LoginParam loginParam) {
-        String phoneNumber = loginParam.getPhoneNumber();
-        String verificationCode = loginParam.getVerificationCode();
-
+    private void checkVerificationCode(String phoneNumber, String verificationCode) {
         // 检查验证码
         // Redis对应的key
         String redisKey = Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX + phoneNumber;
@@ -127,6 +123,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         }
         // 删除验证码
         stringRedisTemplate.delete(redisKey);
+    }
+
+    @Override
+    public LoginResponse login(LoginParam loginParam) {
+        String phoneNumber = loginParam.getPhoneNumber();
+        String verificationCode = loginParam.getVerificationCode();
+
+        checkVerificationCode(phoneNumber, verificationCode);
 
         // 根据手机号查询用户信息
         LambdaQueryWrapper<UserInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -182,6 +186,46 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         userInfo.setCertificatesNo(realNameParam.getCertificatesNo());
         userInfo.setCertificatesUrl(realNameParam.getCertificatesUrl());
         userInfo.setAuthStatus(UserInfo.AUTH_STATUS_AUTHING); // 认证中
+        if (baseMapper.updateById(userInfo) <= 0) {
+            throw new BusinessException(ResultEnum.USER_UPDATE_FAILED);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean updatePhone(String userId, LoginParam loginParam) {
+        String phoneNumber = loginParam.getPhoneNumber();
+        // 根据手机号查询用户信息
+        LambdaQueryWrapper<UserInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserInfo::getPhone, phoneNumber);
+        UserInfo existUser = baseMapper.selectOne(lambdaQueryWrapper);
+        if (!ObjectUtils.isEmpty(existUser)) {
+            throw new BusinessException(ResultEnum.PHONE_ALREADY_EXIST);
+        }
+
+        String verificationCode = loginParam.getVerificationCode();
+        checkVerificationCode(phoneNumber, verificationCode);
+
+        // 根据id查询用户信息
+        UserInfo userInfo = baseMapper.selectById(userId);
+        if (ObjectUtils.isEmpty(userInfo)) {
+            throw new BusinessException(ResultEnum.USER_NOT_EXIST);
+        }
+        userInfo.setPhone(loginParam.getPhoneNumber());
+        if (baseMapper.updateById(userInfo) <= 0) {
+            throw new BusinessException(ResultEnum.USER_UPDATE_FAILED);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean updateNickname(String userId, String nickName) {
+        // 根据id查询用户信息
+        UserInfo userInfo = baseMapper.selectById(userId);
+        if (ObjectUtils.isEmpty(userInfo)) {
+            throw new BusinessException(ResultEnum.USER_NOT_EXIST);
+        }
+        userInfo.setNickName(nickName);
         if (baseMapper.updateById(userInfo) <= 0) {
             throw new BusinessException(ResultEnum.USER_UPDATE_FAILED);
         }
