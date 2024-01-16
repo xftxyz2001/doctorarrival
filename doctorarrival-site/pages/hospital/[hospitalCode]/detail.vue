@@ -12,19 +12,69 @@
         <span class="v-link clickable dark" @click="gotoHospitalNotice">预约须知</span>
       </div>
       <div class="nav-item">
-        <span class="v-link clickable dark"> 停诊信息 </span>
+        <span class="v-link clickable dark">停诊信息</span>
       </div>
       <div class="nav-item">
-        <span class="v-link clickable dark"> 查询/取消 </span>
+        <span class="v-link clickable dark">查询/取消</span>
       </div>
     </div>
 
     <!-- 右侧 内容 -->
-    <div class="page-container"></div>
+    <div class="page-container">
+      <div class="hospital-detail">
+        <div class="common-header">
+          <div class="title-wrapper">
+            <span class="hospital-title">{{ hospital.hospitalName }}</span>
+            <div class="icon-wrapper">
+              <span class="iconfont"></span>
+              {{ hospital.hospitalType }}
+            </div>
+          </div>
+        </div>
+        <div class="info-wrapper">
+          <img
+            :src="hospital.logoData"
+            :alt="hospital.hospitalName"
+            style="width: 80px; height: 80px"
+          />
+          <div class="content-wrapper">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div>
+              <div class="icon-text-wrapper">
+                <span class="iconfont prefix-icon"></span>
+                <span class="text">
+                  <p>{{ hospital.route }}</p>
+                </span>
+                <span class="iconfont right-icon"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="title mt40">医院介绍</div>
+        <div class="detail-content mt40">
+          <p>{{ hospital.intro }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { findHospitalByHospitalCode } from "@/api/hospital";
+
+const route = useRoute();
+const { hospitalCode } = route.params;
+
+const hospital = ref({});
+function initHospital() {
+  findHospitalByHospitalCode(hospitalCode).then(res => {
+    hospital.value = res;
+  });
+}
+initHospital();
+</script>
 
 <style scoped>
 @import "assets/css/hospital_personal.css";
