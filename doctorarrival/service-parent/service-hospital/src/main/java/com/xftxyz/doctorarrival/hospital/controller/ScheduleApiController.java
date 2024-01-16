@@ -8,10 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +39,10 @@ public class ScheduleApiController {
                                                                      @RequestParam("departmentCode") @NotBlank String departmentCode,
                                                                      @RequestParam("workDate") @NotBlank String workDate) {
         return scheduleService.findScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCode, departmentCode, workDate);
+    }
+
+    @GetMapping("/id/{id}")
+    public Schedule getScheduleById(@PathVariable("id") @NotBlank String id) {
+        return scheduleService.findScheduleById(id);
     }
 }

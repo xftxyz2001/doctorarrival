@@ -41,6 +41,8 @@ public enum ResultEnum {
     PATIENT_ADD_FAIL(322, "就诊人添加失败"),
     PATIENT_UPDATE_FAIL(323, "就诊人更新失败"),
 
+    SCHEDULE_NOT_FOUND(330, "排班不存在"),
+
     // 4参数错误
     PARAM_ERROR(400, "非法参数"),
     PARAM_VALID_ERROR(401, "参数校验失败"),

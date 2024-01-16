@@ -12,4 +12,6 @@ public interface ScheduleService {
     IPage<ScheduleDateVO> findSchedulePage(String hospitalCode, String departmentCode, Long current, Long size);
 
     List<Schedule> findScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(String hospitalCode, String departmentCode, String workDate);
+
+    Schedule findScheduleById(String id);
 }

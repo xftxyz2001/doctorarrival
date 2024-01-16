@@ -2,7 +2,9 @@ package com.xftxyz.doctorarrival.hospital.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xftxyz.doctorarrival.common.exception.BusinessException;
 import com.xftxyz.doctorarrival.common.helper.DateTimeHelper;
+import com.xftxyz.doctorarrival.common.result.ResultEnum;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
 import com.xftxyz.doctorarrival.hospital.repository.ScheduleRepository;
@@ -11,10 +13,7 @@ import com.xftxyz.doctorarrival.vo.hospital.ScheduleDateVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.xftxyz.doctorarrival.common.constant.Constants.DAY_IN_MILLIS;
@@ -84,6 +83,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         Date workDateDateEnd = new Date(workDateDate.getTime() + DAY_IN_MILLIS);
 
         return scheduleRepository.findByHospitalCodeAndDepartmentCodeAndWorkDateBetween(hospitalCode, departmentCode, workDateDate, workDateDateEnd);
+    }
+
+    @Override
+    public Schedule findScheduleById(String id) {
+        Optional<Schedule> scheduleOptional = scheduleRepository.findById(id);
+        if (scheduleOptional.isEmpty()) {
+            throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
+        }
+        return scheduleOptional.get();
     }
 
 }

@@ -55,3 +55,10 @@ export function getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCo
     params: { hospitalCode, departmentCode, workDate }
   });
 }
+
+export function getScheduleById(id) {
+  return request({
+    url: `/api/hospital/schedule/id/${id}`,
+    method: "get"
+  });
+}
