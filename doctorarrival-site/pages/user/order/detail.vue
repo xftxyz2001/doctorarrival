@@ -31,47 +31,31 @@
 <style scoped>
 @import 'assets/css/hospital_personal.css';
 @import 'assets/css/hospital.css';
-@import 'assets/css/personal.css';
 
-.header-wrapper .title {
-  font-size: 16px;
-  margin-top: 0;
+.info-wrapper {
+  padding-left: 0;
+  padding-top: 0;
 }
 
 .content-wrapper {
-  margin-left: 0;
-}
-
-.patient-card .el-card__header .detail {
-  font-size: 14px;
-}
-
-.page-container .title {
-  letter-spacing: 1px;
-  font-weight: 700;
   color: #333;
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-.page-container .tips {
-  width: 100%;
-  padding-left: 0;
-}
-
-.page-container .form-wrapper {
-  padding-left: 92px;
-  width: 580px;
-}
-
-.form-normal {
-  height: 40px;
+  font-size: 14px;
+  padding-bottom: 0;
 }
 
 .bottom-wrapper {
   width: 100%;
-  padding: 0;
+}
+
+.button-wrapper {
+  margin: 0;
+}
+
+.el-form-item {
+  margin-bottom: 5px;
+}
+
+.bottom-wrapper .button-wrapper {
   margin-top: 0;
 }
 </style>

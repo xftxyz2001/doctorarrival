@@ -23,7 +23,7 @@
     <div class="page-container">
       <div class="personal-patient">
         <div class="header-wrapper">
-          <div class="title">添加就诊人</div>
+          <div class="title">{{ patientId ? '修改' : '添加' }}就诊人</div>
         </div>
 
         <div>
