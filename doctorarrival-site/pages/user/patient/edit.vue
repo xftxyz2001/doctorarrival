@@ -23,7 +23,7 @@
     <div class="page-container">
       <div class="personal-patient">
         <div class="header-wrapper">
-          <div class="title">{{ patientId ? '修改' : '添加' }}就诊人</div>
+          <div class="title">{{ patientId ? "修改" : "添加" }}就诊人</div>
         </div>
 
         <div>
@@ -37,7 +37,11 @@
                 <el-input v-model="formModel.name" placeholder="请输入真实姓名全称" class="input v-input" />
               </el-form-item>
               <el-form-item prop="certificatesType" label="证件类型：">
-                <el-select v-model="formModel.certificatesType" placeholder="请选择证件类型" class="v-select patient-select">
+                <el-select
+                  v-model="formModel.certificatesType"
+                  placeholder="请选择证件类型"
+                  class="v-select patient-select"
+                >
                   <el-option v-for="item in certificatesTypeList" :key="item.id" :label="item.value" :value="item.id">
                   </el-option>
                 </el-select>
@@ -118,7 +122,6 @@
               </el-form-item>
             </el-form>
           </div>
-
         </div>
 
         <div class="bottom-wrapper">
@@ -126,85 +129,83 @@
             <div class="v-button" @click="saveOrUpdate">{{ submitButtonText }}</div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from '@/api/dict'
-import { getPatientDetail, addPatient, updatePatient } from '@/api/user'
+import { getDictChildrenByDictCode } from "@/api/dict";
+import { getPatientDetail, addPatient, updatePatient } from "@/api/user";
 
-const route = useRoute()
-const patientId = route.query.id
-const router = useRouter()
+const route = useRoute();
+const patientId = route.query.id;
+const router = useRouter();
 
-const certificatesTypeList = ref([])
+const certificatesTypeList = ref([]);
 // 表单
 const formModel = ref({
-  name: '',
-  certificatesType: '',
-  certificatesNo: '',
-  gender: '',
-  birthday: '',
-  phone: '',
+  name: "",
+  certificatesType: "",
+  certificatesNo: "",
+  gender: "",
+  birthday: "",
+  phone: "",
 
-  marry: '', // 
-  insured: '',
-  cardNo: '',
-  contactsName: '',
-  contactsPhone: '',
-})
-const submitButtonText = ref('保存')
+  marry: "", //
+  insured: "",
+  cardNo: "",
+  contactsName: "",
+  contactsPhone: ""
+});
+const submitButtonText = ref("保存");
 
 // 初始化证件类型
 function initCertificatesTypeList() {
-  getDictChildrenByDictCode('CertificatesType').then(res => {
-    certificatesTypeList.value = res
+  getDictChildrenByDictCode("CertificatesType").then(res => {
+    certificatesTypeList.value = res;
     // 修正id
     certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000
-    })
-  })
+      item.id = item.id % 1000000;
+    });
+  });
 }
-initCertificatesTypeList()
+initCertificatesTypeList();
 
 function initPatient() {
   if (patientId) {
     getPatientDetail(patientId).then(res => {
-      formModel.value = res
-    })
+      formModel.value = res;
+    });
   }
 }
-initPatient()
+initPatient();
 
 function saveOrUpdate() {
   if (patientId) {
     updatePatient(formModel.value).then(() => {
       ElMessage({
-        type: 'success',
-        message: '更新成功',
-      })
-      router.push('/user/patient')
-    })
+        type: "success",
+        message: "更新成功"
+      });
+      router.push("/user/patient");
+    });
   } else {
     addPatient(formModel.value).then(() => {
       ElMessage({
-        type: 'success',
-        message: '添加成功',
-      })
-      router.push('/user/patient')
-    })
+        type: "success",
+        message: "添加成功"
+      });
+      router.push("/user/patient");
+    });
   }
 }
-
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
-@import 'assets/css/personal.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
+@import "assets/css/personal.css";
 
 .header-wrapper .title {
   font-size: 16px;

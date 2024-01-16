@@ -37,7 +37,7 @@
                   <span v-if="!editing.nickName">{{ userInfo.nickName }}</span>
                   <el-button class="ml20" @click="toggleEdit('nickName')" v-if="!editing.nickName">修改</el-button>
 
-                  <div v-if="editing.nickName" style="display: flex; align-items: center;">
+                  <div v-if="editing.nickName" style="display: flex; align-items: center">
                     <el-input v-if="editing.nickName" v-model="userInfo.nickName" />
                     <el-button class="ml20" @click="save('nickName')" v-if="editing.nickName">√</el-button>
                   </div>
@@ -46,7 +46,7 @@
                   <span v-if="!editing.phone">{{ userInfo.phone }}</span>
                   <el-button class="ml20" @click="toggleEdit('phone')" v-if="!editing.phone">修改</el-button>
 
-                  <div v-if="editing.phone" style="display: flex; align-items: center;">
+                  <div v-if="editing.phone" style="display: flex; align-items: center">
                     <el-input v-model="userInfo.phone" />
                     <el-button class="ml20" @click="getVerificationCode">{{ getVerificationCodeButtonText }}</el-button>
 
@@ -63,125 +63,124 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { sendVerificationCode } from '@/api/sms';
-import { getUserInfoDetail, updatePhone, updateNickname } from '@/api/user';
+import { sendVerificationCode } from "@/api/sms";
+import { getUserInfoDetail, updatePhone, updateNickname } from "@/api/user";
 
-const userInfo = ref({})
-const verificationCode = ref('')
+const userInfo = ref({});
+const verificationCode = ref("");
 
-const getVerificationCodeButtonText = ref('获取验证码')
-let clearSmsTime = null // 倒计时定时任务引用
+const getVerificationCodeButtonText = ref("获取验证码");
+let clearSmsTime = null; // 倒计时定时任务引用
 
 const editing = ref({
   nickName: false,
-  phone: false,
-})
+  phone: false
+});
 
 function initUserInfo() {
   getUserInfoDetail().then(res => {
-    userInfo.value = res
-  })
+    userInfo.value = res;
+  });
 }
-initUserInfo()
+initUserInfo();
 
 // 检查手机号合法性
 function checkPhone(phone) {
   if (!phone) {
     ElMessage({
-      message: '请输入手机号',
-      type: 'warning'
-    })
-    return false
+      message: "请输入手机号",
+      type: "warning"
+    });
+    return false;
   }
   if (!/^1[3-9]\d{9}$/.test(phone)) {
     ElMessage({
-      message: '手机号格式不正确',
-      type: 'warning'
-    })
-    return false
+      message: "手机号格式不正确",
+      type: "warning"
+    });
+    return false;
   }
-  return true
+  return true;
 }
 
 // 倒计时
 function countDown() {
   if (clearSmsTime) {
-    clearInterval(clearSmsTime)
+    clearInterval(clearSmsTime);
   }
-  getVerificationCodeButtonText.value = 60 // 下次发送倒计时
+  getVerificationCodeButtonText.value = 60; // 下次发送倒计时
   clearSmsTime = setInterval(() => {
-    getVerificationCodeButtonText.value--
+    getVerificationCodeButtonText.value--;
     if (getVerificationCodeButtonText.value <= 0) {
-      clearInterval(clearSmsTime)
-      getVerificationCodeButtonText.value = '获取验证码'
+      clearInterval(clearSmsTime);
+      getVerificationCodeButtonText.value = "获取验证码";
     }
-  }, 1000)
+  }, 1000);
 }
 
 // 发送验证码
 function getVerificationCode() {
-  const phoneNumber = userInfo.value.phone
-  checkPhone(phoneNumber)
+  const phoneNumber = userInfo.value.phone;
+  checkPhone(phoneNumber);
 
-  if (getVerificationCodeButtonText.value != '获取验证码') {
-    return
+  if (getVerificationCodeButtonText.value != "获取验证码") {
+    return;
   }
-  countDown() // 倒计时
+  countDown(); // 倒计时
 
-  sendVerificationCode(phoneNumber)
+  sendVerificationCode(phoneNumber);
   ElMessage({
-    type: 'success',
-    message: '验证码已发送至' + phoneNumber,
-  })
+    type: "success",
+    message: "验证码已发送至" + phoneNumber
+  });
 }
 
 function toggleEdit(key) {
-  editing.value[key] = !editing.value[key]
+  editing.value[key] = !editing.value[key];
 }
 
 function save(key) {
-  if (key === 'nickName') {
+  if (key === "nickName") {
     updateNickname(userInfo.value.nickName).then(res => {
       if (res) {
-        initUserInfo()
+        initUserInfo();
         // userInfo.value = res
         ElMessage({
-          type: 'success',
-          message: '修改成功',
-        })
+          type: "success",
+          message: "修改成功"
+        });
         // location.reload()
       }
-    })
-  } else if (key === 'phone') {
+    });
+  } else if (key === "phone") {
     const params = {
       phoneNumber: userInfo.value.phone,
-      verificationCode: verificationCode.value,
-    }
+      verificationCode: verificationCode.value
+    };
     updatePhone(params).then(res => {
       if (res) {
-        initUserInfo()
+        initUserInfo();
         // userInfo.value = res
         ElMessage({
-          type: 'success',
-          message: '修改成功',
-        })
+          type: "success",
+          message: "修改成功"
+        });
         // location.reload()
       }
-    })
+    });
   }
-  editing.value[key] = false
+  editing.value[key] = false;
 }
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
-@import 'assets/css/personal.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
+@import "assets/css/personal.css";
 
 .header-wrapper .title {
   font-size: 16px;

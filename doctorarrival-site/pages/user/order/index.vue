@@ -8,7 +8,7 @@
       <div class="nav-item">
         <span class="v-link clickable dark" @click="$router.push('/user/realname')">实名认证</span>
       </div>
-      <div class="nav-item ">
+      <div class="nav-item">
         <span class="v-link clickable dark" @click="$router.push('/user/patient')">就诊人管理</span>
       </div>
       <div class="nav-item selected">
@@ -20,15 +20,12 @@
     </div>
 
     <!-- 右侧 内容 -->
-
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
 </style>

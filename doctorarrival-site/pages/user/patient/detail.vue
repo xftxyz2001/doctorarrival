@@ -22,9 +22,7 @@
     <!-- 右侧 内容 -->
     <div class="page-container">
       <div class="personal-patient">
-        <div class="title" style="margin-top: 0px; font-size: 16px">
-          就诊人详情
-        </div>
+        <div class="title" style="margin-top: 0px; font-size: 16px">就诊人详情</div>
 
         <div>
           <div class="sub-title">
@@ -78,7 +76,6 @@
               </el-form-item>
             </el-form>
           </div>
-
         </div>
       </div>
     </div>
@@ -86,86 +83,88 @@
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from '@/api/dict'
-import { getPatientDetail, removePatient } from '@/api/user'
+import { getDictChildrenByDictCode } from "@/api/dict";
+import { getPatientDetail, removePatient } from "@/api/user";
 
-const route = useRoute()
-const router = useRouter()
-const patientId = route.query.id
+const route = useRoute();
+const router = useRouter();
+const patientId = route.query.id;
 
-const certificatesTypeList = ref([])
-const patient = ref({})
+const certificatesTypeList = ref([]);
+const patient = ref({});
 
 // 初始化证件类型
 function initCertificatesTypeList() {
-  getDictChildrenByDictCode('CertificatesType').then(res => {
-    certificatesTypeList.value = res
+  getDictChildrenByDictCode("CertificatesType").then(res => {
+    certificatesTypeList.value = res;
     // 修正id
     certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000
-    })
-  })
+      item.id = item.id % 1000000;
+    });
+  });
 }
-initCertificatesTypeList()
+initCertificatesTypeList();
 
 function initPatient() {
   getPatientDetail(patientId).then(res => {
-    patient.value = res
-  })
+    patient.value = res;
+  });
 }
-initPatient()
+initPatient();
 
 // 删除就诊人
 function remove() {
-  ElMessageBox.confirm('确定删除该就诊人吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(() => {
-    removePatient(patientId).then(() => {
-      ElMessage({
-        type: 'success',
-        message: '删除成功',
-      })
-      router.push('/user/patient')
-    })
-  }).catch(() => {
-    ElMessage({
-      type: 'info',
-      message: '已取消删除',
-    })
+  ElMessageBox.confirm("确定删除该就诊人吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
   })
+    .then(() => {
+      removePatient(patientId).then(() => {
+        ElMessage({
+          type: "success",
+          message: "删除成功"
+        });
+        router.push("/user/patient");
+      });
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "已取消删除"
+      });
+    });
 }
 
 // 修改就诊人
 function edit() {
   router.push({
-    path: '/user/patient/edit',
+    path: "/user/patient/edit",
     query: {
-      id: patientId,
-    },
-  })
+      id: patientId
+    }
+  });
 }
 
 // 计算属性
 const certificatesTypeString = computed(() => {
-  const certificatesType = certificatesTypeList.value.find(item => item.id === patient.value.certificatesType)
-  return certificatesType ? certificatesType.value : '未知'
-})
+  const certificatesType = certificatesTypeList.value.find(item => item.id === patient.value.certificatesType);
+  return certificatesType ? certificatesType.value : "未知";
+});
 
 const genderString = computed(() => {
-  return patient.value.gender = patient.value.gender == 1 ? '男' : patient.value.gender == 0 ? '女' : '保密'
-})
+  return (patient.value.gender = patient.value.gender == 1 ? "男" : patient.value.gender == 0 ? "女" : "保密");
+});
 
 const marryString = computed(() => {
-  return patient.value.marry = patient.value.marry == 1 ? '已婚' : patient.value.marry == 0 ? '未婚' : '保密'
-})
+  return (patient.value.marry = patient.value.marry == 1 ? "已婚" : patient.value.marry == 0 ? "未婚" : "保密");
+});
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
-@import 'assets/css/personal.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
+@import "assets/css/personal.css";
 
 .info-wrapper {
   padding-left: 0;

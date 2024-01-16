@@ -30,9 +30,15 @@
             <div class="filter-wrapper">
               <span class="label">等级：</span>
               <div class="condition-wrapper">
-                <span class="item v-link clickable" v-for="item in hospitalTypeList" :key="item.id"
-                  @click="hospitalTypeSelect(item)" :class="hospitalQueryObj.hospitalType === item.id ? 'selected' : ''">
-                  {{ item.value }}</span>
+                <span
+                  class="item v-link clickable"
+                  v-for="item in hospitalTypeList"
+                  :key="item.id"
+                  @click="hospitalTypeSelect(item)"
+                  :class="hospitalQueryObj.hospitalType === item.id ? 'selected' : ''"
+                >
+                  {{ item.value }}</span
+                >
               </div>
             </div>
 
@@ -40,25 +46,43 @@
             <div class="filter-wrapper">
               <span class="label">省份：</span>
               <div class="condition-wrapper">
-                <span class="item v-link clickable" v-for="item in provinceList" :key="item.id"
-                  @click="provinceSelect(item)" :class="hospitalQueryObj.provinceCode === item.id ? 'selected' : ''">
-                  {{ item.value }}</span>
+                <span
+                  class="item v-link clickable"
+                  v-for="item in provinceList"
+                  :key="item.id"
+                  @click="provinceSelect(item)"
+                  :class="hospitalQueryObj.provinceCode === item.id ? 'selected' : ''"
+                >
+                  {{ item.value }}</span
+                >
               </div>
             </div>
             <div class="filter-wrapper">
               <span class="label">城市：</span>
               <div class="condition-wrapper">
-                <span class="item v-link clickable" v-for="item in cityList" :key="item.id" @click="citySelect(item)"
-                  :class="hospitalQueryObj.cityCode === item.id ? 'selected' : ''">
-                  {{ item.value }}</span>
+                <span
+                  class="item v-link clickable"
+                  v-for="item in cityList"
+                  :key="item.id"
+                  @click="citySelect(item)"
+                  :class="hospitalQueryObj.cityCode === item.id ? 'selected' : ''"
+                >
+                  {{ item.value }}</span
+                >
               </div>
             </div>
             <div class="filter-wrapper">
               <span class="label">地区：</span>
               <div class="condition-wrapper">
-                <span class="item v-link clickable" v-for="item in districtList" :key="item.id"
-                  @click="districtSelect(item)" :class="hospitalQueryObj.districtCode === item.id ? 'selected' : ''">
-                  {{ item.value }}</span>
+                <span
+                  class="item v-link clickable"
+                  v-for="item in districtList"
+                  :key="item.id"
+                  @click="districtSelect(item)"
+                  :class="hospitalQueryObj.districtCode === item.id ? 'selected' : ''"
+                >
+                  {{ item.value }}</span
+                >
               </div>
             </div>
           </div>
@@ -72,9 +96,7 @@
                 <div class="wrapper">
                   <div class="hospital-title">{{ item.hospitalName }}</div>
                   <div class="bottom-container">
-                    <div class="icon-wrapper">
-                      <span class="iconfont"></span>{{ item.hospitalType }}
-                    </div>
+                    <div class="icon-wrapper"><span class="iconfont"></span>{{ item.hospitalType }}</div>
                     <div class="icon-wrapper">
                       <span class="iconfont"></span>每天{{ item.bookingRule?.releaseTime }}放号
                     </div>
@@ -127,19 +149,15 @@
           <div class="content-wrapper">
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">关于延长北京大学国际医院放假的通知
-              </span>
+              <span class="notice v-link clickable dark">关于延长北京大学国际医院放假的通知 </span>
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">北京中医药大学东方医院部分科室医生门诊医
-              </span>
+              <span class="notice v-link clickable dark">北京中医药大学东方医院部分科室医生门诊医 </span>
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">
-                武警总医院号源暂停更新通知
-              </span>
+              <span class="notice v-link clickable dark"> 武警总医院号源暂停更新通知 </span>
             </div>
           </div>
         </div>
@@ -167,14 +185,11 @@
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">
-                首都医科大学附属北京潞河医院老年医学科门诊停诊公告
-              </span>
+              <span class="notice v-link clickable dark"> 首都医科大学附属北京潞河医院老年医学科门诊停诊公告 </span>
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">中日友好医院中西医结合心内科门诊停诊公告
-              </span>
+              <span class="notice v-link clickable dark">中日友好医院中西医结合心内科门诊停诊公告 </span>
             </div>
           </div>
         </div>
@@ -184,95 +199,95 @@
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode, getDictChildrenByParentId } from '@/api/dict';
-import { findHospitalPage } from '@/api/hospital';
+import { getDictChildrenByDictCode, getDictChildrenByParentId } from "@/api/dict";
+import { findHospitalPage } from "@/api/hospital";
 
-const hospitalQueryObj = ref({}) // 医院查询对象
+const hospitalQueryObj = ref({}); // 医院查询对象
 
-const hospitalTypeList = ref([]) // 医院类型列表
-const provinceList = ref([]) // 省份列表
-const cityList = ref([]) // 城市列表
-const districtList = ref([]) // 地区列表
+const hospitalTypeList = ref([]); // 医院类型列表
+const provinceList = ref([]); // 省份列表
+const cityList = ref([]); // 城市列表
+const districtList = ref([]); // 地区列表
 
-const hospitalList = ref([]) // 医院列表
+const hospitalList = ref([]); // 医院列表
 
 // 获取医院类型列表
 function getHospitalTypeList() {
-  getDictChildrenByDictCode('hospitalType').then(res => {
-    hospitalTypeList.value = res
-  })
+  getDictChildrenByDictCode("hospitalType").then(res => {
+    hospitalTypeList.value = res;
+  });
 }
-getHospitalTypeList()
+getHospitalTypeList();
 
 // 医院类型选择
 function hospitalTypeSelect(item) {
-  hospitalQueryObj.value.hospitalType = item.id
-  getHospitalList()
+  hospitalQueryObj.value.hospitalType = item.id;
+  getHospitalList();
 }
 
 // 获取省份列表
 function getProvinceList() {
-  getDictChildrenByDictCode('AdministrativeDivisions').then(res => {
-    provinceList.value = res
-  })
+  getDictChildrenByDictCode("AdministrativeDivisions").then(res => {
+    provinceList.value = res;
+  });
 }
-getProvinceList()
+getProvinceList();
 
 // 省份选择
 function provinceSelect(item) {
   // 省
-  hospitalQueryObj.value.provinceCode = item.id
+  hospitalQueryObj.value.provinceCode = item.id;
   // 市
-  hospitalQueryObj.value.cityCode = undefined
-  getCityList(item.id)
+  hospitalQueryObj.value.cityCode = undefined;
+  getCityList(item.id);
   // 区
-  hospitalQueryObj.value.districtCode = undefined
-  districtList.value = []
-  getHospitalList()
+  hospitalQueryObj.value.districtCode = undefined;
+  districtList.value = [];
+  getHospitalList();
 }
 
 // 获取城市列表
 function getCityList(provinceCode) {
   getDictChildrenByParentId(provinceCode).then(res => {
-    cityList.value = res
-  })
+    cityList.value = res;
+  });
 }
 
 // 城市选择
 function citySelect(item) {
   // 市
-  hospitalQueryObj.value.cityCode = item.id
+  hospitalQueryObj.value.cityCode = item.id;
   // 区
-  hospitalQueryObj.value.districtCode = undefined
-  getDistrictList(item.id)
-  getHospitalList()
+  hospitalQueryObj.value.districtCode = undefined;
+  getDistrictList(item.id);
+  getHospitalList();
 }
 
 // 获取地区列表
 function getDistrictList(cityCode) {
   getDictChildrenByParentId(cityCode).then(res => {
-    districtList.value = res
-  })
+    districtList.value = res;
+  });
 }
 
 // 地区选择
 function districtSelect(item) {
   // 区
-  hospitalQueryObj.value.districtCode = item.id
-  getHospitalList()
+  hospitalQueryObj.value.districtCode = item.id;
+  getHospitalList();
 }
 
 // 获取医院列表
 function getHospitalList() {
   findHospitalPage(hospitalQueryObj.value, 1, 10).then(res => {
-    hospitalList.value = res.records
-  })
+    hospitalList.value = res.records;
+  });
 }
-getHospitalList()
+getHospitalList();
 
 // 跳转到医院页面
-const router = useRouter()
+const router = useRouter();
 function gotoHospital(hospitalCode) {
-  router.push(`/hospital/${hospitalCode}`)
+  router.push(`/hospital/${hospitalCode}`);
 }
 </script>

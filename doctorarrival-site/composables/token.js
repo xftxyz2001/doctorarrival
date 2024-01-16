@@ -1,8 +1,8 @@
-let cookieToken = null
+let cookieToken = null;
 
 export const useToken = () => {
   if (cookieToken === null) {
-    cookieToken = useCookie('token')
+    cookieToken = useCookie("token");
   }
-  return cookieToken
-}
+  return cookieToken;
+};

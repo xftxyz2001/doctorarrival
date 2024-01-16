@@ -49,7 +49,11 @@
               </el-form-item>
 
               <el-form-item prop="certificatesType" label="证件类型：">
-                <el-select v-model="formModel.certificatesType" placeholder="请选择证件类型" class="v-select patient-select">
+                <el-select
+                  v-model="formModel.certificatesType"
+                  placeholder="请选择证件类型"
+                  class="v-select patient-select"
+                >
                   <el-option v-for="item in certificatesTypeList" :key="item.id" :label="item.value" :value="item.id">
                   </el-option>
                 </el-select>
@@ -67,9 +71,7 @@
                       <div class="upload-inner-wrapper">
                         <img v-if="formModel.certificatesUrl" :src="certificatesFilePreview" class="avatar" />
                         <el-icon class="avatar-uploader-icon"><el-icon-plus /></el-icon>
-                        <div v-if="!formModel.certificatesUrl" class="text">
-                          上传证件合照
-                        </div>
+                        <div v-if="!formModel.certificatesUrl" class="text">上传证件合照</div>
                       </div>
                     </el-upload>
                   </div>
@@ -108,162 +110,160 @@
             </el-form>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from '@/api/dict';
-import { uploadCertificates } from '@/api/oss';
-import { getUserInfoDetail, saveRealName } from '@/api/user';
+import { getDictChildrenByDictCode } from "@/api/dict";
+import { uploadCertificates } from "@/api/oss";
+import { getUserInfoDetail, saveRealName } from "@/api/user";
 
-const componentKey = ref(0)
+const componentKey = ref(0);
 
-const userInfo = ref({})
+const userInfo = ref({});
 
-const certificatesTypeList = ref([])
+const certificatesTypeList = ref([]);
 
 // 证件照片预览
-const certificatesFilePreview = ref('')
+const certificatesFilePreview = ref("");
 
 // 表单
 const formModel = ref({
   name: null, // 姓名
   certificatesType: null, // 证件类型
   certificatesNo: null, // 证件号码
-  certificatesUrl: null, // 证件照片
-})
+  certificatesUrl: null // 证件照片
+});
 
 // 提交按钮
-const submitButtonText = ref('提交')
+const submitButtonText = ref("提交");
 
 function initUserInfo() {
   getUserInfoDetail().then(res => {
-    userInfo.value = res
+    userInfo.value = res;
 
     // 如果是认证失败
     if (userInfo.value.authStatus === -1) {
       // 回填表单
-      formModel.value.name = userInfo.value.name
-      formModel.value.certificatesType = userInfo.value.certificatesType
-      formModel.value.certificatesNo = userInfo.value.certificatesNo
+      formModel.value.name = userInfo.value.name;
+      formModel.value.certificatesType = userInfo.value.certificatesType;
+      formModel.value.certificatesNo = userInfo.value.certificatesNo;
       // formModel.value.certificatesUrl = userInfo.value.certificatesUrl
       // 按钮
-      submitButtonText.value = '更新'
+      submitButtonText.value = "更新";
     }
     // 重新渲染
-    componentKey.value++
-  })
+    componentKey.value++;
+  });
 }
-initUserInfo()
+initUserInfo();
 
 // 初始化证件类型
 function initCertificatesTypeList() {
-  getDictChildrenByDictCode('CertificatesType').then(res => {
-    certificatesTypeList.value = res
+  getDictChildrenByDictCode("CertificatesType").then(res => {
+    certificatesTypeList.value = res;
     // 修正id
     certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000
-    })
-  })
+      item.id = item.id % 1000000;
+    });
+  });
 }
-initCertificatesTypeList()
+initCertificatesTypeList();
 
 // 上传证件照片
 function handleCacheHeadersUpload(file) {
-  const realFile = file.file
+  const realFile = file.file;
 
   // 上传
-  const formData = new FormData()
-  formData.append('file', file.file)
+  const formData = new FormData();
+  formData.append("file", file.file);
   uploadCertificates(formData).then(res => {
-    formModel.value.certificatesUrl = res
-  })
+    formModel.value.certificatesUrl = res;
+  });
 
   // 预览
-  const reader = new FileReader()
+  const reader = new FileReader();
   reader.onload = e => {
-    certificatesFilePreview.value = e.target.result
-  }
-  reader.readAsDataURL(realFile)
+    certificatesFilePreview.value = e.target.result;
+  };
+  reader.readAsDataURL(realFile);
 }
 
 // 保存认证信息
 function saveUserAuth() {
   // 校验
-  const { name, certificatesType, certificatesNo, certificatesUrl } = formModel.value
+  const { name, certificatesType, certificatesNo, certificatesUrl } = formModel.value;
   if (!name) {
     ElMessage({
-      message: '请输入联系人姓名全称',
-      type: 'warning',
-    })
-    return
+      message: "请输入联系人姓名全称",
+      type: "warning"
+    });
+    return;
   }
   if (!certificatesType) {
     ElMessage({
-      message: '请选择证件类型',
-      type: 'warning',
-    })
-    return
+      message: "请选择证件类型",
+      type: "warning"
+    });
+    return;
   }
   if (!certificatesNo) {
     ElMessage({
-      message: '请输入联系人证件号码',
-      type: 'warning',
-    })
-    return
+      message: "请输入联系人证件号码",
+      type: "warning"
+    });
+    return;
   }
   if (!certificatesUrl) {
     ElMessage({
-      message: '请上传证件合照',
-      type: 'warning',
-    })
-    return
+      message: "请上传证件合照",
+      type: "warning"
+    });
+    return;
   }
 
   // 提交
-  submitButtonText.value = '正在提交...'
+  submitButtonText.value = "正在提交...";
   const params = {
     name,
     certificatesType,
     certificatesNo,
-    certificatesUrl,
-  }
+    certificatesUrl
+  };
   saveRealName(params).then(res => {
     // submitButtonText.value = '提交'
-    initUserInfo()
-  })
+    initUserInfo();
+  });
 }
 
 // 计算属性
 const authStatusString = computed(() => {
   switch (userInfo.value.authStatus) {
     case 0:
-      return '未认证'
+      return "未认证";
     case 1:
-      return '认证中'
+      return "认证中";
     case 2:
-      return '认证成功'
+      return "认证成功";
     case -1:
-      return '认证失败'
+      return "认证失败";
     default:
-      return '未认证'
+      return "未认证";
   }
-})
+});
 
 const certificatesTypeString = computed(() => {
-  const certificatesType = certificatesTypeList.value.find(item => item.id === userInfo.value.certificatesType)
-  return certificatesType ? certificatesType.value : '未知'
-})
+  const certificatesType = certificatesTypeList.value.find(item => item.id === userInfo.value.certificatesType);
+  return certificatesType ? certificatesType.value : "未知";
+});
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
-@import 'assets/css/personal.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
+@import "assets/css/personal.css";
 
 .header-wrapper .title {
   font-size: 16px;

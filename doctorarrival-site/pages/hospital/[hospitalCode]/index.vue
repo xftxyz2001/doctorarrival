@@ -26,9 +26,7 @@
         <div class="common-header">
           <div class="title-wrapper">
             <span class="hospital-title">{{ hospital.hospitalName }}</span>
-            <div class="icon-wrapper">
-              <span class="iconfont"></span>{{ hospital.hospitalType }}
-            </div>
+            <div class="icon-wrapper"><span class="iconfont"></span>{{ hospital.hospitalType }}</div>
           </div>
         </div>
 
@@ -50,7 +48,9 @@
             </div>
             <div class="line">
               <span class="label">退号时间：</span>
-              <span v-if="hospitalBookingRule.quitDay == -1">就诊前一工作日{{ hospitalBookingRule.quitTime }}前取消</span>
+              <span v-if="hospitalBookingRule.quitDay == -1"
+                >就诊前一工作日{{ hospitalBookingRule.quitTime }}前取消</span
+              >
               <span v-if="hospitalBookingRule.quitDay == 0">就诊前当天{{ hospitalBookingRule.quitTime }}前取消</span>
             </div>
             <div style="margin-top: 20px">医院预约规则</div>
@@ -72,10 +72,15 @@
                 <div class="dept-list el-scrollbar__wrap" style="margin-bottom: -17px; margin-right: -17px">
                   <div class="el-scrollbar__view">
                     <!-- 展示区 -->
-                    <div class="sub-item" v-for="primaryDepartment in departmentList"
+                    <div
+                      class="sub-item"
+                      v-for="primaryDepartment in departmentList"
                       :key="primaryDepartment.departmentCode"
-                      :class="primaryDepartment.departmentCode === activePrimaryDepartment.departmentCode ? 'selected' : ''"
-                      @click="scrollto(primaryDepartment)">
+                      :class="
+                        primaryDepartment.departmentCode === activePrimaryDepartment.departmentCode ? 'selected' : ''
+                      "
+                      @click="scrollto(primaryDepartment)"
+                    >
                       {{ primaryDepartment.departmentName }}
                     </div>
                   </div>
@@ -93,16 +98,24 @@
           <!-- 科室展示 -->
           <div class="sub-dept-container">
             <!-- 展示区 -->
-            <div v-for="primaryDepartment in departmentList" :key="primaryDepartment.departmentCode"
-              class="sub-dept-wrapper" :id="primaryDepartment.departmentCode"
-              :class="primaryDepartment.departmentCode === activePrimaryDepartment.departmentCode ? 'selected' : ''">
+            <div
+              v-for="primaryDepartment in departmentList"
+              :key="primaryDepartment.departmentCode"
+              class="sub-dept-wrapper"
+              :id="primaryDepartment.departmentCode"
+              :class="primaryDepartment.departmentCode === activePrimaryDepartment.departmentCode ? 'selected' : ''"
+            >
               <div class="sub-title">
                 <div class="block selected"></div>
                 {{ primaryDepartment.departmentName }}
               </div>
               <div class="sub-item-wrapper">
-                <div v-for="childrenDepartment in primaryDepartment.children" :key="childrenDepartment.departmentCode"
-                  class="sub-item" @click="gotoSchedule(childrenDepartment)">
+                <div
+                  v-for="childrenDepartment in primaryDepartment.children"
+                  :key="childrenDepartment.departmentCode"
+                  class="sub-item"
+                  @click="gotoSchedule(childrenDepartment)"
+                >
                   <span class="v-link clickable">{{ childrenDepartment.departmentName }} </span>
                 </div>
               </div>
@@ -111,51 +124,50 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { findHospitalByHospitalCode, getDepartmentByHospitalCode } from '@/api/hospital'
+import { findHospitalByHospitalCode, getDepartmentByHospitalCode } from "@/api/hospital";
 
-const componentKey = ref(0)
+const componentKey = ref(0);
 
-const route = useRoute()
-const router = useRouter()
-const hospitalCode = route.params.hospitalCode
+const route = useRoute();
+const router = useRouter();
+const hospitalCode = route.params.hospitalCode;
 
-const hospital = ref({})
-const hospitalBookingRule = ref({})
+const hospital = ref({});
+const hospitalBookingRule = ref({});
 
-const departmentList = ref([])
-const activePrimaryDepartment = ref({})
+const departmentList = ref([]);
+const activePrimaryDepartment = ref({});
 
 // 获取医院信息
 function initHospital() {
   findHospitalByHospitalCode(hospitalCode).then(res => {
-    hospital.value = res
-    hospitalBookingRule.value = res.bookingRule
-    componentKey.value++ // 重新渲染页面
-  })
+    hospital.value = res;
+    hospitalBookingRule.value = res.bookingRule;
+    componentKey.value++; // 重新渲染页面
+  });
 }
-initHospital()
+initHospital();
 
 // 获取科室信息
 function initDepartment() {
   getDepartmentByHospitalCode(hospitalCode).then(res => {
-    departmentList.value = res
-    activePrimaryDepartment.value = res[0]
-  })
+    departmentList.value = res;
+    activePrimaryDepartment.value = res[0];
+  });
 }
-initDepartment()
+initDepartment();
 
 // 滚动到指定位置
 function scrollto(primaryDepartment) {
-  const el = document.getElementById(primaryDepartment.departmentCode)
+  const el = document.getElementById(primaryDepartment.departmentCode);
   el.scrollIntoView({
-    behavior: 'smooth'
-  })
-  activePrimaryDepartment.value = primaryDepartment
+    behavior: "smooth"
+  });
+  activePrimaryDepartment.value = primaryDepartment;
 }
 
 // 前往排班页面
@@ -164,36 +176,35 @@ function gotoSchedule(department) {
     path: `/hospital/schedule`,
     query: {
       hospitalCode: hospitalCode,
-      departmentCode: department.departmentCode,
+      departmentCode: department.departmentCode
     }
-  })
+  });
 }
 
 // 路由
 function gotoHospital() {
   ElMessage({
-    message: '预约挂号页面',
-    type: 'warning'
-  })
+    message: "预约挂号页面",
+    type: "warning"
+  });
 }
 
 function gotoHospitalDetail() {
   ElMessage({
-    message: '医院详情页面',
-    type: 'warning'
-  })
+    message: "医院详情页面",
+    type: "warning"
+  });
 }
 
 function gotoHospitalNotice() {
   ElMessage({
-    message: '预约须知页面',
-    type: 'warning'
-  })
+    message: "预约须知页面",
+    type: "warning"
+  });
 }
-
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
 </style>

@@ -35,26 +35,36 @@
           <div class="title-wrapper">{{ workDateTips }}</div>
           <!-- 日期 号源 -->
           <div class="calendar-list-wrapper">
-            <div class="calendar-item space" style="width: 124px" v-for="schedule in scheduleList.records"
+            <div
+              class="calendar-item space"
+              style="width: 124px"
+              v-for="schedule in scheduleList.records"
               :key="schedule.workDate"
-              :class="{ 'gray': schedule.status < 1, 'selected': schedule.workDate == activeSchedule.workDate }"
-              @click="selectDate(schedule)">
+              :class="{ gray: schedule.status < 1, selected: schedule.workDate == activeSchedule.workDate }"
+              @click="selectDate(schedule)"
+            >
               <div class="date-wrapper">
-                <span>{{ schedule.workDate }}</span><span class="week">{{ schedule.dayOfWeek }}</span>
+                <span>{{ schedule.workDate }}</span
+                ><span class="week">{{ schedule.dayOfWeek }}</span>
               </div>
               <div class="status-wrapper" v-if="schedule.status === 1">
                 {{ schedule.availableNumber }} / {{ schedule.reservedNumber }}
               </div>
               <div class="status-wrapper" v-if="schedule.status === 0">停约</div>
               <div class="status-wrapper" v-if="schedule.status === -1">停诊</div>
-
             </div>
           </div>
 
           <!-- 分页 -->
-          <el-pagination class="pagination" style="justify-content: center;" layout="prev, pager, next"
-            :current-page="scheduleList.current" :total="scheduleList.total" :page-size="scheduleList.size"
-            @current-change="getSchedulePageList">
+          <el-pagination
+            class="pagination"
+            style="justify-content: center"
+            layout="prev, pager, next"
+            :current-page="scheduleList.current"
+            :total="scheduleList.total"
+            :page-size="scheduleList.size"
+            @current-change="getSchedulePageList"
+          >
           </el-pagination>
         </div>
 
@@ -81,9 +91,14 @@
                   <div class="right-wrapper">
                     <div class="fee">￥{{ item.amount }}</div>
                     <div class="button-wrapper">
-                      <div class="v-button" @click="booking(item)"
-                        :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''">
-                        <span>剩余<span class="number">{{ item.availableNumber }}</span></span>
+                      <div
+                        class="v-button"
+                        @click="booking(item)"
+                        :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''"
+                      >
+                        <span
+                          >剩余<span class="number">{{ item.availableNumber }}</span></span
+                        >
                       </div>
                     </div>
                   </div>
@@ -114,9 +129,14 @@
                   <div class="right-wrapper">
                     <div class="fee">￥{{ item.amount }}</div>
                     <div class="button-wrapper">
-                      <div class="v-button" @click="booking(item)"
-                        :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''">
-                        <span>剩余<span class="number">{{ item.availableNumber }}</span></span>
+                      <div
+                        class="v-button"
+                        @click="booking(item)"
+                        :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''"
+                      >
+                        <span
+                          >剩余<span class="number">{{ item.availableNumber }}</span></span
+                        >
                       </div>
                     </div>
                   </div>
@@ -127,7 +147,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -137,82 +156,82 @@ import {
   getDepartmentByHospitalCodeAndDepartmentCode,
   getSchedulePage,
   getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate
-} from '@/api/hospital'
+} from "@/api/hospital";
 
-const route = useRoute()
-const router = useRouter()
-const { hospitalCode, departmentCode } = route.query
+const route = useRoute();
+const router = useRouter();
+const { hospitalCode, departmentCode } = route.query;
 
-const hospital = ref({})
-const department = ref({})
+const hospital = ref({});
+const department = ref({});
 
-const scheduleList = ref([])
-const activeSchedule = ref({})
+const scheduleList = ref([]);
+const activeSchedule = ref({});
 
-const activeScheduleDetail = ref({})
+const activeScheduleDetail = ref({});
 
 // 获取医院信息
 function initHospital() {
   findHospitalByHospitalCode(hospitalCode).then(res => {
-    hospital.value = res
-  })
+    hospital.value = res;
+  });
 }
-initHospital()
+initHospital();
 
 // 回到医院页面
 function gotoHospital() {
-  router.push(`/hospital/${hospitalCode}`)
+  router.push(`/hospital/${hospitalCode}`);
 }
 
 // 获取科室信息
 function initDepartment() {
   getDepartmentByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode).then(res => {
-    department.value = res
-  })
+    department.value = res;
+  });
 }
-initDepartment()
+initDepartment();
 
 // 获取号源信息
 function getSchedulePageList(page = 1) {
   getSchedulePage(hospitalCode, departmentCode, page).then(res => {
-    scheduleList.value = res
-    selectDate(res.records[0])
-  })
+    scheduleList.value = res;
+    selectDate(res.records[0]);
+  });
 }
-getSchedulePageList()
+getSchedulePageList();
 
 // 计算属性 {{ scheduleList.records[0].workDate }} —— {{ scheduleList.records[scheduleList.records.length - 1].workDate }}
 const workDateTips = computed(() => {
   if (scheduleList.value.records) {
-    return `${scheduleList.value.records[0].workDate} —— ${scheduleList.value.records[scheduleList.value.records.length - 1].workDate}`
+    return `${scheduleList.value.records[0].workDate} —— ${scheduleList.value.records[scheduleList.value.records.length - 1].workDate}`;
   }
-})
+});
 
 // 选择日期
 function selectDate(schedule) {
-  activeSchedule.value = schedule
-  const { hospitalCode, departmentCode, workDate } = schedule
+  activeSchedule.value = schedule;
+  const { hospitalCode, departmentCode, workDate } = schedule;
   getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCode, departmentCode, workDate).then(res => {
-    activeScheduleDetail.value = res
-  })
+    activeScheduleDetail.value = res;
+  });
 }
 
 // 预约挂号
 function booking(schedule) {
   ElMessage({
     message: `正在预约 ${schedule.doctorName}...`,
-    type: 'success'
-  })
+    type: "success"
+  });
   router.push({
     path: `/hospital/booking`,
     query: {
-      scheduleId: schedule.id,
+      scheduleId: schedule.id
     }
-  })
+  });
 }
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
 </style>

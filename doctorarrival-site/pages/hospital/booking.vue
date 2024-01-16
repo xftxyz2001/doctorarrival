@@ -37,12 +37,11 @@
 </template>
 
 <script setup>
-const route = useRoute()
-const { scheduleId } = route.query
-
+const route = useRoute();
+const { scheduleId } = route.query;
 </script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
 </style>

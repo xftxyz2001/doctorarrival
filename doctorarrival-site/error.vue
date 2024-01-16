@@ -9,10 +9,10 @@
 <script setup>
 const props = defineProps({
   error: Object
-})
+});
 
 // for debug
-console.error(props.error)
+console.error(props.error);
 
-const handleError = () => clearError({ redirect: '/' })
+const handleError = () => clearError({ redirect: "/" });
 </script>

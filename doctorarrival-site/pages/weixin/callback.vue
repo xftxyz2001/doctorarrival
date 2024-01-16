@@ -1,8 +1,8 @@
 <script setup>
-const route = useRoute()
-const { token } = route.query
+const route = useRoute();
+const { token } = route.query;
 if (window) {
-  postMessage({ token }, location.origin)
+  postMessage({ token }, location.origin);
 }
-useRouter().push('/')
+useRouter().push("/");
 </script>

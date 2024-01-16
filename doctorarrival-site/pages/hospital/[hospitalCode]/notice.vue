@@ -20,18 +20,15 @@
     </div>
 
     <!-- 右侧 内容 -->
-    <div class="page-container">
-    </div>
+    <div class="page-container"></div>
   </div>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped>
-@import 'assets/css/hospital_personal.css';
-@import 'assets/css/hospital.css';
+@import "assets/css/hospital_personal.css";
+@import "assets/css/hospital.css";
 
 .hospital-detail .info-wrapper {
   width: 100%;

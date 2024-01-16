@@ -1,57 +1,57 @@
 // 医院
 export function findHospitalByHospitalName(hospitalName) {
   return request({
-    url: '/api/hospital/find/name',
-    method: 'get',
+    url: "/api/hospital/find/name",
+    method: "get",
     params: { hospitalName }
-  })
+  });
 }
 
 export function findHospitalByHospitalCode(hospitalCode) {
   return request({
     url: `/api/hospital/find/code/${hospitalCode}`,
-    method: 'get'
-  })
+    method: "get"
+  });
 }
 
 export function findHospitalPage(searchObj, current, size) {
   return request({
-    url: '/api/hospital/find/page',
-    method: 'post',
+    url: "/api/hospital/find/page",
+    method: "post",
     prams: { current, size },
     data: searchObj
-  })
+  });
 }
 
 // 科室
 export function getDepartmentByHospitalCode(hospitalCode) {
   return request({
     url: `/api/hospital/department/hospital/code/${hospitalCode}`,
-    method: 'get'
-  })
+    method: "get"
+  });
 }
 
 export function getDepartmentByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode) {
   return request({
     url: `/api/hospital/department/hospital/department/code`,
-    method: 'get',
+    method: "get",
     params: { hospitalCode, departmentCode }
-  })
+  });
 }
 
 // 排班
 export function getSchedulePage(hospitalCode, departmentCode, current = 1, size = 7) {
   return request({
     url: `/api/hospital/schedule/page`,
-    method: 'get',
+    method: "get",
     params: { hospitalCode, departmentCode, current, size }
-  })
+  });
 }
 
 export function getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCode, departmentCode, workDate) {
   return request({
     url: `/api/hospital/schedule/hospital/department/date`,
-    method: 'get',
+    method: "get",
     params: { hospitalCode, departmentCode, workDate }
-  })
+  });
 }

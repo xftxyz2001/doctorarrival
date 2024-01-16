@@ -3,14 +3,14 @@
     <div class="wrapper">
       <!-- logo -->
       <div class="left-wrapper v-link selected" @click="$router.push('/')">
-        <img style="width: 50px; height: 50px;" src="assets/images/logo.png" />
+        <img style="width: 50px; height: 50px" src="assets/images/logo.png" />
         <span class="text">“医来” 预约挂号统一平台</span>
       </div>
 
       <!-- 搜索框 -->
       <div class="search-wrapper" v-show="$route.path !== '/'">
         <div class="hospital-search animation-show">
-          <div id="search" style="display: block;width: 100%;">
+          <div id="search" style="display: block; width: 100%">
             <hospitalsearcher />
           </div>
         </div>
@@ -41,10 +41,15 @@
     </div>
 
     <!-- 登录弹出层 -->
-    <el-dialog v-model="dialogUserFormVisible" style="text-align: left" top="50px" :append-to-body="true" width="960px"
-      @close="closeLoginDialog">
+    <el-dialog
+      v-model="dialogUserFormVisible"
+      style="text-align: left"
+      top="50px"
+      :append-to-body="true"
+      width="960px"
+      @close="closeLoginDialog"
+    >
       <div class="container">
-
         <!-- 手机登录 -->
         <div class="operate-view" v-show="dialogAtrr.showLoginType === 'phone'">
           <div class="wrapper" style="width: 100%">
@@ -52,15 +57,21 @@
               <span class="title">{{ dialogAtrr.labelTips }}</span>
               <el-form>
                 <el-form-item>
-                  <el-input v-model="dialogAtrr.inputValue" :placeholder="dialogAtrr.placeholder"
-                    :maxlength="dialogAtrr.maxlength" class="input v-input">
+                  <el-input
+                    v-model="dialogAtrr.inputValue"
+                    :placeholder="dialogAtrr.placeholder"
+                    :maxlength="dialogAtrr.maxlength"
+                    class="input v-input"
+                  >
                     <template v-slot:suffix>
-                      <span class="sendText v-link" v-if="dialogAtrr.second > 0">{{ dialogAtrr.second }}s
-                      </span>
+                      <span class="sendText v-link" v-if="dialogAtrr.second > 0">{{ dialogAtrr.second }}s </span>
                       <!-- </template>
                     <template v-slot:suffix> -->
-                      <span class="sendText v-link highlight clickable selected" v-if="dialogAtrr.second == 0"
-                        @click="getVerificationCode">重新发送
+                      <span
+                        class="sendText v-link highlight clickable selected"
+                        v-if="dialogAtrr.second == 0"
+                        @click="getVerificationCode"
+                        >重新发送
                       </span>
                     </template>
                   </el-input>
@@ -101,9 +112,7 @@
           <div class="code-wrapper">
             <div>
               <img src="assets/images/code_wechat.png" class="code-img" />
-              <div class="code-text">
-                <span class="iconfont icon"></span>微信扫一扫关注
-              </div>
+              <div class="code-text"><span class="iconfont icon"></span>微信扫一扫关注</div>
               <div class="code-text">“快速预约挂号”</div>
             </div>
             <div class="wechat-code-wrapper">
@@ -123,66 +132,65 @@
 </template>
 
 <script setup>
-import { sendVerificationCode } from '@/api/sms'
-import { login, getUserInfoBasic, getWxLoginQrCodeParam } from '@/api/user'
+import { sendVerificationCode } from "@/api/sms";
+import { login, getUserInfoBasic, getWxLoginQrCodeParam } from "@/api/user";
 
-const router = useRouter()
+const router = useRouter();
 
 // 登录弹出层默认属性值
 const defaultDialogAtrr = {
-  showLoginType: 'phone', // 控制手机登录（phone）与微信登录（weixin）切换
+  showLoginType: "phone", // 控制手机登录（phone）与微信登录（weixin）切换
 
-  labelTips: '手机号码', // 输入框提示
+  labelTips: "手机号码", // 输入框提示
 
-  inputValue: '', // 输入框绑定对象
-  placeholder: '请输入您的手机号', // 输入框placeholder
+  inputValue: "", // 输入框绑定对象
+  placeholder: "请输入您的手机号", // 输入框placeholder
   maxlength: 11, // 输入框长度控制
 
-  loginBtn: '获取验证码', // 登录按钮或获取验证码按钮文本
+  loginBtn: "获取验证码", // 登录按钮或获取验证码按钮文本
 
-  second: -1, // 倒计时间  second>0 : 显示倒计时 second=0 ：重新发送 second=-1 ：什么都不显示
-}
+  second: -1 // 倒计时间  second>0 : 显示倒计时 second=0 ：重新发送 second=-1 ：什么都不显示
+};
 
-const dialogUserFormVisible = ref(false) // 登录弹出层
-const nickName = ref('') // 昵称
-const dialogAtrr = ref(JSON.parse(JSON.stringify(defaultDialogAtrr))) // 登录弹出层属性
-let clearSmsTime = null // 倒计时定时任务引用 关闭登录层清除定时任务
-let phoneNumber = '' // 上次发送验证码的手机号（用于重新发送验证码）
-
+const dialogUserFormVisible = ref(false); // 登录弹出层
+const nickName = ref(""); // 昵称
+const dialogAtrr = ref(JSON.parse(JSON.stringify(defaultDialogAtrr))); // 登录弹出层属性
+let clearSmsTime = null; // 倒计时定时任务引用 关闭登录层清除定时任务
+let phoneNumber = ""; // 上次发送验证码的手机号（用于重新发送验证码）
 
 // 初始化登录弹出层属性
 function initDialogAtrr() {
-  dialogAtrr.value = JSON.parse(JSON.stringify(defaultDialogAtrr))
+  dialogAtrr.value = JSON.parse(JSON.stringify(defaultDialogAtrr));
 }
 
 // 点击登录/注册
 function showLoginDialog() {
-  initDialogAtrr()
-  dialogUserFormVisible.value = true
+  initDialogAtrr();
+  dialogUserFormVisible.value = true;
 }
 
 // 关闭登录弹出层
 function closeLoginDialog() {
   if (clearSmsTime) {
-    clearInterval(clearSmsTime)
+    clearInterval(clearSmsTime);
   }
-  dialogUserFormVisible.value = false
+  dialogUserFormVisible.value = false;
 }
 
 // 用户菜单
 function loginUserMenu(command) {
-  if (command === '/user') {
-    router.push('/user/info')
-  } else if (command === '/patient') {
-    router.push('/user/patient')
-  } else if (command === '/order') {
-    router.push('/user/order')
-  } else if (command === '/logout') {
+  if (command === "/user") {
+    router.push("/user/info");
+  } else if (command === "/patient") {
+    router.push("/user/patient");
+  } else if (command === "/order") {
+    router.push("/user/order");
+  } else if (command === "/logout") {
     // 清除token
-    useToken().value = ''
+    useToken().value = "";
     // 清除昵称
-    nickName.value = ''
-    router.push('/')
+    nickName.value = "";
+    router.push("/");
   }
 }
 
@@ -190,59 +198,59 @@ function loginUserMenu(command) {
 function checkPhone(phone) {
   if (!phone) {
     ElMessage({
-      message: '请输入手机号',
-      type: 'warning'
-    })
-    return false
+      message: "请输入手机号",
+      type: "warning"
+    });
+    return false;
   }
   if (!/^1[3-9]\d{9}$/.test(phone)) {
     ElMessage({
-      message: '手机号格式不正确',
-      type: 'warning'
-    })
-    return false
+      message: "手机号格式不正确",
+      type: "warning"
+    });
+    return false;
   }
-  return true
+  return true;
 }
 
 // 倒计时
 function countDown() {
   if (clearSmsTime) {
-    clearInterval(clearSmsTime)
+    clearInterval(clearSmsTime);
   }
-  dialogAtrr.value.second = 60 // 下次发送倒计时
+  dialogAtrr.value.second = 60; // 下次发送倒计时
   clearSmsTime = setInterval(() => {
-    dialogAtrr.value.second--
+    dialogAtrr.value.second--;
     if (dialogAtrr.value.second <= 0) {
-      clearInterval(clearSmsTime)
-      dialogAtrr.value.second = 0
+      clearInterval(clearSmsTime);
+      dialogAtrr.value.second = 0;
     }
-  }, 1000)
+  }, 1000);
 }
 
 // 获取验证码
 function getVerificationCode() {
-  if (dialogAtrr.value.loginBtn === '获取验证码') {
-    phoneNumber = dialogAtrr.value.inputValue
+  if (dialogAtrr.value.loginBtn === "获取验证码") {
+    phoneNumber = dialogAtrr.value.inputValue;
   }
   // 检查手机号合法性
   if (!checkPhone(phoneNumber)) {
-    return
+    return;
   }
   // 控制重复发送
   if (dialogAtrr.value.second > 0) {
-    return
+    return;
   }
-  countDown() // 倒计时
+  countDown(); // 倒计时
   // 初始化验证码相关属性
-  dialogAtrr.value.inputValue = ''
-  dialogAtrr.value.placeholder = '请输入验证码'
-  dialogAtrr.value.maxlength = 6
-  dialogAtrr.value.loginBtn = '马上登录'
+  dialogAtrr.value.inputValue = "";
+  dialogAtrr.value.placeholder = "请输入验证码";
+  dialogAtrr.value.maxlength = 6;
+  dialogAtrr.value.loginBtn = "马上登录";
 
   // 发送验证码
-  sendVerificationCode(phoneNumber)
-  dialogAtrr.value.labelTips = '验证码已发送至' + phoneNumber
+  sendVerificationCode(phoneNumber);
+  dialogAtrr.value.labelTips = "验证码已发送至" + phoneNumber;
   // sendVerificationCode(phoneNumber).then(res => {
   //   // false：发送失败
   //   if (!res) {
@@ -261,79 +269,78 @@ function getVerificationCode() {
 function tryGetNickName() {
   // 检查token
   if (!useToken().value) {
-    return
+    return;
   }
   getUserInfoBasic().then(res => {
-    nickName.value = res.nickName
-  })
+    nickName.value = res.nickName;
+  });
 }
-tryGetNickName()
+tryGetNickName();
 
 // 登陆成功
 function loginSuccess(token) {
   // 保存token
-  useToken().value = token
+  useToken().value = token;
   // 获取用户基本信息
-  tryGetNickName()
+  tryGetNickName();
   // 关闭登录弹出层
-  closeLoginDialog()
+  closeLoginDialog();
 }
 
 // 点击发送验证码或登录按钮
 function sendButtonClick() {
-  if (dialogAtrr.value.loginBtn === '获取验证码') {
-    getVerificationCode()
-  } else if (dialogAtrr.value.loginBtn === '马上登录') {
-    const verificationCode = dialogAtrr.value.inputValue
+  if (dialogAtrr.value.loginBtn === "获取验证码") {
+    getVerificationCode();
+  } else if (dialogAtrr.value.loginBtn === "马上登录") {
+    const verificationCode = dialogAtrr.value.inputValue;
     if (!verificationCode) {
       ElMessage({
-        message: '请输入验证码',
-        type: 'warning'
-      })
-      return
+        message: "请输入验证码",
+        type: "warning"
+      });
+      return;
     } else if (verificationCode.length !== dialogAtrr.value.maxlength) {
       ElMessage({
-        message: '验证码位数不正确',
-        type: 'warning'
-      })
-      return
+        message: "验证码位数不正确",
+        type: "warning"
+      });
+      return;
     }
     // 执行验证码登录
     login({ phoneNumber, verificationCode }).then(res => {
       if (res) {
-        loginSuccess(res.token)
+        loginSuccess(res.token);
       } else {
         // 登录失败
         ElMessage({
-          message: '登录失败',
-          type: 'error'
-        })
+          message: "登录失败",
+          type: "error"
+        });
       }
-    })
-
+    });
   }
 }
 
 // 微信登录
 function weixinLogin() {
-  dialogAtrr.value.showLoginType = 'weixin'
+  dialogAtrr.value.showLoginType = "weixin";
   getWxLoginQrCodeParam().then(res => {
-    const obj = new WxLogin(res)
-  })
+    const obj = new WxLogin(res);
+  });
 }
 
 // 手机号登录
 function phoneLogin() {
-  dialogAtrr.value.showLoginType = 'phone'
+  dialogAtrr.value.showLoginType = "phone";
 }
 
 // 监听微信扫码回调
 if (window) {
-  addEventListener("message", (e) => {
+  addEventListener("message", e => {
     if (e.origin === location.origin) {
-      const { token } = e.data
-      loginSuccess(token)
+      const { token } = e.data;
+      loginSuccess(token);
     }
-  })
+  });
 }
 </script>
