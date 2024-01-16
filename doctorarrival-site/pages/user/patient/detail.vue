@@ -1,23 +1,7 @@
 <template>
   <div class="nav-container page-component">
     <!-- 左侧 导航 -->
-    <div class="nav left-nav">
-      <div class="nav-item">
-        <span class="v-link clickable dark" @click="$router.push('/user/info')">用户资料</span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark" @click="$router.push('/user/realname')">实名认证</span>
-      </div>
-      <div class="nav-item selected">
-        <span class="v-link selected dark" @click="$router.push('/user/patient')">就诊人管理</span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark" @click="$router.push('/user/order')">挂号订单</span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark">意见反馈</span>
-      </div>
-    </div>
+    <usernavigator />
 
     <!-- 右侧 内容 -->
     <div class="page-container">
@@ -45,27 +29,27 @@
               </el-form-item>
               <el-form-item label="证件号码：">
                 <div class="">
-                  <span>{{ patient.certificatesNo }} </span>
+                  <span>{{ patient.certificatesNo }}</span>
                 </div>
               </el-form-item>
               <el-form-item label="性别：">
                 <div class="">
-                  <span>{{ genderString }} </span>
+                  <span>{{ genderString }}</span>
                 </div>
               </el-form-item>
               <el-form-item label="出生日期：">
                 <div class="">
-                  <span>{{ patient.birthday }} </span>
+                  <span>{{ patient.birthday }}</span>
                 </div>
               </el-form-item>
               <el-form-item label="手机号码：">
                 <div class="">
-                  <span>{{ patient.phone }} </span>
+                  <span>{{ patient.phone }}</span>
                 </div>
               </el-form-item>
               <el-form-item label="婚姻状况：">
                 <div class="">
-                  <span>{{ marryString }} </span>
+                  <span>{{ marryString }}</span>
                 </div>
               </el-form-item>
 

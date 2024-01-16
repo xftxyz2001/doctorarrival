@@ -1,23 +1,7 @@
 <template>
   <div class="nav-container page-component">
     <!-- 左侧 导航 -->
-    <div class="nav left-nav">
-      <div class="nav-item selected">
-        <span class="v-link selected dark" @click="gotoHospital">预约挂号</span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark" @click="gotoHospitalDetail">医院详情</span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark" @click="gotoHospitalNotice">预约须知</span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark"> 停诊信息 </span>
-      </div>
-      <div class="nav-item">
-        <span class="v-link clickable dark"> 查询/取消 </span>
-      </div>
-    </div>
+    <hospitalnavigator />
 
     <!-- 右侧 内容 -->
     <div class="page-container">
@@ -44,8 +28,8 @@
               @click="selectDate(schedule)"
             >
               <div class="date-wrapper">
-                <span>{{ schedule.workDate }}</span
-                ><span class="week">{{ schedule.dayOfWeek }}</span>
+                <span>{{ schedule.workDate }}</span>
+                <span class="week">{{ schedule.dayOfWeek }}</span>
               </div>
               <div class="status-wrapper" v-if="schedule.status === 1">
                 {{ schedule.availableNumber }} / {{ schedule.reservedNumber }}
@@ -64,8 +48,7 @@
             :total="scheduleList.total"
             :page-size="scheduleList.size"
             @current-change="getSchedulePageList"
-          >
-          </el-pagination>
+          ></el-pagination>
         </div>
 
         <!-- TODO 即将放号 -->
@@ -96,9 +79,10 @@
                         @click="booking(item)"
                         :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''"
                       >
-                        <span
-                          >剩余<span class="number">{{ item.availableNumber }}</span></span
-                        >
+                        <span>
+                          剩余
+                          <span class="number">{{ item.availableNumber }}</span>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -134,9 +118,10 @@
                         @click="booking(item)"
                         :style="item.availableNumber <= 0 ? 'background-color: #7f828b;' : ''"
                       >
-                        <span
-                          >剩余<span class="number">{{ item.availableNumber }}</span></span
-                        >
+                        <span>
+                          剩余
+                          <span class="number">{{ item.availableNumber }}</span>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -160,7 +145,8 @@ import {
 
 const route = useRoute();
 const router = useRouter();
-const { hospitalCode, departmentCode } = route.query;
+const { hospitalCode } = route.params;
+const { departmentCode } = route.query;
 
 const hospital = ref({});
 const department = ref({});
@@ -223,7 +209,7 @@ function booking(schedule) {
     type: "success"
   });
   router.push({
-    path: `/hospital/booking`,
+    path: `/hospital/${hospitalCode}/booking`,
     query: {
       scheduleId: schedule.id
     }

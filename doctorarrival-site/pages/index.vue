@@ -37,8 +37,8 @@
                   @click="hospitalTypeSelect(item)"
                   :class="hospitalQueryObj.hospitalType === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}</span
-                >
+                  {{ item.value }}
+                </span>
               </div>
             </div>
 
@@ -53,8 +53,8 @@
                   @click="provinceSelect(item)"
                   :class="hospitalQueryObj.provinceCode === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}</span
-                >
+                  {{ item.value }}
+                </span>
               </div>
             </div>
             <div class="filter-wrapper">
@@ -67,8 +67,8 @@
                   @click="citySelect(item)"
                   :class="hospitalQueryObj.cityCode === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}</span
-                >
+                  {{ item.value }}
+                </span>
               </div>
             </div>
             <div class="filter-wrapper">
@@ -81,8 +81,8 @@
                   @click="districtSelect(item)"
                   :class="hospitalQueryObj.districtCode === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}</span
-                >
+                  {{ item.value }}
+                </span>
               </div>
             </div>
           </div>
@@ -96,9 +96,13 @@
                 <div class="wrapper">
                   <div class="hospital-title">{{ item.hospitalName }}</div>
                   <div class="bottom-container">
-                    <div class="icon-wrapper"><span class="iconfont"></span>{{ item.hospitalType }}</div>
                     <div class="icon-wrapper">
-                      <span class="iconfont"></span>每天{{ item.bookingRule?.releaseTime }}放号
+                      <span class="iconfont"></span>
+                      {{ item.hospitalType }}
+                    </div>
+                    <div class="icon-wrapper">
+                      <span class="iconfont"></span>
+                      每天{{ item.bookingRule?.releaseTime }}放号
                     </div>
                   </div>
                 </div>
@@ -121,14 +125,14 @@
             </div>
           </div>
           <div class="content-wrapper">
-            <span class="item v-link clickable dark">神经内科 </span>
-            <span class="item v-link clickable dark">消化内科 </span>
-            <span class="item v-link clickable dark">呼吸内科 </span>
-            <span class="item v-link clickable dark">内科 </span>
-            <span class="item v-link clickable dark">神经外科 </span>
-            <span class="item v-link clickable dark">妇科 </span>
-            <span class="item v-link clickable dark">产科 </span>
-            <span class="item v-link clickable dark">儿科 </span>
+            <span class="item v-link clickable dark">神经内科</span>
+            <span class="item v-link clickable dark">消化内科</span>
+            <span class="item v-link clickable dark">呼吸内科</span>
+            <span class="item v-link clickable dark">内科</span>
+            <span class="item v-link clickable dark">神经外科</span>
+            <span class="item v-link clickable dark">妇科</span>
+            <span class="item v-link clickable dark">产科</span>
+            <span class="item v-link clickable dark">儿科</span>
           </div>
         </div>
 
@@ -149,15 +153,15 @@
           <div class="content-wrapper">
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">关于延长北京大学国际医院放假的通知 </span>
+              <span class="notice v-link clickable dark">关于延长北京大学国际医院放假的通知</span>
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">北京中医药大学东方医院部分科室医生门诊医 </span>
+              <span class="notice v-link clickable dark">北京中医药大学东方医院部分科室医生门诊医</span>
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark"> 武警总医院号源暂停更新通知 </span>
+              <span class="notice v-link clickable dark">武警总医院号源暂停更新通知</span>
             </div>
           </div>
         </div>
@@ -185,11 +189,11 @@
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark"> 首都医科大学附属北京潞河医院老年医学科门诊停诊公告 </span>
+              <span class="notice v-link clickable dark">首都医科大学附属北京潞河医院老年医学科门诊停诊公告</span>
             </div>
             <div class="notice-wrapper">
               <div class="point"></div>
-              <span class="notice v-link clickable dark">中日友好医院中西医结合心内科门诊停诊公告 </span>
+              <span class="notice v-link clickable dark">中日友好医院中西医结合心内科门诊停诊公告</span>
             </div>
           </div>
         </div>

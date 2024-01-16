@@ -26,7 +26,8 @@
         <!-- 登录状态 -->
         <el-dropdown v-if="nickName" @command="loginUserMenu">
           <span class="el-dropdown-link">
-            {{ nickName }}<el-icon class="el-icon--right"><el-icon-arrow-down /></el-icon>
+            {{ nickName }}
+            <el-icon class="el-icon--right"><el-icon-arrow-down /></el-icon>
           </span>
           <template v-slot:dropdown>
             <el-dropdown-menu class="user-name-wrapper">
@@ -64,14 +65,15 @@
                     class="input v-input"
                   >
                     <template v-slot:suffix>
-                      <span class="sendText v-link" v-if="dialogAtrr.second > 0">{{ dialogAtrr.second }}s </span>
+                      <span class="sendText v-link" v-if="dialogAtrr.second > 0">{{ dialogAtrr.second }}s</span>
                       <!-- </template>
                     <template v-slot:suffix> -->
                       <span
                         class="sendText v-link highlight clickable selected"
                         v-if="dialogAtrr.second == 0"
                         @click="getVerificationCode"
-                        >重新发送
+                      >
+                        重新发送
                       </span>
                     </template>
                   </el-input>
@@ -85,7 +87,7 @@
               <div class="wechat-wrapper" @click="weixinLogin">
                 <span class="iconfont icon"></span>
               </div>
-              <span class="third-text"> 第三方账号登录 </span>
+              <span class="third-text">第三方账号登录</span>
             </div>
           </div>
         </div>
@@ -101,7 +103,7 @@
                 <div class="phone-wrapper" @click="phoneLogin()">
                   <span class="iconfont icon"></span>
                 </div>
-                <span class="third-text"> 手机短信验证码登录 </span>
+                <span class="third-text">手机短信验证码登录</span>
               </div>
             </div>
           </div>
@@ -112,7 +114,10 @@
           <div class="code-wrapper">
             <div>
               <img src="assets/images/code_wechat.png" class="code-img" />
-              <div class="code-text"><span class="iconfont icon"></span>微信扫一扫关注</div>
+              <div class="code-text">
+                <span class="iconfont icon"></span>
+                微信扫一扫关注
+              </div>
               <div class="code-text">“快速预约挂号”</div>
             </div>
             <div class="wechat-code-wrapper">
