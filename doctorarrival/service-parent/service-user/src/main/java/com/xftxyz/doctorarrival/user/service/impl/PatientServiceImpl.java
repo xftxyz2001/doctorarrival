@@ -54,6 +54,43 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient>
         }
         return true;
     }
+
+    @Override
+    public Boolean addPatient(Long userId, Patient patient) {
+        patient.setUserId(userId);
+        if (baseMapper.insert(patient) <= 0) {
+            throw new BusinessException(ResultEnum.PATIENT_ADD_FAIL);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean updatePatient(Long userId, Patient patient) {
+        LambdaQueryWrapper<Patient> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Patient::getUserId, userId);
+        lambdaQueryWrapper.eq(Patient::getId, patient.getId());
+        Patient existPatient = baseMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(existPatient)) {
+            throw new BusinessException(ResultEnum.PATIENT_NOT_EXIST);
+        }
+
+        existPatient.setName(patient.getName());
+        existPatient.setPhone(patient.getPhone());
+        existPatient.setCertificatesType(patient.getCertificatesType());
+        existPatient.setCertificatesNo(patient.getCertificatesNo());
+        existPatient.setGender(patient.getGender());
+        existPatient.setMarry(patient.getMarry());
+        existPatient.setBirthday(patient.getBirthday());
+        existPatient.setInsured(patient.getInsured());
+        existPatient.setCardNo(patient.getCardNo());
+        existPatient.setContactsName(patient.getContactsName());
+        existPatient.setContactsPhone(patient.getContactsPhone());
+
+        if (baseMapper.updateById(patient) <= 0) {
+            throw new BusinessException(ResultEnum.PATIENT_UPDATE_FAIL);
+        }
+        return true;
+    }
 }
 
 

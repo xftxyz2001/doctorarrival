@@ -17,4 +17,8 @@ public interface PatientService extends IService<Patient> {
     Patient getPatientDetail(String userId, String patientId);
 
     Boolean removePatient(String userId, String patientId);
+
+    Boolean addPatient(Long userId, Patient patient);
+
+    Boolean updatePatient(Long userId, Patient patient);
 }

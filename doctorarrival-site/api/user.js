@@ -58,3 +58,19 @@ export function removePatient(patientId) {
     method: 'delete'
   })
 }
+
+export function addPatient(data) {
+  return request({
+    url: '/api/user/patient/auth/add',
+    method: 'post',
+    data
+  })
+}
+
+export function updatePatient(data) {
+  return request({
+    url: '/api/user/patient/auth/update',
+    method: 'put',
+    data
+  })
+}
