@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.processor;
+package com.xftxyz.doctorarrival.processor;
 
 import java.io.IOException;
 
@@ -8,9 +8,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xftxyz.doctorarrival.common.helper.Base64Helper;
-import com.xftxyz.doctorarrival.common.helper.CipherHelper;
-import com.xftxyz.doctorarrival.common.helper.KeyHelper;
+import com.xftxyz.doctorarrival.helper.Base64Helper;
+import com.xftxyz.doctorarrival.helper.CipherHelper;
+import com.xftxyz.doctorarrival.helper.KeyHelper;
 
 public class EncryptionRequestProcessor {
 

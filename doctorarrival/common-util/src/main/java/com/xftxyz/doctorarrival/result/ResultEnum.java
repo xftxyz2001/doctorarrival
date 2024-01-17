@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.result;
+package com.xftxyz.doctorarrival.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

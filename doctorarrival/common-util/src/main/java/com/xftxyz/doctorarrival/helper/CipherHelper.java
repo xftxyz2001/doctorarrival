@@ -1,7 +1,7 @@
-package com.xftxyz.doctorarrival.common.helper;
+package com.xftxyz.doctorarrival.helper;
 
-import static com.xftxyz.doctorarrival.common.constant.Constants.ALGORITHM_AES;
-import static com.xftxyz.doctorarrival.common.constant.Constants.ALGORITHM_RSA;
+import static com.xftxyz.doctorarrival.constant.Constants.ALGORITHM_AES;
+import static com.xftxyz.doctorarrival.constant.Constants.ALGORITHM_RSA;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.config;
+package com.xftxyz.doctorarrival.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

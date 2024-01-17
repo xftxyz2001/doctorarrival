@@ -1,7 +1,7 @@
 package com.xftxyz.doctorarrival.user.controller;
 
-import com.xftxyz.doctorarrival.common.annotation.NoWrap;
-import com.xftxyz.doctorarrival.common.helper.JwtHelper;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
+import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.domain.user.Patient;
 import com.xftxyz.doctorarrival.user.service.PatientService;
 import jakarta.validation.constraints.NotNull;

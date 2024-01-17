@@ -2,8 +2,8 @@ package com.xftxyz.doctorarrival.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xftxyz.doctorarrival.common.exception.BusinessException;
-import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.exception.BusinessException;
+import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.domain.user.Patient;
 import com.xftxyz.doctorarrival.user.mapper.PatientMapper;
 import com.xftxyz.doctorarrival.user.service.PatientService;

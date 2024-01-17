@@ -3,7 +3,7 @@ package com.xftxyz.doctorarrival.sdk.service;
 import java.io.FileInputStream;
 import java.security.PrivateKey;
 
-import com.xftxyz.doctorarrival.common.helper.KeyHelper;
+import com.xftxyz.doctorarrival.helper.KeyHelper;
 
 public class DoctorarrivalServiceBuilder {
     public static DoctorarrivalService build(String hospitalCode, String privateKeyLocation) {

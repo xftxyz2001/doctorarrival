@@ -1,8 +1,9 @@
-package com.xftxyz.doctorarrival.common.result;
+package com.xftxyz.doctorarrival.result;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xftxyz.doctorarrival.common.annotation.NoWrap;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
+import com.xftxyz.doctorarrival.result.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

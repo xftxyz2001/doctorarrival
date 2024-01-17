@@ -2,8 +2,8 @@ package com.xftxyz.doctorarrival.sdk.processor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xftxyz.doctorarrival.common.helper.Base64Helper;
-import com.xftxyz.doctorarrival.common.helper.CipherHelper;
+import com.xftxyz.doctorarrival.helper.Base64Helper;
+import com.xftxyz.doctorarrival.helper.CipherHelper;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;

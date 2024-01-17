@@ -1,7 +1,7 @@
-package com.xftxyz.doctorarrival.common.exception;
+package com.xftxyz.doctorarrival.exception;
 
-import com.xftxyz.doctorarrival.common.result.Result;
-import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.result.Result;
+import com.xftxyz.doctorarrival.result.ResultEnum;
 import lombok.Getter;
 
 @Getter

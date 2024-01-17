@@ -1,7 +1,8 @@
-package com.xftxyz.doctorarrival.common.exception;
+package com.xftxyz.doctorarrival.exception;
 
-import com.xftxyz.doctorarrival.common.result.Result;
-import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.exception.BusinessException;
+import com.xftxyz.doctorarrival.result.Result;
+import com.xftxyz.doctorarrival.result.ResultEnum;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

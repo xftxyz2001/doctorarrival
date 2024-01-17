@@ -1,7 +1,7 @@
 package com.xftxyz.doctorarrival.order.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xftxyz.doctorarrival.common.helper.JwtHelper;
+import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;

@@ -1,6 +1,5 @@
 package com.xftxyz.doctorarrival.hospital.client;
 
-import com.xftxyz.doctorarrival.common.result.Result;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Repository;

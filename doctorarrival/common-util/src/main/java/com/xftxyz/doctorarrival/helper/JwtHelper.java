@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.helper;
+package com.xftxyz.doctorarrival.helper;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

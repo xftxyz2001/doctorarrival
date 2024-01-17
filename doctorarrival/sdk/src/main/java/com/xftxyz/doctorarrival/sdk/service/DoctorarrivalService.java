@@ -1,11 +1,11 @@
 package com.xftxyz.doctorarrival.sdk.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.xftxyz.doctorarrival.common.helper.Base64Helper;
-import com.xftxyz.doctorarrival.common.helper.CipherHelper;
-import com.xftxyz.doctorarrival.common.helper.KeyHelper;
-import com.xftxyz.doctorarrival.common.result.Result;
-import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.helper.Base64Helper;
+import com.xftxyz.doctorarrival.helper.CipherHelper;
+import com.xftxyz.doctorarrival.helper.KeyHelper;
+import com.xftxyz.doctorarrival.result.Result;
+import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.sdk.api.*;
 import com.xftxyz.doctorarrival.sdk.constant.ApiUrls;
 import com.xftxyz.doctorarrival.sdk.processor.EncryptionRequestProcessor;

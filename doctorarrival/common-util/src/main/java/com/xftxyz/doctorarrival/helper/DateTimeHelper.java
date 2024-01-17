@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.helper;
+package com.xftxyz.doctorarrival.helper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

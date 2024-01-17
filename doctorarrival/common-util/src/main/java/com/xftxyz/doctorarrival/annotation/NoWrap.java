@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.annotation;
+package com.xftxyz.doctorarrival.annotation;
 
 import java.lang.annotation.*;
 

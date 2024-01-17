@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.helper;
+package com.xftxyz.doctorarrival.helper;
 
 import java.util.Base64;
 

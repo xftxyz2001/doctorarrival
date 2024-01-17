@@ -1,13 +1,10 @@
 package com.xftxyz.doctorarrival.user.service.impl;
 
-import java.util.Date;
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.xftxyz.doctorarrival.common.helper.JwtHelper;
+import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.user.autoconfigure.WxOpenProperties;
 import com.xftxyz.doctorarrival.user.mapper.UserInfoMapper;
-import com.xftxyz.doctorarrival.user.service.UserInfoService;
 import com.xftxyz.doctorarrival.user.service.WxOpenService;
 import com.xftxyz.doctorarrival.vo.user.WxAccessToken;
 import com.xftxyz.doctorarrival.vo.user.WxLoginQrCodeParam;

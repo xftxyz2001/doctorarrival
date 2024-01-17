@@ -1,4 +1,4 @@
-package com.xftxyz.doctorarrival.common.constant;
+package com.xftxyz.doctorarrival.constant;
 
 public interface Constants {
 

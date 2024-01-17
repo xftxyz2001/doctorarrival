@@ -1,12 +1,12 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.xftxyz.doctorarrival.common.exception.BusinessException;
-import com.xftxyz.doctorarrival.common.helper.Base64Helper;
-import com.xftxyz.doctorarrival.common.helper.CipherHelper;
-import com.xftxyz.doctorarrival.common.helper.KeyHelper;
-import com.xftxyz.doctorarrival.common.processor.EncryptionRequestProcessor;
-import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.exception.BusinessException;
+import com.xftxyz.doctorarrival.helper.Base64Helper;
+import com.xftxyz.doctorarrival.helper.CipherHelper;
+import com.xftxyz.doctorarrival.helper.KeyHelper;
+import com.xftxyz.doctorarrival.processor.EncryptionRequestProcessor;
+import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.domain.hospital.*;
 import com.xftxyz.doctorarrival.hospital.mapper.HospitalSetMapper;
 import com.xftxyz.doctorarrival.hospital.repository.DepartmentRepository;
@@ -28,8 +28,8 @@ import java.security.KeyPair;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 
-import static com.xftxyz.doctorarrival.common.constant.Constants.HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX;
-import static com.xftxyz.doctorarrival.common.constant.Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX;
+import static com.xftxyz.doctorarrival.constant.Constants.HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX;
+import static com.xftxyz.doctorarrival.constant.Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX;
 
 @Service
 @RequiredArgsConstructor
