@@ -104,7 +104,7 @@ CREATE TABLE `order_info` (
     `department_name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '科室名称',
     `doctor_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '医生名称',
     `doctor_title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '医生职称',
-    `schedule_id` bigint NOT NULL COMMENT '排班id',
+    `schedule_id` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '排班id',
     `reserve_date` datetime NULL DEFAULT NULL COMMENT '预约时间',
     `patient_id` bigint NOT NULL COMMENT '就诊人id',
     `patient_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '就诊人名称',

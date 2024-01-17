@@ -91,6 +91,11 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient>
         }
         return true;
     }
+
+    @Override
+    public Patient getPatientDetailNoWarp(Long patientId) {
+        return baseMapper.selectById(patientId);
+    }
 }
 
 

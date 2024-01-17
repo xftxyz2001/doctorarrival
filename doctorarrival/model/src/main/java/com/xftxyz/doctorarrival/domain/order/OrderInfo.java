@@ -75,7 +75,7 @@ public class OrderInfo implements Serializable {
      * 排班id
      */
     @TableField(value = "schedule_id")
-    private Long scheduleId;
+    private String scheduleId;
 
     /**
      * 预约时间

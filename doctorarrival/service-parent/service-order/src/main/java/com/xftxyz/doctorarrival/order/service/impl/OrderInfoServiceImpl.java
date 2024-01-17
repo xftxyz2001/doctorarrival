@@ -1,4 +1,5 @@
 package com.xftxyz.doctorarrival.order.service.impl;
+import java.util.Date;
 
 import com.alibaba.nacos.common.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -9,9 +10,11 @@ import com.xftxyz.doctorarrival.common.exception.BusinessException;
 import com.xftxyz.doctorarrival.common.result.ResultEnum;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
+import com.xftxyz.doctorarrival.domain.user.Patient;
 import com.xftxyz.doctorarrival.hospital.client.ScheduleApiClient;
 import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
+import com.xftxyz.doctorarrival.user.client.PatientApiClient;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         implements OrderInfoService {
 
     private final ScheduleApiClient scheduleApiClient;
+
+    private final PatientApiClient patientApiClient;
 
     @Override
     public Boolean saveWarp(OrderInfo orderInfo) {
@@ -122,9 +127,31 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         String scheduleId = submitOrderParam.getScheduleId();
         Long patientId = submitOrderParam.getPatientId();
 
-        Schedule schedule = scheduleApiClient.getScheduleById(scheduleId);
-        // Patient patient = patientApiClient.getPatientById(patientId);
-        return null;
+        Schedule schedule = scheduleApiClient.getScheduleByIdInner(scheduleId);
+        Patient patient = patientApiClient.getPatientDetailInner(patientId);
+
+        // 构造订单
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setUserId(userId);
+        orderInfo.setHospitalCode(schedule.getHospitalCode());
+        // orderInfo.setHospitalName("");
+        orderInfo.setDepartmentCode(schedule.getDepartmentCode());
+        // orderInfo.setDepartmentName("");
+        orderInfo.setDoctorName(schedule.getDoctorName());
+        orderInfo.setDoctorTitle(schedule.getDoctorTitle());
+        orderInfo.setScheduleId(schedule.getHospitalScheduleId());
+        orderInfo.setReserveDate(schedule.getWorkDate());
+
+        orderInfo.setPatientId(patientId);
+        orderInfo.setPatientName(patient.getName());
+        orderInfo.setPatientPhone(patient.getPhone());
+        orderInfo.setAmount(1);
+        orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_UNPAID);
+
+        if (baseMapper.insert(orderInfo) <= 0) {
+            throw new BusinessException(ResultEnum.ORDER_SAVE_FAILED);
+        }
+        return orderInfo.getId();
     }
 
     @Override

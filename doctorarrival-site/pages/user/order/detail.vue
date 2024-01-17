@@ -7,7 +7,15 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const route = useRoute();
+const { orderId } = route.query;
+
+ElMessage({
+  message: orderId,
+  type: "success"
+});
+</script>
 
 <style scoped>
 @import "assets/css/hospital_personal.css";

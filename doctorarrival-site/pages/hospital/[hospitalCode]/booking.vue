@@ -149,7 +149,7 @@
             <!-- 确认提交 -->
             <div class="bottom-wrapper">
               <div class="button-wrapper">
-                <div class="v-button" @click="submitOrder">
+                <div class="v-button" @click="submitButtonClicked">
                   {{ submitButtonText }}
                 </div>
               </div>
@@ -165,6 +165,7 @@
 import { getDictChildrenByDictCode } from "@/api/dict";
 import { getScheduleById } from "@/api/hospital";
 import { getPatientList } from "@/api/user";
+import { submitOrder } from "@/api/order";
 
 const route = useRoute();
 const router = useRouter();
@@ -233,7 +234,11 @@ function addPatient() {
 }
 
 // 提交订单
-function submitOrder() {
+function submitButtonClicked() {
+  if (submitButtonText.value === "提交中...") {
+    return;
+  }
+
   if (!activePatient.value.id) {
     ElMessage({
       message: "请选择就诊人",
@@ -241,15 +246,32 @@ function submitOrder() {
     });
     return;
   }
+
+  const params = {
+    scheduleId: scheduleId,
+    patientId: activePatient.value.id
+  };
+  submitOrder(params).then(res => {
+    if (res) {
+      ElMessage({
+        message: "提交成功",
+        type: "success"
+      });
+      submitButtonText.value = "提交";
+      router.push({
+        path: "/user/order/detail",
+        query: {
+          orderId: res
+        }
+      });
+    }
+  });
+
   ElMessage({
     message: "正在提交...",
     type: "success"
   });
   submitButtonText.value = "提交中...";
-
-  setTimeout(() => {
-    submitButtonText.value = "提交";
-  }, 2000);
 }
 </script>
 

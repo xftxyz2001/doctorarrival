@@ -1,5 +1,6 @@
 package com.xftxyz.doctorarrival.user.controller;
 
+import com.xftxyz.doctorarrival.common.annotation.NoWrap;
 import com.xftxyz.doctorarrival.common.helper.JwtHelper;
 import com.xftxyz.doctorarrival.domain.user.Patient;
 import com.xftxyz.doctorarrival.user.service.PatientService;
@@ -50,5 +51,11 @@ public class PatientApiController {
     public Boolean updatePatient(@RequestHeader(JwtHelper.X_USER_ID) Long userId,
                                  @RequestBody @NotNull Patient patient) {
         return patientService.updatePatient(userId, patient);
+    }
+
+    @NoWrap
+    @GetMapping("/inner/detail/{patientId}")
+    public Patient getPatientDetailInner(@PathVariable("patientId") Long patientId) {
+        return patientService.getPatientDetailNoWarp(patientId);
     }
 }

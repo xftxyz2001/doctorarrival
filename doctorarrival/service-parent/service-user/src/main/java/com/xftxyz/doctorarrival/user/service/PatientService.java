@@ -21,4 +21,6 @@ public interface PatientService extends IService<Patient> {
     Boolean addPatient(Long userId, Patient patient);
 
     Boolean updatePatient(Long userId, Patient patient);
+
+    Patient getPatientDetailNoWarp(Long patientId);
 }

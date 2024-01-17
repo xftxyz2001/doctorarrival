@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ScheduleApiClient {
 
     @GetMapping("/inner/id/{id}")
-    Schedule getScheduleById(@PathVariable("id") String id);
+    Schedule getScheduleByIdInner(@PathVariable("id") String id);
 }
