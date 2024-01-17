@@ -2,6 +2,7 @@ package com.xftxyz.doctorarrival.common.result;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xftxyz.doctorarrival.common.annotation.NoWrap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -20,8 +21,16 @@ public class GlobalResultHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        // 如果不需要进行封装的，可以添加一些校验手段，比如添加标记排除的注解
-        return !ResponseEntity.class.isAssignableFrom(returnType.getParameterType());
+        if (ResponseEntity.class.isAssignableFrom(returnType.getParameterType())) {
+            return false;
+        }
+        if (returnType.hasMethodAnnotation(NoWrap.class)) {
+            return false;
+        }
+        if (returnType.getContainingClass().isAnnotationPresent(NoWrap.class)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

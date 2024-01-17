@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 
 import java.util.List;
 
@@ -27,4 +28,12 @@ public interface OrderInfoService extends IService<OrderInfo> {
     OrderInfo getByIdWarp(Long id);
 
     IPage<OrderInfo> find(OrderInfoQueryVO orderInfoQueryVO, Long current, Long size);
+
+    Long submitOrder(Long userId, SubmitOrderParam submitOrderParam);
+
+    OrderInfo getOrderDetail(Long userId, Long orderId);
+
+    IPage<OrderInfo> getOrderList(Long userId, Long current, Long size);
+
+    Boolean cancelOrder(Long userId, Long orderId);
 }

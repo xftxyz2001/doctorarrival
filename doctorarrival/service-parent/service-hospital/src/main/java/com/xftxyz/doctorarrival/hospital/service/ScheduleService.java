@@ -14,4 +14,6 @@ public interface ScheduleService {
     List<Schedule> findScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(String hospitalCode, String departmentCode, String workDate);
 
     Schedule findScheduleById(String id);
+
+    Schedule findScheduleByIdNoWarp(String id);
 }

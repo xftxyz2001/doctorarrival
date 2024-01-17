@@ -19,6 +19,7 @@
         <module>common-util</module>
         <module>service-util</module>
         <module>service-parent</module>
+        <module>service-client-parent</module>
         <module>service-gateway</module>
         <module>model4sdk</module>
         <module>sdk</module>

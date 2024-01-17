@@ -94,4 +94,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleOptional.get();
     }
 
+    @Override
+    public Schedule findScheduleByIdNoWarp(String id) {
+        return scheduleRepository.findById(id).orElse(null);
+    }
+
 }

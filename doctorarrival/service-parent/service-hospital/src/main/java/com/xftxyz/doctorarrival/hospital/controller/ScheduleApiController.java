@@ -1,6 +1,7 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.common.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.hospital.service.ScheduleService;
 import com.xftxyz.doctorarrival.vo.hospital.ScheduleDateVO;
@@ -44,5 +45,11 @@ public class ScheduleApiController {
     @GetMapping("/id/{id}")
     public Schedule getScheduleById(@PathVariable("id") @NotBlank String id) {
         return scheduleService.findScheduleById(id);
+    }
+
+    @NoWrap
+    @GetMapping("/inner/id/{id}")
+    public Schedule getScheduleByIdInner(@PathVariable("id") @NotBlank String id) {
+        return scheduleService.findScheduleByIdNoWarp(id);
     }
 }

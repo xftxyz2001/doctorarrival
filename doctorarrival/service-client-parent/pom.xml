@@ -9,19 +9,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service-parent</artifactId>
+    <artifactId>service-client-parent</artifactId>
     <packaging>pom</packaging>
-    <name>微服务们</name>
+    <name>微服务客户端们</name>
     <modules>
-        <module>service-common</module>
-        <module>service-hospital</module>
-        <module>service-user</module>
-
-        <module>service-sms</module>
-        <module>service-oss</module>
-        <module>service-order</module>
-        <module>service-task</module>
-        <module>service-statistics</module>
+        <module>service-client-hospital</module>
     </modules>
 
     <properties>
@@ -39,26 +31,20 @@
 
         <dependency>
             <groupId>com.xftxyz.doctorarrival</groupId>
-            <artifactId>service-util</artifactId>
+            <artifactId>common-util</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <!-- Mybatis-Plus -->
+        <!-- 服务调用 Feign -->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-        <!-- MySQL -->
+        <!-- 负载均衡 -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-        </dependency>
-
-        <!-- 服务注册 Nacos -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
     </dependencies>
 

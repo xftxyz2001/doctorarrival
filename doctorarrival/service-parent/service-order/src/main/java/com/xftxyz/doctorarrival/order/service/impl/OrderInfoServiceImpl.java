@@ -7,10 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xftxyz.doctorarrival.common.exception.BusinessException;
 import com.xftxyz.doctorarrival.common.result.ResultEnum;
+import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
-import com.xftxyz.doctorarrival.order.service.OrderInfoService;
+import com.xftxyz.doctorarrival.hospital.client.ScheduleApiClient;
 import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
+import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -22,8 +26,11 @@ import java.util.List;
  * @createDate 2024-01-04 21:23:18
  */
 @Service
+@RequiredArgsConstructor
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo>
         implements OrderInfoService {
+
+    private final ScheduleApiClient scheduleApiClient;
 
     @Override
     public Boolean saveWarp(OrderInfo orderInfo) {
@@ -108,6 +115,41 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 OrderInfo::getCreateTime, orderInfoQueryVO.getCreateTimeFrom(), orderInfoQueryVO.getCreateTimeTo());
 
         return baseMapper.selectPage(new Page<>(current, size), lambdaQueryWrapper);
+    }
+
+    @Override
+    public Long submitOrder(Long userId, SubmitOrderParam submitOrderParam) {
+        String scheduleId = submitOrderParam.getScheduleId();
+        Long patientId = submitOrderParam.getPatientId();
+
+        Schedule schedule = scheduleApiClient.getScheduleById(scheduleId);
+        // Patient patient = patientApiClient.getPatientById(patientId);
+        return null;
+    }
+
+    @Override
+    public OrderInfo getOrderDetail(Long userId, Long orderId) {
+        LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrderInfo::getUserId, userId);
+        lambdaQueryWrapper.eq(OrderInfo::getId, orderId);
+        OrderInfo orderInfo = baseMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(orderInfo)) {
+            throw new BusinessException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        return orderInfo;
+    }
+
+    @Override
+    public IPage<OrderInfo> getOrderList(Long userId, Long current, Long size) {
+        LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrderInfo::getUserId, userId);
+        lambdaQueryWrapper.orderByDesc(OrderInfo::getUpdateTime); // 按更新时间倒序
+        return baseMapper.selectPage(new Page<>(current, size), lambdaQueryWrapper);
+    }
+
+    @Override
+    public Boolean cancelOrder(Long userId, Long orderId) {
+        return null;
     }
 }
 
