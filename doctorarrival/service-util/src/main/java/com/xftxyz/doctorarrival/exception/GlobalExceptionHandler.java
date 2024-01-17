@@ -1,6 +1,5 @@
 package com.xftxyz.doctorarrival.exception;
 
-import com.xftxyz.doctorarrival.exception.BusinessException;
 import com.xftxyz.doctorarrival.result.Result;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import jakarta.validation.ConstraintViolation;

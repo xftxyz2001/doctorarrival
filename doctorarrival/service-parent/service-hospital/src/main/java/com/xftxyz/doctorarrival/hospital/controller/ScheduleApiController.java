@@ -37,8 +37,8 @@ public class ScheduleApiController {
 
     @GetMapping("/hospital/department/date")
     public List<Schedule> getScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(@RequestParam("hospitalCode") @NotBlank String hospitalCode,
-                                                                     @RequestParam("departmentCode") @NotBlank String departmentCode,
-                                                                     @RequestParam("workDate") @NotBlank String workDate) {
+                                                                                @RequestParam("departmentCode") @NotBlank String departmentCode,
+                                                                                @RequestParam("workDate") @NotBlank String workDate) {
         return scheduleService.findScheduleByHospitalCodeAndDepartmentCodeAndWorkDate(hospitalCode, departmentCode, workDate);
     }
 

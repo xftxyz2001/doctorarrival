@@ -1,12 +1,11 @@
 package com.xftxyz.doctorarrival.oss.service;
 
-import java.util.List;
-
+import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xftxyz.doctorarrival.vo.oss.ListObjectsResultVO;
+import java.util.List;
 
 public interface FileService {
 

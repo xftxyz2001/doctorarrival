@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 /**
  * 批量更新科室请求
  */
-public class BatchUpdateDepartmentRequest implements List<UpdateDepartmentRequest>{
+public class BatchUpdateDepartmentRequest implements List<UpdateDepartmentRequest> {
     private List<UpdateDepartmentRequest> updateDepartmentRequests;
 
-    public BatchUpdateDepartmentRequest(){
+    public BatchUpdateDepartmentRequest() {
         updateDepartmentRequests = new ArrayList<>();
     }
 

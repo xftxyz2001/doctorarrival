@@ -1,18 +1,16 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import com.xftxyz.doctorarrival.domain.hospital.Department;
 import com.xftxyz.doctorarrival.hospital.repository.DepartmentRepository;
 import com.xftxyz.doctorarrival.hospital.service.DepartmentService;
 import com.xftxyz.doctorarrival.vo.hospital.DepartmentVO;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

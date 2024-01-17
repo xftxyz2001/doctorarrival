@@ -46,19 +46,19 @@ spring:
         - id: service-oss
           uri: lb://service-oss
           predicates:
-              - Path=/*/oss/**
+            - Path=/*/oss/**
         - id: service-order
           uri: lb://service-order
           predicates:
-              - Path=/*/order/**
+            - Path=/*/order/**
         - id: service-task
           uri: lb://service-task
           predicates:
-              - Path=/*/task/**
+            - Path=/*/task/**
         - id: service-statistics
           uri: lb://service-statistics
           predicates:
-              - Path=/*/statistics/**
+            - Path=/*/statistics/**
 
 admin:
   authorization: <<后台管理系统密码>>

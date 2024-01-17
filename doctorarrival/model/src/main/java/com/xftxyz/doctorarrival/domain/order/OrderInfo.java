@@ -4,15 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 订单表
+ *
  * @TableName order_info
  */
-@TableName(value ="order_info")
+@TableName(value = "order_info")
 @Data
 public class OrderInfo implements Serializable {
     // （-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）

@@ -1,16 +1,14 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
-import java.util.List;
-
 import com.xftxyz.doctorarrival.domain.hospital.Department;
+import com.xftxyz.doctorarrival.hospital.service.DepartmentService;
+import com.xftxyz.doctorarrival.vo.hospital.DepartmentVO;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.xftxyz.doctorarrival.hospital.service.DepartmentService;
-import com.xftxyz.doctorarrival.vo.hospital.DepartmentVO;
-
-import jakarta.validation.constraints.NotBlank;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Validated
 @RestController

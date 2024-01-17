@@ -1,17 +1,17 @@
 package com.xftxyz.doctorarrival.user.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.vo.user.*;
 
 import java.util.List;
 
 /**
-* @author 25810
-* @description 针对表【user_info(用户信息表)】的数据库操作Service
-* @createDate 2024-01-03 23:44:16
-*/
+ * @author 25810
+ * @description 针对表【user_info(用户信息表)】的数据库操作Service
+ * @createDate 2024-01-03 23:44:16
+ */
 public interface UserInfoService extends IService<UserInfo> {
 
     Boolean saveWarp(UserInfo userInfo);

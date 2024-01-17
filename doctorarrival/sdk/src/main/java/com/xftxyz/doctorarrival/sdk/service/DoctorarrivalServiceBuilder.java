@@ -1,9 +1,9 @@
 package com.xftxyz.doctorarrival.sdk.service;
 
+import com.xftxyz.doctorarrival.helper.KeyHelper;
+
 import java.io.FileInputStream;
 import java.security.PrivateKey;
-
-import com.xftxyz.doctorarrival.helper.KeyHelper;
 
 public class DoctorarrivalServiceBuilder {
     public static DoctorarrivalService build(String hospitalCode, String privateKeyLocation) {

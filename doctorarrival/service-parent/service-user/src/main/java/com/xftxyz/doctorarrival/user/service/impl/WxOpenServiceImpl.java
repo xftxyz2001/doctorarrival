@@ -1,8 +1,8 @@
 package com.xftxyz.doctorarrival.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
+import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.user.autoconfigure.WxOpenProperties;
 import com.xftxyz.doctorarrival.user.mapper.UserInfoMapper;
 import com.xftxyz.doctorarrival.user.service.WxOpenService;

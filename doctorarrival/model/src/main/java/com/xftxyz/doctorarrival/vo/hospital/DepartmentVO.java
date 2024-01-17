@@ -1,7 +1,6 @@
 package com.xftxyz.doctorarrival.vo.hospital;
 
 import lombok.Data;
-import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
 

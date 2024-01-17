@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 /**
  * 批量更新排班请求
  */
-public class BatchUpdateScheduleRequest implements List<UpdateScheduleRequest>{
+public class BatchUpdateScheduleRequest implements List<UpdateScheduleRequest> {
     private List<UpdateScheduleRequest> updateScheduleRequests;
 
-    public BatchUpdateScheduleRequest(){
+    public BatchUpdateScheduleRequest() {
         updateScheduleRequests = new ArrayList<>();
     }
 

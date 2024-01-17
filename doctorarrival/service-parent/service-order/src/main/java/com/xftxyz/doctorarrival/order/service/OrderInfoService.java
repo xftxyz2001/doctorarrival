@@ -1,18 +1,18 @@
 package com.xftxyz.doctorarrival.order.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 
 import java.util.List;
 
 /**
-* @author 25810
-* @description 针对表【order_info(订单表)】的数据库操作Service
-* @createDate 2024-01-04 21:23:18
-*/
+ * @author 25810
+ * @description 针对表【order_info(订单表)】的数据库操作Service
+ * @createDate 2024-01-04 21:23:18
+ */
 public interface OrderInfoService extends IService<OrderInfo> {
 
     Boolean saveWarp(OrderInfo orderInfo);

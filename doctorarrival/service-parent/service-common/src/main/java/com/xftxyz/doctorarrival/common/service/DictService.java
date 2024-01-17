@@ -1,12 +1,11 @@
 package com.xftxyz.doctorarrival.common.service;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.xftxyz.doctorarrival.domain.common.Dict;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.xftxyz.doctorarrival.domain.common.Dict;
+import java.util.List;
 
 /**
  * @author 25810

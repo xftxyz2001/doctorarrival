@@ -1,8 +1,8 @@
 package com.xftxyz.doctorarrival.sdk.callback;
 
-import java.util.Date;
-
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 下单

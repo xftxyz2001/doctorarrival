@@ -1,13 +1,12 @@
 package com.xftxyz.doctorarrival.sdk;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest.BookingRule;
-
 import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest;
+import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest.BookingRule;
 import com.xftxyz.doctorarrival.sdk.service.DoctorarrivalService;
 import com.xftxyz.doctorarrival.sdk.service.DoctorarrivalServiceBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DoctorarrivalServiceTest {
 

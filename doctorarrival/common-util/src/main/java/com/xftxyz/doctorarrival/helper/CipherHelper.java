@@ -1,13 +1,12 @@
 package com.xftxyz.doctorarrival.helper;
 
-import static com.xftxyz.doctorarrival.constant.Constants.ALGORITHM_AES;
-import static com.xftxyz.doctorarrival.constant.Constants.ALGORITHM_RSA;
-
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
+import static com.xftxyz.doctorarrival.constant.Constants.ALGORITHM_AES;
+import static com.xftxyz.doctorarrival.constant.Constants.ALGORITHM_RSA;
 
 public class CipherHelper {
     private final Cipher decryptCipher;
