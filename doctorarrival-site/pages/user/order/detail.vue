@@ -132,7 +132,7 @@
 import { getOrderDetail, cancelOrder, getPayPage, queryOrder } from "@/api/order";
 
 const route = useRoute();
-const { orderId } = route.query;
+const { orderId, out_trade_no } = route.query;
 
 const orderInfo = ref({});
 
@@ -141,7 +141,17 @@ function getOrderDetailData() {
     orderInfo.value = res;
   });
 }
-getOrderDetailData();
+
+// 如果orderId不为空，且等于out_trade_no，说明是从支付页面跳转过来的，需要查询订单状态
+if (orderId && orderId === out_trade_no) {
+  queryOrder(orderId).then(res => {
+    if (res) {
+      getOrderDetailData();
+    }
+  });
+} else {
+  getOrderDetailData();
+}
 
 function cancelOrderButtonClicked() {
   ElMessageBox({
@@ -164,7 +174,7 @@ function cancelOrderButtonClicked() {
 
 function pay() {
   getPayPage(orderId).then(res => {
-    console.log(res);
+    document.write(res);
   });
 }
 </script>

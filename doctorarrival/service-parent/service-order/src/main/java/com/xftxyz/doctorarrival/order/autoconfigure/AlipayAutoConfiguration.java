@@ -6,9 +6,10 @@ import com.alipay.api.AlipayConfig;
 import com.alipay.api.DefaultAlipayClient;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 
-// @Configuration
+@Configuration
 @EnableConfigurationProperties(AlipayProperties.class)
 public class AlipayAutoConfiguration {
 

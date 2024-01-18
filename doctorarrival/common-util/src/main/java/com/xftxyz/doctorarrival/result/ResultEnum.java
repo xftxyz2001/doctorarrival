@@ -69,6 +69,7 @@ public enum ResultEnum {
     ORDER_STATUS_NOT_ALLOW(706, "订单状态不允许"),
 
     ORDER_STATUS_CANNOT_CANCEL(707, "订单状态不允许取消"),
+    ALIPAY_ERROR(708, "支付信息获取失败"),
     ;
 
     private final Integer code;
