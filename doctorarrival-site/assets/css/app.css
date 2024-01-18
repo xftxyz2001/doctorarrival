@@ -2249,7 +2249,7 @@
     background: #fff;
     -webkit-box-shadow: 0 0 20px 0 rgba(73, 144, 241, .2);
     box-shadow: 0 0 20px 0 rgba(73, 144, 241, .2);
-    margin-left: 35px
+    /* margin-left: 35px */
 }
 
 .operate-view .wrapper {

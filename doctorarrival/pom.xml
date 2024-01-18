@@ -34,6 +34,9 @@
         <oss.version>3.10.2</oss.version>
         <sms.version>2.0.24</sms.version>
         <easyexcel.version>3.3.2</easyexcel.version>
+
+        <wechatpay.version>0.2.12</wechatpay.version>
+        <alipay.version>4.38.192.ALL</alipay.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -97,6 +100,20 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>alibabacloud-dysmsapi20170525</artifactId>
                 <version>${sms.version}</version>
+            </dependency>
+
+            <!-- 微信支付 -->
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-java</artifactId>
+                <version>${wechatpay.version}</version>
+            </dependency>
+
+            <!-- 支付宝支付 -->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

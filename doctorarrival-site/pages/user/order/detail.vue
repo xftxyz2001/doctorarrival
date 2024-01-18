@@ -125,45 +125,16 @@
         </div>
       </div>
     </div>
-
-    <!-- 微信支付弹出框 -->
-    <el-dialog
-      v-model="dialogPayVisible"
-      style="text-align: left"
-      :append-to-body="true"
-      width="500px"
-      @close="closeDialog"
-    >
-      <div class="container">
-        <div class="operate-view" style="height: 350px">
-          <div class="wrapper wechat">
-            <div>
-              <!-- <qriously :value="payQrCodeUrl" :size="220" /> -->
-              <img :src="payQrCodeUrl" style="width: 220px; height: 220px" alt="二维码" />
-              <div style="text-align: center; line-height: 25px; margin-bottom: 40px">
-                请使用微信扫一扫
-                <br />
-                扫描二维码支付
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { getOrderDetail, cancelOrder } from "@/api/order";
-import qrcode from "qrcode";
+import { getOrderDetail, cancelOrder, getPayPage, queryOrder } from "@/api/order";
 
 const route = useRoute();
 const { orderId } = route.query;
 
 const orderInfo = ref({});
-
-const dialogPayVisible = ref(false);
-const payQrCodeUrl = ref("");
 
 function getOrderDetailData() {
   getOrderDetail(orderId).then(res => {
@@ -192,20 +163,8 @@ function cancelOrderButtonClicked() {
 }
 
 function pay() {
-  // 获取支付二维码
-  qrcode.toDataURL("https://www.baidu.com").then(url => {
-    console.log(url);
-    payQrCodeUrl.value = url;
-  });
-
-  dialogPayVisible.value = true;
-}
-
-function closeDialog() {
-  dialogPayVisible.value = false;
-  ElMessage({
-    type: "info",
-    message: "支付已取消"
+  getPayPage(orderId).then(res => {
+    console.log(res);
   });
 }
 </script>

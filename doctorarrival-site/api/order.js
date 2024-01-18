@@ -31,3 +31,18 @@ export function cancelOrder(orderId) {
     method: "put"
   });
 }
+
+// alipay
+export function getPayPage(orderId) {
+  return request({
+    url: `/api/order/alipay/auth/pay/${orderId}`,
+    method: "get"
+  });
+}
+
+export function queryOrder(orderId) {
+  return request({
+    url: `/api/order/alipay/auth/query/${orderId}`,
+    method: "get"
+  });
+}
