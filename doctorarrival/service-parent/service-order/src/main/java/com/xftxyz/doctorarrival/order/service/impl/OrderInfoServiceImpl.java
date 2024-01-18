@@ -14,6 +14,7 @@ import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.user.client.PatientApiClient;
+import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 import lombok.RequiredArgsConstructor;
@@ -166,9 +167,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
-    public IPage<OrderInfo> getOrderList(Long userId, Long current, Long size) {
+    public IPage<OrderInfo> getOrderList(Long userId, OrderInfoQueryParam orderInfoQueryParam, Long current, Long size) {
         LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(OrderInfo::getUserId, userId);
+        lambdaQueryWrapper.eq(StringUtils.hasText(orderInfoQueryParam.getPatientId()), OrderInfo::getPatientId, orderInfoQueryParam.getPatientId());
+        lambdaQueryWrapper.eq(!ObjectUtils.isEmpty(orderInfoQueryParam.getOrderStatus()), OrderInfo::getOrderStatus, orderInfoQueryParam.getOrderStatus());
         lambdaQueryWrapper.orderByDesc(OrderInfo::getUpdateTime); // 按更新时间倒序
         return baseMapper.selectPage(new Page<>(current, size), lambdaQueryWrapper);
     }

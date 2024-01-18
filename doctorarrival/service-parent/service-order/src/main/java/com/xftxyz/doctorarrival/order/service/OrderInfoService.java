@@ -3,6 +3,7 @@ package com.xftxyz.doctorarrival.order.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
+import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 
@@ -33,7 +34,7 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     OrderInfo getOrderDetail(Long userId, Long orderId);
 
-    IPage<OrderInfo> getOrderList(Long userId, Long current, Long size);
+    IPage<OrderInfo> getOrderList(Long userId, OrderInfoQueryParam orderInfoQueryParam, Long current, Long size);
 
     Boolean cancelOrder(Long userId, Long orderId);
 }

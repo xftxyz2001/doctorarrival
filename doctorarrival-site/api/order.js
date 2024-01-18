@@ -13,14 +13,15 @@ export function getOrderDetail(orderId) {
   });
 }
 
-export function getOrderList(current = 1, size = 10) {
+export function getOrderList(data, current = 1, size = 10) {
   return request({
     url: "/api/order/info/auth/list",
-    method: "get",
+    method: "post",
     params: {
       current,
       size
-    }
+    },
+    data
   });
 }
 

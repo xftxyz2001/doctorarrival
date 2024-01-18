@@ -5,6 +5,7 @@ import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
+import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -33,11 +34,12 @@ public class OrderInfoApiController {
     }
 
     // 获取订单列表
-    @GetMapping("/auth/list")
+    @PostMapping("/auth/list")
     public IPage<OrderInfo> getOrderList(@RequestHeader(JwtHelper.X_USER_ID) Long userId,
+                                         @RequestBody @NotNull OrderInfoQueryParam orderInfoQueryParam,
                                          @RequestParam(value = "current", defaultValue = "1") Long current,
                                          @RequestParam(value = "size", defaultValue = "10") Long size) {
-        return orderInfoService.getOrderList(userId, current, size);
+        return orderInfoService.getOrderList(userId, orderInfoQueryParam, current, size);
     }
 
     // 取消订单
