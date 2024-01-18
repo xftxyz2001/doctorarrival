@@ -67,6 +67,8 @@ public enum ResultEnum {
     ORDER_UPDATE_FAILED(704, "订单更新失败"),
     ORDER_STATUS_UPDATE_FAILED(705, "订单状态更新失败"),
     ORDER_STATUS_NOT_ALLOW(706, "订单状态不允许"),
+
+    ORDER_STATUS_CANNOT_CANCEL(707, "订单状态不允许取消"),
     ;
 
     private final Integer code;

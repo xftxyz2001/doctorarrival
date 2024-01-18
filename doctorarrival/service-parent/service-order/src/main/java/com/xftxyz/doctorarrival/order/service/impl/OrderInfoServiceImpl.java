@@ -175,7 +175,27 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Override
     public Boolean cancelOrder(Long userId, Long orderId) {
-        return null;
+        // 查询订单
+        LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrderInfo::getUserId, userId);
+        lambdaQueryWrapper.eq(OrderInfo::getId, orderId);
+        OrderInfo orderInfo = baseMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(orderInfo)) {
+            throw new BusinessException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        // 未支付->取消；支付->退款；其他状态->不可取消
+        Integer orderStatus = orderInfo.getOrderStatus();
+        if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderStatus)) {
+            orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
+        } else if (OrderInfo.ORDER_STATUS_PAID.equals(orderStatus)) {
+            orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
+        } else {
+            throw new BusinessException(ResultEnum.ORDER_STATUS_CANNOT_CANCEL);
+        }
+        if (baseMapper.updateById(orderInfo) <= 0) {
+            throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
+        }
+        return true;
     }
 }
 
