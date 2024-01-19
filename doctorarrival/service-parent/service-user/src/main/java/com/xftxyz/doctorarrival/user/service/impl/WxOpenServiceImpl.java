@@ -84,6 +84,7 @@ public class WxOpenServiceImpl implements WxOpenService {
         }
         // 生成token
         String token = JwtHelper.generateToken(userInfo.getId());
-        return "redirect:" + wxOpenProperties.getSiteOrigin() + "/weixin/callback" + "?token=" + token;
+        String nickName = URLEncoder.encode(userInfo.getNickName(), StandardCharsets.UTF_8);
+        return "redirect:" + wxOpenProperties.getSiteOrigin() + "/weixin/callback" + "?token=" + token + "&nickName=" + nickName;
     }
 }

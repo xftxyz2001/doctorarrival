@@ -21,12 +21,12 @@
         <span class="v-link clickable">帮助中心</span>
 
         <!-- 未登录状态 -->
-        <span v-if="!nickName" class="v-link clickable" @click="showLoginDialog">登录/注册</span>
+        <span v-if="!token" class="v-link clickable" @click="showLoginDialog">登录/注册</span>
 
         <!-- 登录状态 -->
-        <el-dropdown v-if="nickName" @command="loginUserMenu">
+        <el-dropdown v-if="token" @command="loginUserMenu">
           <span class="el-dropdown-link">
-            {{ nickName }}
+            {{ token.nickName }}
             <el-icon class="el-icon--right"><el-icon-arrow-down /></el-icon>
           </span>
           <template v-slot:dropdown>
@@ -157,8 +157,8 @@ const defaultDialogAtrr = {
   second: -1 // 倒计时间  second>0 : 显示倒计时 second=0 ：重新发送 second=-1 ：什么都不显示
 };
 
-const dialogUserFormVisible = ref(false); // 登录弹出层
-const nickName = ref(""); // 昵称
+const dialogUserFormVisible = useLoginDialogVisible(); // 登录弹出层
+const token = useToken(); // 昵称
 const dialogAtrr = ref(JSON.parse(JSON.stringify(defaultDialogAtrr))); // 登录弹出层属性
 let clearSmsTime = null; // 倒计时定时任务引用 关闭登录层清除定时任务
 let phoneNumber = ""; // 上次发送验证码的手机号（用于重新发送验证码）
@@ -192,10 +192,17 @@ function loginUserMenu(command) {
     router.push("/user/order");
   } else if (command === "/logout") {
     // 清除token
-    useToken().value = "";
+    token.value = undefined;
     // 清除昵称
-    nickName.value = "";
-    router.push("/");
+    // nickName.value = "";
+    location.reload();
+    // router.push("/");
+    // router.push({
+    //   path: "/",
+    //   query: {
+    //     s: Math.random()
+    //   }
+    // });
   }
 }
 
@@ -271,23 +278,23 @@ function getVerificationCode() {
 }
 
 // 尝试获取昵称
-function tryGetNickName() {
-  // 检查token
-  if (!useToken().value) {
-    return;
-  }
-  getUserInfoBasic().then(res => {
-    nickName.value = res.nickName;
-  });
-}
-tryGetNickName();
+// function tryGetNickName() {
+//   // 检查token
+//   if (!useToken().value) {
+//     return;
+//   }
+//   getUserInfoBasic().then(res => {
+//     nickName.value = res.nickName;
+//   });
+// }
+// tryGetNickName();
 
 // 登陆成功
-function loginSuccess(token) {
+function loginSuccess(loginResponse) {
   // 保存token
-  useToken().value = token;
+  token.value = loginResponse;
   // 获取用户基本信息
-  tryGetNickName();
+  // tryGetNickName();
   // 关闭登录弹出层
   closeLoginDialog();
 }
@@ -314,7 +321,7 @@ function sendButtonClick() {
     // 执行验证码登录
     login({ phoneNumber, verificationCode }).then(res => {
       if (res) {
-        loginSuccess(res.token);
+        loginSuccess(res);
       } else {
         // 登录失败
         ElMessage({
@@ -343,8 +350,7 @@ function phoneLogin() {
 if (window) {
   addEventListener("message", e => {
     if (e.origin === location.origin) {
-      const { token } = e.data;
-      loginSuccess(token);
+      loginSuccess(e.data);
     }
   });
 }

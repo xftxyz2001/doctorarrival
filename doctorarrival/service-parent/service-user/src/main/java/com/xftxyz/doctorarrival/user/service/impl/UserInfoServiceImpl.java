@@ -148,6 +148,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         String token = JwtHelper.generateToken(userInfo.getId());
         // 响应
         LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setNickName(userInfo.getNickName());
         loginResponse.setToken(token);
         return loginResponse;
     }
