@@ -1,5 +1,6 @@
 package com.xftxyz.doctorarrival.common.controller;
 
+import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.common.service.DictService;
 import com.xftxyz.doctorarrival.domain.common.Dict;
 import jakarta.validation.constraints.Min;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Validated
 @RequiredArgsConstructor
@@ -33,5 +36,17 @@ public class DictApiController {
     @GetMapping("/children/code/{dictCode}")
     public List<Dict> getDictChildrenByDictCode(@PathVariable("dictCode") String dictCode) {
         return dictService.getDictChildrenByDictCode(dictCode);
+    }
+
+    @NoWrap
+    @GetMapping("/inner/map/code/{dictCode}")
+    public Map<String, String> getDictMapByDictCodeInner(@PathVariable("dictCode") String dictCode) {
+        return dictService.getDictMapByDictCodeInner(dictCode);
+    }
+
+    @NoWrap
+    @GetMapping("/inner/map/administrative/divisions")
+    public Map<String, String> getAdministrativeDivisionsMapInner() {
+        return dictService.getAdministrativeDivisionsMapInner();
     }
 }

@@ -37,7 +37,7 @@
                   @click="hospitalTypeSelect(item)"
                   :class="hospitalQueryObj.hospitalType === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}
+                  {{ item.name }}
                 </span>
               </div>
             </div>
@@ -53,7 +53,7 @@
                   @click="provinceSelect(item)"
                   :class="hospitalQueryObj.provinceCode === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}
+                  {{ item.name }}
                 </span>
               </div>
             </div>
@@ -67,7 +67,7 @@
                   @click="citySelect(item)"
                   :class="hospitalQueryObj.cityCode === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}
+                  {{ item.name }}
                 </span>
               </div>
             </div>
@@ -81,7 +81,7 @@
                   @click="districtSelect(item)"
                   :class="hospitalQueryObj.districtCode === item.id ? 'selected' : ''"
                 >
-                  {{ item.value }}
+                  {{ item.name }}
                 </span>
               </div>
             </div>
@@ -225,7 +225,7 @@ getHospitalTypeList();
 
 // 医院类型选择
 function hospitalTypeSelect(item) {
-  hospitalQueryObj.value.hospitalType = item.id;
+  hospitalQueryObj.value.hospitalType = item.value;
   getHospitalList();
 }
 

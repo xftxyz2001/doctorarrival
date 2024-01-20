@@ -29,6 +29,12 @@ public class Dict implements Serializable {
     private Long parentId;
 
     /**
+     * 名称
+     */
+    @TableField(value = "name")
+    private String name;
+
+    /**
      * 值
      */
     @TableField(value = "value")

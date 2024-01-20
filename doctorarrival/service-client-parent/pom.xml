@@ -15,6 +15,7 @@
     <modules>
         <module>service-client-hospital</module>
         <module>service-client-user</module>
+        <module>service-client-common</module>
     </modules>
 
     <properties>

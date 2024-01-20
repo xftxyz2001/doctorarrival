@@ -4,15 +4,17 @@
 CREATE DATABASE `doctorarrival_common` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
 USE `doctorarrival_common`;
 -- 数据字典表
-CREATE TABLE `dict` (
-    `id` bigint NOT NULL COMMENT 'id',
-    `parent_id` bigint NOT NULL COMMENT '上级id',
-    `value` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '值',
-    `dict_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '编码',
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX `idx_dict_code`(`dict_code` ASC) USING BTREE,
-    INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '数据字典表' ROW_FORMAT = Dynamic;
+CREATE TABLE `dict`  (
+  `id` bigint NOT NULL COMMENT 'id',
+  `parent_id` bigint NOT NULL COMMENT '上级id',
+  `name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
+  `value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '值',
+  `dict_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '编码',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_dict_code`(`dict_code` ASC) USING BTREE,
+  INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '数据字典表' ROW_FORMAT = DYNAMIC;
+
 -- 
 -- 医院模块
 -- 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xftxyz.doctorarrival.common.mapper.DictMapper;
 import com.xftxyz.doctorarrival.common.service.DictService;
 import com.xftxyz.doctorarrival.domain.common.Dict;
+import com.xftxyz.doctorarrival.enumeration.DictCodeEnum;
 import com.xftxyz.doctorarrival.exception.BusinessException;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.vo.common.DictExcelVO;
@@ -17,7 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author 25810
@@ -42,6 +46,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict>
                 Dict dict = new Dict();
                 dict.setId(dictExcelVO.getId());
                 dict.setParentId(dictExcelVO.getParentId());
+                dict.setName(dictExcelVO.getName());
                 dict.setValue(dictExcelVO.getValue());
                 dict.setDictCode(dictExcelVO.getDictCode());
                 return dict;
@@ -64,6 +69,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict>
                 DictExcelVO dictExcelVO = new DictExcelVO();
                 dictExcelVO.setId(dict.getId());
                 dictExcelVO.setParentId(dict.getParentId());
+                dictExcelVO.setName(dict.getName());
                 dictExcelVO.setValue(dict.getValue());
                 dictExcelVO.setDictCode(dict.getDictCode());
                 return dictExcelVO;
@@ -97,6 +103,48 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict>
         List<Dict> dictList = baseMapper.selectList(lambdaQueryWrapper);
         dictList.forEach(this::fillHasChildren);
         return dictList;
+    }
+
+    @Override
+    public Map<String, String> getDictMapByDictCodeInner(String dictCode) {
+        LambdaQueryWrapper<Dict> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getDictCode, dictCode);
+        Dict dict = baseMapper.selectOne(lambdaQueryWrapper);
+        lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getParentId, dict.getId());
+        List<Dict> dictList = baseMapper.selectList(lambdaQueryWrapper);
+        return dictList.stream().collect(Collectors.toMap(Dict::getValue, Dict::getName));
+    }
+
+    @Override
+    public Map<String, String> getAdministrativeDivisionsMapInner() {
+        LambdaQueryWrapper<Dict> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getDictCode, DictCodeEnum.ADMINISTRATIVE_DIVISIONS.getCode());
+        Dict dict = baseMapper.selectOne(lambdaQueryWrapper);
+
+        Map<String, String> administrativeDivisionsMap = new HashMap<>();
+        // 查询省
+        lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getParentId, dict.getId());
+        List<Dict> provinceList = baseMapper.selectList(lambdaQueryWrapper);
+        provinceList.forEach(province -> {
+            administrativeDivisionsMap.put(province.getValue(), province.getName());
+            // 查询市
+            LambdaQueryWrapper<Dict> cityWrapper = new LambdaQueryWrapper<>();
+            cityWrapper.eq(Dict::getParentId, province.getId());
+            List<Dict> cityList = baseMapper.selectList(cityWrapper);
+            cityList.forEach(city -> {
+                administrativeDivisionsMap.put(city.getValue(), province.getName() + city.getName());
+                // 查询区
+                LambdaQueryWrapper<Dict> districtWrapper = new LambdaQueryWrapper<>();
+                districtWrapper.eq(Dict::getParentId, city.getId());
+                List<Dict> districtList = baseMapper.selectList(districtWrapper);
+                districtList.forEach(district -> {
+                    administrativeDivisionsMap.put(district.getValue(), province.getName());
+                });
+            });
+        });
+        return administrativeDivisionsMap;
     }
 
     private void fillHasChildren(Dict dict) {

@@ -18,14 +18,20 @@ public class DictExcelVO {
     private Long parentId;
 
     /**
+     * 名称
+     */
+    @ExcelProperty(value = "名称", index = 2)
+    private String name;
+
+    /**
      * 值
      */
-    @ExcelProperty(value = "值", index = 2)
+    @ExcelProperty(value = "值", index = 3)
     private String value;
 
     /**
      * 编码
      */
-    @ExcelProperty(value = "编码", index = 3)
+    @ExcelProperty(value = "编码", index = 4)
     private String dictCode;
 }

@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 25810
@@ -30,4 +31,8 @@ public interface DictService extends IService<Dict> {
     List<Dict> getDictChildrenByParentId(Long parentId);
 
     List<Dict> getDictChildrenByDictCode(String dictCode);
+
+    Map<String, String> getDictMapByDictCodeInner(String dictCode);
+
+    Map<String, String> getAdministrativeDivisionsMapInner();
 }
