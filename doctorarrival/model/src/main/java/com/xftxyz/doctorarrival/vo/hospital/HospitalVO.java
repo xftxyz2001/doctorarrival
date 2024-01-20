@@ -2,11 +2,6 @@ package com.xftxyz.doctorarrival.vo.hospital;
 
 import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 
 /**
  * 医院

@@ -1,7 +1,5 @@
 package com.xftxyz.doctorarrival.order.service;
 
-import com.alipay.api.AlipayApiException;
-
 public interface AlipayService {
     String getPayPage(Long userId, Long orderId);
 

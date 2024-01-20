@@ -18,7 +18,7 @@ export function findHospitalPage(searchObj, current, size) {
   return request({
     url: "/api/hospital/find/page",
     method: "post",
-    prams: { current, size },
+    params: { current, size },
     data: searchObj
   });
 }

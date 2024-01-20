@@ -1,7 +1,6 @@
 package com.xftxyz.doctorarrival.hospital.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xftxyz.doctorarrival.domain.hospital.Hospital;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalQueryVO;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalVO;
 

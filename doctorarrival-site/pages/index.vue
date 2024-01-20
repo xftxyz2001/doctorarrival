@@ -35,7 +35,7 @@
                   v-for="item in hospitalTypeList"
                   :key="item.id"
                   @click="hospitalTypeSelect(item)"
-                  :class="hospitalQueryObj.hospitalType === item.id ? 'selected' : ''"
+                  :class="hospitalQueryObj.hospitalType === item.value ? 'selected' : ''"
                 >
                   {{ item.name }}
                 </span>
@@ -109,6 +109,22 @@
                 <img :src="item.logoData" :alt="item.hospitalName" class="hospital-img" />
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- 加载更多 -->
+        <div
+          class="v-card clickable list-item"
+          @click="loadMore"
+          v-show="hospitalListPage.current < hospitalListPage.pages"
+        >
+          <div style="text-align: center">
+            <span class="text">加载更多</span>
+          </div>
+        </div>
+        <div class="v-card clickable list-item" v-show="hospitalListPage.current >= hospitalListPage.pages">
+          <div style="text-align: center">
+            <span class="text">没有更多了</span>
           </div>
         </div>
       </div>
@@ -213,6 +229,7 @@ const provinceList = ref([]); // 省份列表
 const cityList = ref([]); // 城市列表
 const districtList = ref([]); // 地区列表
 
+const hospitalListPage = ref([]); // 医院列表分页
 const hospitalList = ref([]); // 医院列表
 
 // 获取医院类型列表
@@ -283,11 +300,20 @@ function districtSelect(item) {
 
 // 获取医院列表
 function getHospitalList() {
-  findHospitalPage(hospitalQueryObj.value, 1, 10).then(res => {
+  findHospitalPage(hospitalQueryObj.value).then(res => {
+    hospitalListPage.value = res;
     hospitalList.value = res.records;
   });
 }
 getHospitalList();
+
+// 加载更多
+function loadMore() {
+  findHospitalPage(hospitalQueryObj.value, hospitalListPage.value.current + 1, 10).then(res => {
+    hospitalListPage.value = res;
+    hospitalList.value = hospitalList.value.concat(res.records);
+  });
+}
 
 // 跳转到医院页面
 const router = useRouter();
