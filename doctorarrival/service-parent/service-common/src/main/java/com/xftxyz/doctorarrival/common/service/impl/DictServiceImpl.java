@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -117,34 +117,30 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict>
     }
 
     @Override
-    public Map<String, String> getAdministrativeDivisionsMapInner() {
+    public List<String> getAdministrativeDivisionsListInner(String provinceCode, String cityCode, String districtCode) {
         LambdaQueryWrapper<Dict> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Dict::getDictCode, DictCodeEnum.ADMINISTRATIVE_DIVISIONS.getCode());
         Dict dict = baseMapper.selectOne(lambdaQueryWrapper);
 
-        Map<String, String> administrativeDivisionsMap = new HashMap<>();
-        // 查询省
+        List<String> administrativeDivisionsNameList = new ArrayList<>();
         lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Dict::getParentId, dict.getId());
-        List<Dict> provinceList = baseMapper.selectList(lambdaQueryWrapper);
-        provinceList.forEach(province -> {
-            administrativeDivisionsMap.put(province.getValue(), province.getName());
-            // 查询市
-            LambdaQueryWrapper<Dict> cityWrapper = new LambdaQueryWrapper<>();
-            cityWrapper.eq(Dict::getParentId, province.getId());
-            List<Dict> cityList = baseMapper.selectList(cityWrapper);
-            cityList.forEach(city -> {
-                administrativeDivisionsMap.put(city.getValue(), province.getName() + city.getName());
-                // 查询区
-                LambdaQueryWrapper<Dict> districtWrapper = new LambdaQueryWrapper<>();
-                districtWrapper.eq(Dict::getParentId, city.getId());
-                List<Dict> districtList = baseMapper.selectList(districtWrapper);
-                districtList.forEach(district -> {
-                    administrativeDivisionsMap.put(district.getValue(), province.getName());
-                });
-            });
-        });
-        return administrativeDivisionsMap;
+        lambdaQueryWrapper.eq(Dict::getValue, provinceCode);
+        Dict province = baseMapper.selectOne(lambdaQueryWrapper);
+        administrativeDivisionsNameList.add(province.getName());
+
+        lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getParentId, province.getId());
+        lambdaQueryWrapper.eq(Dict::getValue, cityCode);
+        Dict city = baseMapper.selectOne(lambdaQueryWrapper);
+        administrativeDivisionsNameList.add(city.getName());
+
+        lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Dict::getParentId, city.getId());
+        lambdaQueryWrapper.eq(Dict::getValue, districtCode);
+        Dict district = baseMapper.selectOne(lambdaQueryWrapper);
+        administrativeDivisionsNameList.add(district.getName());
+        return administrativeDivisionsNameList;
     }
 
     private void fillHasChildren(Dict dict) {

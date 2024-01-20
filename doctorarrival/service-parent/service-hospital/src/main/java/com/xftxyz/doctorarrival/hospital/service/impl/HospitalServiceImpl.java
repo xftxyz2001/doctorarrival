@@ -3,7 +3,6 @@ package com.xftxyz.doctorarrival.hospital.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xftxyz.doctorarrival.common.client.DictApiClient;
-import com.xftxyz.doctorarrival.domain.common.Dict;
 import com.xftxyz.doctorarrival.domain.hospital.Hospital;
 import com.xftxyz.doctorarrival.enumeration.DictCodeEnum;
 import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,15 +49,17 @@ public class HospitalServiceImpl implements HospitalService {
 
     private List<HospitalVO> warptoHospitalVO(List<Hospital> hospitalList) {
         Map<String, String> hospitalTypeMap = dictApiClient.getDictMapByDictCodeInner(DictCodeEnum.HOSPITAL_TYPE.getCode());
-        Map<String, String> administrativeDivisionsMap = dictApiClient.getAdministrativeDivisionsMapInner();
         return hospitalList.stream().map(hospital -> {
             HospitalVO hospitalVO = new HospitalVO();
             hospitalVO.setHospitalCode(hospital.getHospitalCode());
             hospitalVO.setHospitalName(hospital.getHospitalName());
             hospitalVO.setHospitalType(hospitalTypeMap.get(hospital.getHospitalType()));
-            hospitalVO.setProvince(administrativeDivisionsMap.get(hospital.getProvinceCode()));
-            hospitalVO.setCity(administrativeDivisionsMap.get(hospital.getCityCode()));
-            hospitalVO.setDistrict(administrativeDivisionsMap.get(hospital.getDistrictCode()));
+
+            List<String> administrativeDivisionsList = dictApiClient.getAdministrativeDivisionsListInner(hospital.getProvinceCode(), hospital.getCityCode(), hospital.getDistrictCode());
+            hospitalVO.setProvince(administrativeDivisionsList.get(0));
+            hospitalVO.setCity(administrativeDivisionsList.get(1));
+            hospitalVO.setDistrict(administrativeDivisionsList.get(2));
+
             hospitalVO.setAddress(hospital.getAddress());
             hospitalVO.setLogoData(hospital.getLogoData());
             hospitalVO.setIntro(hospital.getIntro());
@@ -72,14 +72,16 @@ public class HospitalServiceImpl implements HospitalService {
 
     private HospitalVO warptoHospitalVO(Hospital hospital) {
         Map<String, String> hospitalTypeMap = dictApiClient.getDictMapByDictCodeInner(DictCodeEnum.HOSPITAL_TYPE.getCode());
-        Map<String, String> administrativeDivisionsMap = dictApiClient.getAdministrativeDivisionsMapInner();
         HospitalVO hospitalVO = new HospitalVO();
         hospitalVO.setHospitalCode(hospital.getHospitalCode());
         hospitalVO.setHospitalName(hospital.getHospitalName());
         hospitalVO.setHospitalType(hospitalTypeMap.get(hospital.getHospitalType()));
-        hospitalVO.setProvince(administrativeDivisionsMap.get(hospital.getProvinceCode()));
-        hospitalVO.setCity(administrativeDivisionsMap.get(hospital.getCityCode()));
-        hospitalVO.setDistrict(administrativeDivisionsMap.get(hospital.getDistrictCode()));
+
+        List<String> administrativeDivisionsList = dictApiClient.getAdministrativeDivisionsListInner(hospital.getProvinceCode(), hospital.getCityCode(), hospital.getDistrictCode());
+        hospitalVO.setProvince(administrativeDivisionsList.get(0));
+        hospitalVO.setCity(administrativeDivisionsList.get(1));
+        hospitalVO.setDistrict(administrativeDivisionsList.get(2));
+
         hospitalVO.setAddress(hospital.getAddress());
         hospitalVO.setLogoData(hospital.getLogoData());
         hospitalVO.setIntro(hospital.getIntro());
@@ -87,5 +89,6 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalVO.setBookingRule(hospital.getBookingRule());
 
         return hospitalVO;
+
     }
 }

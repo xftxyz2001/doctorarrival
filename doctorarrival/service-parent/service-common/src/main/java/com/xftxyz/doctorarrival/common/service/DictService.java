@@ -34,5 +34,5 @@ public interface DictService extends IService<Dict> {
 
     Map<String, String> getDictMapByDictCodeInner(String dictCode);
 
-    Map<String, String> getAdministrativeDivisionsMapInner();
+    List<String> getAdministrativeDivisionsListInner(String provinceCode, String cityCode, String districtCode);
 }
