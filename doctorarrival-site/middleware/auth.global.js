@@ -1,10 +1,13 @@
+function needAuth(path) {
+  return path.includes("user") || path.includes("booking") || path.includes("order");
+}
+
 export default defineNuxtRouteMiddleware((to, from) => {
-  // 如果to.path包含user或booking
-  if (to.path.includes("user") || to.path.includes("booking")) {
+  if (needAuth(to.path)) {
     // 没有token
     if (!useToken().value) {
       // 键入网址/刷新页面进入，导向首页
-      if (from.path.includes("user") || from.path.includes("booking")) {
+      if (needAuth(from.path)) {
         return navigateTo("/");
       }
       // 其他情况，弹出登录框

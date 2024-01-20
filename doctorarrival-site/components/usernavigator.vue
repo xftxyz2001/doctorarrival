@@ -33,8 +33,8 @@ const navigation = ref([
     path: "/user/order"
   },
   {
-    name: "意见反馈",
-    path: "/user/feedback"
+    name: "问题讨论",
+    path: "/user/discuss"
   }
 ]);
 </script>

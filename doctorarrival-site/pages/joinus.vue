@@ -1,13 +1,7 @@
 <template>
-  <div>
-    尽请期待
-  </div>
+  <div>尽请期待</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style>
-
-</style>
+<style></style>

@@ -33,11 +33,11 @@ const navigation = ref([
   },
   {
     name: "停诊信息",
-    path: `/hospital/${hospitalCode}/stop`
+    path: `/hospital/${hospitalCode}/info`
   },
   {
     name: "查询/取消",
-    path: `/hospital/${hospitalCode}/cancel`
+    path: `/hospital/${hospitalCode}/order`
   }
 ]);
 </script>
