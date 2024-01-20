@@ -14,6 +14,7 @@ import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.user.client.PatientApiClient;
+import com.xftxyz.doctorarrival.vo.hospital.ScheduleVO;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
@@ -127,16 +128,16 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         String scheduleId = submitOrderParam.getScheduleId();
         Long patientId = submitOrderParam.getPatientId();
 
-        Schedule schedule = scheduleApiClient.getScheduleByIdInner(scheduleId);
+        ScheduleVO schedule = scheduleApiClient.getScheduleByIdInner(scheduleId);
         Patient patient = patientApiClient.getPatientDetailInner(patientId);
 
         // 构造订单
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setUserId(userId);
         orderInfo.setHospitalCode(schedule.getHospitalCode());
-        // orderInfo.setHospitalName("");
+        orderInfo.setHospitalName(schedule.getHospitalName());
         orderInfo.setDepartmentCode(schedule.getDepartmentCode());
-        // orderInfo.setDepartmentName("");
+        orderInfo.setDepartmentName(schedule.getDepartmentName());
         orderInfo.setDoctorName(schedule.getDoctorName());
         orderInfo.setDoctorTitle(schedule.getDoctorTitle());
         orderInfo.setScheduleId(schedule.getHospitalScheduleId());

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.hospital.service.ScheduleService;
-import com.xftxyz.doctorarrival.vo.hospital.ScheduleDateVO;
+import com.xftxyz.doctorarrival.vo.hospital.ScheduleVO;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +28,10 @@ public class ScheduleApiController {
     }
 
     @GetMapping("/page")
-    public IPage<ScheduleDateVO> getSchedulePage(@RequestParam("hospitalCode") @NotBlank String hospitalCode,
-                                                 @RequestParam("departmentCode") @NotBlank String departmentCode,
-                                                 @RequestParam(value = "current", defaultValue = "1") @Min(1) Long current,
-                                                 @RequestParam(value = "size", defaultValue = "7") @Min(1) Long size) {
+    public IPage<ScheduleVO> getSchedulePage(@RequestParam("hospitalCode") @NotBlank String hospitalCode,
+                                             @RequestParam("departmentCode") @NotBlank String departmentCode,
+                                             @RequestParam(value = "current", defaultValue = "1") @Min(1) Long current,
+                                             @RequestParam(value = "size", defaultValue = "7") @Min(1) Long size) {
         return scheduleService.findSchedulePage(hospitalCode, departmentCode, current, size);
     }
 
@@ -43,13 +43,13 @@ public class ScheduleApiController {
     }
 
     @GetMapping("/id/{id}")
-    public Schedule getScheduleById(@PathVariable("id") @NotBlank String id) {
+    public ScheduleVO getScheduleById(@PathVariable("id") @NotBlank String id) {
         return scheduleService.findScheduleById(id);
     }
 
     @NoWrap
     @GetMapping("/inner/id/{id}")
-    public Schedule getScheduleByIdInner(@PathVariable("id") @NotBlank String id) {
+    public ScheduleVO getScheduleByIdInner(@PathVariable("id") @NotBlank String id) {
         return scheduleService.findScheduleByIdNoWarp(id);
     }
 }

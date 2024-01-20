@@ -93,19 +93,19 @@
                 <el-form-item label="就诊日期：">
                   <div class="content">
                     <span>
-                      {{ schedule.workDate }} {{ "schedule.param.dayOfWeek" }}
+                      {{ schedule.workDate }} {{ schedule.dayOfWeek }}
                       {{ schedule.workTime == 0 ? "上午" : "下午" }}
                     </span>
                   </div>
                 </el-form-item>
                 <el-form-item label="就诊医院：">
                   <div class="content">
-                    <span>{{ schedule.hospitalCode }}</span>
+                    <span>{{ schedule.hospitalName }}</span>
                   </div>
                 </el-form-item>
                 <el-form-item label="就诊科室：">
                   <div class="content">
-                    <span>{{ schedule.departmentCode }}</span>
+                    <span>{{ schedule.departmentName }}</span>
                   </div>
                 </el-form-item>
                 <el-form-item label="医生姓名：">

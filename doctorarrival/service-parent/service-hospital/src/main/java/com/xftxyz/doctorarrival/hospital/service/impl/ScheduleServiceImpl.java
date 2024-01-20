@@ -2,14 +2,17 @@ package com.xftxyz.doctorarrival.hospital.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xftxyz.doctorarrival.domain.hospital.Department;
+import com.xftxyz.doctorarrival.domain.hospital.Hospital;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.exception.BusinessException;
 import com.xftxyz.doctorarrival.helper.DateTimeHelper;
+import com.xftxyz.doctorarrival.hospital.repository.DepartmentRepository;
 import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
 import com.xftxyz.doctorarrival.hospital.repository.ScheduleRepository;
 import com.xftxyz.doctorarrival.hospital.service.ScheduleService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
-import com.xftxyz.doctorarrival.vo.hospital.ScheduleDateVO;
+import com.xftxyz.doctorarrival.vo.hospital.ScheduleVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
+    private final DepartmentRepository departmentRepository;
+
     private final HospitalRepository hospitalRepository;
 
     @Override
@@ -32,7 +37,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public IPage<ScheduleDateVO> findSchedulePage(String hospitalCode, String departmentCode, Long current, Long size) {
+    public IPage<ScheduleVO> findSchedulePage(String hospitalCode, String departmentCode, Long current, Long size) {
         // 创建今天开始的Date（不包含时分秒）
         Date today = DateTimeHelper.getTodayStartDate();
         // 查询预约周期
@@ -49,7 +54,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         // 按照日期分组
         Map<Date, List<Schedule>> groupedSchedule = scheduleListAll.stream().collect(Collectors.groupingBy(Schedule::getWorkDate));
         // 过滤出在分页范围内的排班
-        List<ScheduleDateVO> scheduleDateVOList = groupedSchedule.entrySet().stream().filter(entry -> {
+        List<ScheduleVO> scheduleDateVOList = groupedSchedule.entrySet().stream().filter(entry -> {
             Date workDate = entry.getKey();
             return workDate.after(startDate) && workDate.before(endDate);
         }).map(entry -> {
@@ -61,7 +66,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             Integer availableNumber = scheduleList.stream().mapToInt(Schedule::getAvailableNumber).sum();
             Integer status = scheduleList.stream().mapToInt(Schedule::getStatus).max().getAsInt();
 
-            ScheduleDateVO scheduleDateVO = new ScheduleDateVO();
+            ScheduleVO scheduleDateVO = new ScheduleVO();
             scheduleDateVO.setHospitalCode(hospitalCode);
             scheduleDateVO.setDepartmentCode(departmentCode);
             scheduleDateVO.setWorkDate(workDate);
@@ -71,9 +76,9 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleDateVO.setStatus(status);
 
             return scheduleDateVO;
-        }).sorted(Comparator.comparing(ScheduleDateVO::getWorkDate)).toList();
+        }).sorted(Comparator.comparing(ScheduleVO::getWorkDate)).toList();
 
-        Page<ScheduleDateVO> scheduleVOPage = new Page<>(current, size, groupedSchedule.size());
+        Page<ScheduleVO> scheduleVOPage = new Page<>(current, size, groupedSchedule.size());
         return scheduleVOPage.setRecords(scheduleDateVOList);
     }
 
@@ -86,17 +91,44 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Schedule findScheduleById(String id) {
+    public ScheduleVO findScheduleById(String id) {
         Optional<Schedule> scheduleOptional = scheduleRepository.findById(id);
         if (scheduleOptional.isEmpty()) {
             throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
         }
-        return scheduleOptional.get();
+        return warptoScheduleVO(scheduleOptional.get());
+    }
+
+    private ScheduleVO warptoScheduleVO(Schedule schedule) {
+        ScheduleVO scheduleVO = new ScheduleVO();
+        String hospitalCode = schedule.getHospitalCode();
+        String departmentCode = schedule.getDepartmentCode();
+        scheduleVO.setHospitalCode(hospitalCode);
+        scheduleVO.setDepartmentCode(departmentCode);
+        Hospital hospital = hospitalRepository.findByHospitalCode(hospitalCode);
+        scheduleVO.setHospitalName(hospital.getHospitalName());
+        Department department = departmentRepository.findByHospitalCodeAndDepartmentCode(hospitalCode, departmentCode);
+        scheduleVO.setDepartmentName(department.getDepartmentName());
+
+        scheduleVO.setDoctorTitle(schedule.getDoctorTitle());
+        scheduleVO.setDoctorName(schedule.getDoctorName());
+        scheduleVO.setSkill(schedule.getSkill());
+        scheduleVO.setWorkDate(schedule.getWorkDate());
+        scheduleVO.setDayOfWeek(DateTimeHelper.getDayOfWeek(schedule.getWorkDate()));
+        scheduleVO.setWorkTime(schedule.getWorkTime());
+        scheduleVO.setReservedNumber(schedule.getReservedNumber());
+        scheduleVO.setAvailableNumber(schedule.getAvailableNumber());
+        scheduleVO.setAmount(schedule.getAmount());
+        scheduleVO.setStatus(schedule.getStatus());
+        scheduleVO.setHospitalScheduleId(schedule.getId());
+
+        return scheduleVO;
     }
 
     @Override
-    public Schedule findScheduleByIdNoWarp(String id) {
-        return scheduleRepository.findById(id).orElse(null);
+    public ScheduleVO findScheduleByIdNoWarp(String id) {
+        Optional<Schedule> scheduleOptional = scheduleRepository.findById(id);
+        return scheduleOptional.map(this::warptoScheduleVO).orElse(null);
     }
 
 }
