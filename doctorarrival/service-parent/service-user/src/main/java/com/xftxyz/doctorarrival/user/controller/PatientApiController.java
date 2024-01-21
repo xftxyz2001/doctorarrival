@@ -29,7 +29,7 @@ public class PatientApiController {
     // 根据就诊人id获取就诊人
     @GetMapping("/auth/detail/{patientId}")
     public PatientVO getPatientDetail(@RequestHeader(JwtHelper.X_USER_ID) String userId,
-                                    @PathVariable("patientId") String patientId) {
+                                      @PathVariable("patientId") String patientId) {
         return patientService.getPatientDetail(userId, patientId);
     }
 

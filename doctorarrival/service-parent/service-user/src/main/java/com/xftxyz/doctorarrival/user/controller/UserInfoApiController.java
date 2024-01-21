@@ -1,7 +1,6 @@
 package com.xftxyz.doctorarrival.user.controller;
 
 
-import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.user.service.UserInfoService;
 import com.xftxyz.doctorarrival.vo.user.*;
