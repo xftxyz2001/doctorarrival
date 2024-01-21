@@ -471,7 +471,8 @@ input::-ms-input-placeholder {
 }
 
 .v-input .el-input__inner {
-  padding-right: 90px;
+  width: 240px;
+  /* padding-right: 90px; */
 }
 
 .col-right-bottom {

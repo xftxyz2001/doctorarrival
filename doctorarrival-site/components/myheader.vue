@@ -347,11 +347,11 @@ function phoneLogin() {
 }
 
 // 监听微信扫码回调
-if (window) {
-  addEventListener("message", e => {
-    if (e.origin === location.origin) {
-      loginSuccess(e.data);
-    }
-  });
-}
+// if (window) {
+//   addEventListener("message", e => {
+//     if (e.origin === location.origin) {
+//       loginSuccess(e.data);
+//     }
+//   });
+// }
 </script>

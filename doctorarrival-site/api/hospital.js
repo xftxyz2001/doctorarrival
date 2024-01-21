@@ -62,3 +62,13 @@ export function getScheduleById(id) {
     method: "get"
   });
 }
+
+// join
+export function join(data) {
+  return request({
+    url: "/api/hospital/side/join",
+    method: "post",
+    data,
+    responseType: "blob"
+  });
+}

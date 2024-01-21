@@ -20,6 +20,12 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   response => {
+    // 非json数据直接返回
+    if (response.headers["content-type"].indexOf("application/json") === -1) {
+      return response;
+    }
+
+    // 统一处理返回数据
     const result = response.data;
 
     // SUCCESS(0, "成功"), // 成功

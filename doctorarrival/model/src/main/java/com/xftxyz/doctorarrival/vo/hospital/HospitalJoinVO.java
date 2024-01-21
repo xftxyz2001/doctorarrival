@@ -37,7 +37,42 @@ public class HospitalJoinVO {
     private String contactsPhone;
 
     /**
-     * 手机验证码
+     * 医院类型
      */
-    private String verificationCode;
+    private String hospitalType;
+
+    /**
+     * 省code
+     */
+    private String provinceCode;
+
+    /**
+     * 市code
+     */
+    private String cityCode;
+
+    /**
+     * 区code
+     */
+    private String districtCode;
+
+    /**
+     * 详情地址
+     */
+    private String address;
+
+    /**
+     * 医院logo
+     */
+    private String logoData;
+
+    /**
+     * 医院简介
+     */
+    private String intro;
+
+    /**
+     * 坐车路线
+     */
+    private String route;
 }

@@ -49,14 +49,15 @@ public class HospitalSideServiceImpl implements HospitalSideService {
     @Override
     public Resource join(HospitalJoinVO hospitalJoinVO) {
         // 验证码校验
-        String redisKey = SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX + hospitalJoinVO.getContactsPhone();
-        if (Boolean.FALSE.equals(stringRedisTemplate.hasKey(redisKey))) {
-            throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_EXPIRED);
-        }
-        String code = stringRedisTemplate.opsForValue().get(redisKey);
-        if (!hospitalJoinVO.getVerificationCode().equals(code)) {
-            throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_ERROR);
-        }
+        // String redisKey = SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX + hospitalJoinVO.getContactsPhone();
+        // if (Boolean.FALSE.equals(stringRedisTemplate.hasKey(redisKey))) {
+        //     throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_EXPIRED);
+        // }
+        // String code = stringRedisTemplate.opsForValue().get(redisKey);
+        // if (!hospitalJoinVO.getVerificationCode().equals(code)) {
+        //     throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_ERROR);
+        // }
+
         // 检查医院是否已经加入
         LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(HospitalSet::getHospitalCode, hospitalJoinVO.getHospitalCode());
@@ -80,6 +81,21 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         if (hospitalSetMapper.insert(hospitalSet) <= 0) {
             throw new BusinessException(ResultEnum.HOSPITAL_SET_SAVE_FAILED);
         }
+
+        // 处理附加信息
+        Hospital hospital = new Hospital();
+        hospital.setHospitalCode(hospitalJoinVO.getHospitalCode());
+        hospital.setHospitalName(hospitalJoinVO.getHospitalName());
+        hospital.setHospitalType(hospitalJoinVO.getHospitalType());
+        hospital.setProvinceCode(hospitalJoinVO.getProvinceCode());
+        hospital.setCityCode(hospitalJoinVO.getCityCode());
+        hospital.setDistrictCode(hospitalJoinVO.getDistrictCode());
+        hospital.setAddress(hospitalJoinVO.getAddress());
+        hospital.setLogoData(hospitalJoinVO.getLogoData());
+        hospital.setIntro(hospitalJoinVO.getIntro());
+        hospital.setRoute(hospitalJoinVO.getRoute());
+        hospitalRepository.save(hospital);
+
         return new InputStreamResource(new ByteArrayInputStream(keyPair.getPrivate().getEncoded()));
     }
 
