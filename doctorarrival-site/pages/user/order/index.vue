@@ -83,6 +83,7 @@
         <!-- 分页 -->
         <el-pagination
           class="pagination"
+          style="justify-content: center"
           layout="prev, pager, next"
           :current-page="orderListPage.current"
           :total="orderListPage.total"

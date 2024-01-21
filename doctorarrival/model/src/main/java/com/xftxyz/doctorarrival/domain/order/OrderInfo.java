@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -106,10 +107,10 @@ public class OrderInfo implements Serializable {
     private String patientPhone;
 
     /**
-     * 订单金额（分）
+     * 订单金额
      */
     @TableField(value = "amount")
-    private Integer amount;
+    private BigDecimal amount;
 
     /**
      * 订单状态（-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）

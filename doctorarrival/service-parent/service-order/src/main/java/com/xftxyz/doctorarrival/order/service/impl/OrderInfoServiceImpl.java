@@ -146,7 +146,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setPatientId(patientId);
         orderInfo.setPatientName(patient.getName());
         orderInfo.setPatientPhone(patient.getPhone());
-        orderInfo.setAmount(1);
+        orderInfo.setAmount(schedule.getAmount());
         orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_UNPAID);
 
         if (baseMapper.insert(orderInfo) <= 0) {

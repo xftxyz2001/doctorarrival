@@ -57,7 +57,7 @@ public class UpdateOrderRequest {
     private String patientPhone;
 
     /**
-     * 订单金额（分）
+     * 订单金额
      */
     private Integer amount;
 

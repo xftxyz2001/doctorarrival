@@ -79,7 +79,7 @@
               </el-form-item>
               <el-form-item label="医事服务费：">
                 <div class="content">
-                  <div class="fee">{{ orderInfo.amount / 100 }}元</div>
+                  <div class="fee">{{ orderInfo.amount }}元</div>
                 </div>
               </el-form-item>
               <el-form-item label="挂号单号：">

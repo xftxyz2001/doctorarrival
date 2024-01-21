@@ -45,8 +45,7 @@ public class AlipayServiceImpl implements AlipayService {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         AlipayTradePagePayModel model = new AlipayTradePagePayModel();
         model.setOutTradeNo(orderId.toString());
-        BigDecimal amount = new BigDecimal(orderInfo.getAmount()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-        model.setTotalAmount(amount.toString());
+        model.setTotalAmount(orderInfo.getAmount().toString());
         String subject = orderInfo.getHospitalName() + "-" + orderInfo.getDepartmentName() + "-" + orderInfo.getDoctorName() + "-" + orderInfo.getReserveDate();
         model.setSubject(subject);
         model.setProductCode("FAST_INSTANT_TRADE_PAY");
