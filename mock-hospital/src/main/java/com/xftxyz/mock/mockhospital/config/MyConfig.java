@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyConfig {
 
+
     @Bean
     public DoctorarrivalService doctorarrivalService(@Value("${doctorarrival.hospitalCode}") String hospitalCode,
                                                      @Value("${doctorarrival.privateKeyLocation}") String privateKeyLocation) {
