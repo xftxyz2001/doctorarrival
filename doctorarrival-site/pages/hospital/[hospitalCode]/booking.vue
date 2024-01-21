@@ -20,7 +20,7 @@
                 <div class="v-card clickable item">
                   <div
                     class="inline"
-                    v-for="patient in patientListFix"
+                    v-for="patient in patientList"
                     :key="patient.id"
                     @click="selectPatient(patient)"
                     style="margin-right: 10px"
@@ -28,7 +28,7 @@
                     <div class="item-wrapper" :class="activePatient.id == patient.id ? 'selected' : ''">
                       <div>
                         <div class="item-title">{{ patient.name }}</div>
-                        <div>{{ patient.certificatesType }}</div>
+                        <div>{{ patient.certificatesTypeName }}</div>
                         <div>{{ patient.certificatesNo }}</div>
                       </div>
                       <img src="assets/images/checked.png" class="checked" />
@@ -65,7 +65,7 @@
                   <div>
                     <span class="name">
                       {{ activePatient.name }}
-                      {{ activePatient.certificatesNo }} {{ activePatient.certificatesType }}
+                      {{ activePatient.certificatesNo }} {{ activePatient.certificatesTypeName }}
                     </span>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="info">
                   <span class="type">{{ activePatient.insure == 0 ? "自费" : "医保" }}</span>
                   <span class="card-no">{{ activePatient.certificatesNo }}</span>
-                  <span class="card-view">{{ activePatient.certificatesType }}</span>
+                  <span class="card-view">{{ activePatient.certificatesTypeName }}</span>
                 </div>
                 <span class="operate"></span>
               </div>
@@ -162,7 +162,6 @@
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from "@/api/dict";
 import { getScheduleById } from "@/api/hospital";
 import { getPatientList } from "@/api/user";
 import { submitOrder } from "@/api/order";
@@ -171,8 +170,6 @@ const route = useRoute();
 const router = useRouter();
 const { scheduleId } = route.query;
 const schedule = ref({});
-
-const certificatesTypeList = ref([]);
 
 const patientList = ref([]);
 const activePatient = ref({});
@@ -187,37 +184,14 @@ function initSchedule() {
 }
 initSchedule();
 
-// 初始化证件类型
-function initCertificatesTypeList() {
-  getDictChildrenByDictCode("CertificatesType").then(res => {
-    certificatesTypeList.value = res;
-    // 修正id
-    certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000;
-    });
-  });
-}
-initCertificatesTypeList();
-
 // 初始化就诊人列表
 function initPatientList() {
   getPatientList().then(res => {
     patientList.value = res;
-    // activePatient.value = res[0];
+    activePatient.value = res[0];
   });
 }
 initPatientList();
-
-// 修正证件类型
-const patientListFix = computed(() => {
-  return patientList.value.map(item => {
-    const certificatesType = certificatesTypeList.value.find(type => type.id === item.certificatesType);
-    return {
-      ...item,
-      certificatesType: certificatesType ? certificatesType.value : ""
-    };
-  });
-});
 
 const showInfo = computed(() => {
   return Object.keys(activePatient.value).length > 0;

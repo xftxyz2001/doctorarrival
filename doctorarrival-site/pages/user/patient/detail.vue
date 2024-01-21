@@ -24,7 +24,7 @@
               </el-form-item>
               <el-form-item label="证件类型：">
                 <div class="">
-                  <span>{{ certificatesTypeString }}</span>
+                  <span>{{ patient.certificatesTypeName }}</span>
                 </div>
               </el-form-item>
               <el-form-item label="证件号码：">
@@ -67,27 +67,13 @@
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from "@/api/dict";
 import { getPatientDetail, removePatient } from "@/api/user";
 
 const route = useRoute();
 const router = useRouter();
 const patientId = route.query.id;
 
-const certificatesTypeList = ref([]);
 const patient = ref({});
-
-// 初始化证件类型
-function initCertificatesTypeList() {
-  getDictChildrenByDictCode("CertificatesType").then(res => {
-    certificatesTypeList.value = res;
-    // 修正id
-    certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000;
-    });
-  });
-}
-initCertificatesTypeList();
 
 function initPatient() {
   getPatientDetail(patientId).then(res => {
@@ -129,12 +115,6 @@ function edit() {
     }
   });
 }
-
-// 计算属性
-const certificatesTypeString = computed(() => {
-  const certificatesType = certificatesTypeList.value.find(item => item.id === patient.value.certificatesType);
-  return certificatesType ? certificatesType.value : "未知";
-});
 
 const genderString = computed(() => {
   return (patient.value.gender = patient.value.gender == 1 ? "男" : patient.value.gender == 0 ? "女" : "保密");

@@ -32,7 +32,7 @@ public interface UserInfoService extends IService<UserInfo> {
 
     UserInfoBasic getUserInfoBasic(String userId);
 
-    UserInfo getUserInfoDetail(String userId);
+    UserInfoVO getUserInfoDetail(String userId);
 
     Boolean saveRealName(String userId, RealNameParam realNameParam);
 

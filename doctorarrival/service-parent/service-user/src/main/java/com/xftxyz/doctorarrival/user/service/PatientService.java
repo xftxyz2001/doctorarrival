@@ -2,6 +2,7 @@ package com.xftxyz.doctorarrival.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xftxyz.doctorarrival.domain.user.Patient;
+import com.xftxyz.doctorarrival.vo.user.PatientVO;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  */
 public interface PatientService extends IService<Patient> {
 
-    List<Patient> getPatientList(String userId);
+    List<PatientVO> getPatientList(String userId);
 
-    Patient getPatientDetail(String userId, String patientId);
+    PatientVO getPatientDetail(String userId, String patientId);
 
     Boolean removePatient(String userId, String patientId);
 

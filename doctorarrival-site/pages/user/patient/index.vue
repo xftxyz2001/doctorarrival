@@ -12,12 +12,12 @@
 
         <div class="content-wrapper">
           <!-- 展示就诊人 -->
-          <el-card class="patient-card" shadow="always" v-for="patient in patientListFix" :key="patient.id">
+          <el-card class="patient-card" shadow="always" v-for="patient in patientList" :key="patient.id">
             <template v-slot:header>
               <div class="clearfix">
                 <div>
                   <span class="name">{{ patient.name }}</span>
-                  <span>{{ patient.certificatesNo }} {{ patient.certificatesType }}</span>
+                  <span>{{ patient.certificatesNo }} {{ patient.certificatesTypeName }}</span>
                   <div class="detail" @click="gotoPatientDetail(patient.id)">
                     查看详情
                     <span class="iconfont"></span>
@@ -29,7 +29,7 @@
               <div class="info">
                 <span class="type">{{ patient.insured == 0 ? "自费" : "医保" }}</span>
                 <span class="card-no">{{ patient.certificatesNo }}</span>
-                <span class="card-view">{{ patient.certificatesType }}</span>
+                <span class="card-view">{{ patient.certificatesTypeName }}</span>
               </div>
               <span class="operate"></span>
             </div>
@@ -51,25 +51,11 @@
 </template>
 
 <script setup>
-import { getDictChildrenByDictCode } from "@/api/dict";
 import { getPatientList } from "@/api/user";
 
 const router = useRouter();
 
-const certificatesTypeList = ref([]);
 const patientList = ref([]);
-
-// 初始化证件类型
-function initCertificatesTypeList() {
-  getDictChildrenByDictCode("CertificatesType").then(res => {
-    certificatesTypeList.value = res;
-    // 修正id
-    certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000;
-    });
-  });
-}
-initCertificatesTypeList();
 
 // 初始化就诊人列表
 function initPatientList() {
@@ -78,17 +64,6 @@ function initPatientList() {
   });
 }
 initPatientList();
-
-// 修正证件类型
-const patientListFix = computed(() => {
-  return patientList.value.map(item => {
-    const certificatesType = certificatesTypeList.value.find(type => type.id === item.certificatesType);
-    return {
-      ...item,
-      certificatesType: certificatesType ? certificatesType.value : ""
-    };
-  });
-});
 
 // 查看就诊人详情
 function gotoPatientDetail(id) {

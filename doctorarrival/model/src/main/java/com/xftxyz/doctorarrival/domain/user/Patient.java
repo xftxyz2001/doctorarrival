@@ -40,7 +40,7 @@ public class Patient implements Serializable {
     private String phone;
 
     /**
-     * 证件类型（1：身份证，2：军官证，3：护照）
+     * 证件类型
      */
     @TableField(value = "certificates_type")
     private Integer certificatesType;

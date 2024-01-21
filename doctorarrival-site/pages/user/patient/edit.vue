@@ -29,8 +29,8 @@
                   <el-option
                     v-for="item in certificatesTypeList"
                     :key="item.id"
-                    :label="item.value"
-                    :value="item.id"
+                    :label="item.name"
+                    :value="item.value"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -156,10 +156,6 @@ const submitButtonText = ref("保存");
 function initCertificatesTypeList() {
   getDictChildrenByDictCode("CertificatesType").then(res => {
     certificatesTypeList.value = res;
-    // 修正id
-    certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000;
-    });
   });
 }
 initCertificatesTypeList();

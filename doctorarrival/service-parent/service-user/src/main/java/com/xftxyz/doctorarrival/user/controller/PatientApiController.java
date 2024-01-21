@@ -4,6 +4,7 @@ import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.user.Patient;
 import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.user.service.PatientService;
+import com.xftxyz.doctorarrival.vo.user.PatientVO;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -21,13 +22,13 @@ public class PatientApiController {
 
     // 列出当前用户下所有就诊人
     @GetMapping("/auth/list")
-    public List<Patient> getPatientList(@RequestHeader(JwtHelper.X_USER_ID) String userId) {
+    public List<PatientVO> getPatientList(@RequestHeader(JwtHelper.X_USER_ID) String userId) {
         return patientService.getPatientList(userId);
     }
 
     // 根据就诊人id获取就诊人
     @GetMapping("/auth/detail/{patientId}")
-    public Patient getPatientDetail(@RequestHeader(JwtHelper.X_USER_ID) String userId,
+    public PatientVO getPatientDetail(@RequestHeader(JwtHelper.X_USER_ID) String userId,
                                     @PathVariable("patientId") String patientId) {
         return patientService.getPatientDetail(userId, patientId);
     }

@@ -41,8 +41,8 @@
                   <el-option
                     v-for="item in certificatesTypeList"
                     :key="item.id"
-                    :label="item.value"
-                    :value="item.id"
+                    :label="item.name"
+                    :value="item.value"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -89,8 +89,8 @@
                   {{ userInfo.name }}
                 </div>
               </el-form-item>
-              <el-form-item prop="certificatesType" label="证件类型：">
-                {{ certificatesTypeString }}
+              <el-form-item prop="certificatesTypeName" label="证件类型：">
+                {{ userInfo.certificatesTypeName }}
               </el-form-item>
               <el-form-item prop="certificatesNo" label="证件号码：">
                 {{ userInfo.certificatesNo }}
@@ -152,10 +152,6 @@ initUserInfo();
 function initCertificatesTypeList() {
   getDictChildrenByDictCode("CertificatesType").then(res => {
     certificatesTypeList.value = res;
-    // 修正id
-    certificatesTypeList.value.forEach(item => {
-      item.id = item.id % 1000000;
-    });
   });
 }
 initCertificatesTypeList();
@@ -240,11 +236,6 @@ const authStatusString = computed(() => {
     default:
       return "未认证";
   }
-});
-
-const certificatesTypeString = computed(() => {
-  const certificatesType = certificatesTypeList.value.find(item => item.id === userInfo.value.certificatesType);
-  return certificatesType ? certificatesType.value : "未知";
 });
 </script>
 

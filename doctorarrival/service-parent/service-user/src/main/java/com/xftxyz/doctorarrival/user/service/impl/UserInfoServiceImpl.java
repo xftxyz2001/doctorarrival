@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xftxyz.doctorarrival.common.client.DictApiClient;
 import com.xftxyz.doctorarrival.constant.Constants;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
+import com.xftxyz.doctorarrival.enumeration.DictCodeEnum;
 import com.xftxyz.doctorarrival.exception.BusinessException;
 import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.result.ResultEnum;
@@ -19,6 +21,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 25810
@@ -31,6 +34,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         implements UserInfoService {
 
     private final StringRedisTemplate stringRedisTemplate;
+
+    private final DictApiClient dictApiClient;
 
     @Override
     public Boolean saveWarp(UserInfo userInfo) {
@@ -167,12 +172,32 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
     }
 
     @Override
-    public UserInfo getUserInfoDetail(String userId) {
+    public UserInfoVO getUserInfoDetail(String userId) {
         UserInfo userInfo = baseMapper.selectById(userId);
         if (ObjectUtils.isEmpty(userInfo)) {
             throw new BusinessException(ResultEnum.USER_NOT_EXIST);
         }
-        return userInfo;
+        return warptoUserInfoVO(userInfo);
+    }
+
+    private UserInfoVO warptoUserInfoVO(UserInfo userInfo) {
+        Map<String, String> certificatesTypeMap = dictApiClient.getDictMapByDictCodeInner(DictCodeEnum.CERTIFICATES_TYPE.getCode());
+        UserInfoVO userInfoVO = new UserInfoVO();
+        userInfoVO.setId(userInfo.getId());
+        userInfoVO.setPhone(userInfo.getPhone());
+        userInfoVO.setOpenid(userInfo.getOpenid());
+        userInfoVO.setNickName(userInfo.getNickName());
+        userInfoVO.setName(userInfo.getName());
+        userInfoVO.setCertificatesType(userInfo.getCertificatesType());
+        userInfoVO.setCertificatesTypeName(certificatesTypeMap.get(userInfo.getCertificatesType().toString()));
+        userInfoVO.setCertificatesNo(userInfo.getCertificatesNo());
+        userInfoVO.setCertificatesUrl(userInfo.getCertificatesUrl());
+        userInfoVO.setAuthStatus(userInfo.getAuthStatus());
+        userInfoVO.setAuthTime(userInfo.getAuthTime());
+        userInfoVO.setStatus(userInfo.getStatus());
+        userInfoVO.setCreateTime(userInfo.getCreateTime());
+
+        return userInfoVO;
     }
 
     @Override

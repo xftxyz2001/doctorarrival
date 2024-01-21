@@ -4,10 +4,7 @@ package com.xftxyz.doctorarrival.user.controller;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.user.service.UserInfoService;
-import com.xftxyz.doctorarrival.vo.user.LoginParam;
-import com.xftxyz.doctorarrival.vo.user.LoginResponse;
-import com.xftxyz.doctorarrival.vo.user.RealNameParam;
-import com.xftxyz.doctorarrival.vo.user.UserInfoBasic;
+import com.xftxyz.doctorarrival.vo.user.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +33,7 @@ public class UserInfoApiController {
 
     // 获取用户信息（详细）
     @GetMapping("/auth/detail")
-    public UserInfo getUserInfoDetail(@RequestHeader(JwtHelper.X_USER_ID) String userId) {
+    public UserInfoVO getUserInfoDetail(@RequestHeader(JwtHelper.X_USER_ID) String userId) {
         return userInfoService.getUserInfoDetail(userId);
     }
 
