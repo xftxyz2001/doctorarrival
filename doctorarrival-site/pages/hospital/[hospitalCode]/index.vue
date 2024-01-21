@@ -145,6 +145,13 @@ initHospital();
 // 获取科室信息
 function initDepartment() {
   getDepartmentByHospitalCode(hospitalCode).then(res => {
+    if (res.length === 0) {
+      ElMessage({
+        message: "该医院暂无科室信息",
+        type: "warning"
+      });
+      router.push("/");
+    }
     departmentList.value = res;
     activePrimaryDepartment.value = res[0];
   });

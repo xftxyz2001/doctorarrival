@@ -1,0 +1,6 @@
+server:
+    port: 8999
+
+doctorarrival:
+    hospitalCode: 8999
+    privateKeyLocation: 8999.key

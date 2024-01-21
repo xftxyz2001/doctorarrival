@@ -76,7 +76,7 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         hospitalSet.setSignKey(base64PublicKey);
         hospitalSet.setContactsName(hospitalJoinVO.getContactsName());
         hospitalSet.setContactsPhone(hospitalJoinVO.getContactsPhone());
-        hospitalSet.setStatus(HospitalSet.STATUS_DISABLE);
+        hospitalSet.setStatus(HospitalSet.STATUS_ENABLE);
 
         if (hospitalSetMapper.insert(hospitalSet) <= 0) {
             throw new BusinessException(ResultEnum.HOSPITAL_SET_SAVE_FAILED);
