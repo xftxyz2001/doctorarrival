@@ -19,10 +19,7 @@ public class DateTimeHelper {
 
     public static Date getTodayStartDate() {
         Date today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        return today;
+        return new Date(today.getYear(), today.getMonth(), today.getDate());
     }
 
     // 解析-分割的年月日为Date

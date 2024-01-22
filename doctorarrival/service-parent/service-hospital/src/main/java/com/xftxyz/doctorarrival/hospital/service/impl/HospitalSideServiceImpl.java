@@ -27,9 +27,9 @@ import java.io.ByteArrayInputStream;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import static com.xftxyz.doctorarrival.constant.Constants.HOSPITAL_API_AES_KEY_REDIS_KEY_PREFIX;
-import static com.xftxyz.doctorarrival.constant.Constants.SMS_VERIFICATION_CODE_REDIS_KEY_PREFIX;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +94,16 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         hospital.setLogoData(hospitalJoinVO.getLogoData());
         hospital.setIntro(hospitalJoinVO.getIntro());
         hospital.setRoute(hospitalJoinVO.getRoute());
+
+        // 初始化默认预约规则
+        BookingRule bookingRule = new BookingRule();
+        bookingRule.setCycle(7);
+        bookingRule.setReleaseTime("08:30");
+        bookingRule.setStopTime("11:30");
+        bookingRule.setQuitDay(-1);
+        bookingRule.setQuitTime("15:30");
+        bookingRule.setRule(List.of("规则1", "规则2", "规则3"));
+        hospital.setBookingRule(bookingRule);
         hospitalRepository.save(hospital);
 
         return new InputStreamResource(new ByteArrayInputStream(keyPair.getPrivate().getEncoded()));
