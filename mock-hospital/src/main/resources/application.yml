@@ -1,6 +1,11 @@
 server:
   port: 8999
 
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
 doctorarrival:
   hospitalCode: 8999
   privateKeyLocation: 8999.key
