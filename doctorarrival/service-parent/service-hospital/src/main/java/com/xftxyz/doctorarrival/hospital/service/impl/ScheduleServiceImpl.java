@@ -56,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         // 过滤出在分页范围内的排班
         List<ScheduleVO> scheduleDateVOList = groupedSchedule.entrySet().stream().filter(entry -> {
             Date workDate = entry.getKey();
-            return workDate.after(startDate) && workDate.before(endDate);
+            return workDate.compareTo(startDate) >= 0 && workDate.compareTo(endDate) < 0;
         }).map(entry -> {
             Date workDate = entry.getKey();
             String dayOfWeek = DateTimeHelper.getDayOfWeek(workDate);

@@ -35,7 +35,7 @@ public class MongoTest {
         // schedule.setHospitalScheduleId("yjdgfnfjttshtyshgy");
         //
         // Schedule save = scheduleRepository.save(schedule);
-        Date d1 = new Date(DateTimeHelper.getTodayStartDate().getTime() - 1);
+        Date d1 = DateTimeHelper.getTodayStartDate();
         Date d2 = new Date(d1.getTime() + Constants.DAY_IN_MILLIS);
         List<Schedule> scheduleList = scheduleRepository.findByHospitalCodeAndDepartmentCodeAndWorkDateBetween("1", "1", d1, d2);
         System.out.println(scheduleList);

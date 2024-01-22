@@ -2,6 +2,7 @@ package com.xftxyz.doctorarrival.hospital.repository;
 
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,7 @@ public interface ScheduleRepository extends MongoRepository<Schedule, String> {
     List<Schedule> findByHospitalCodeAndDepartmentCode(String hospitalCode, String departmentCode);
 
     // 根据医院编号、科室编号查询某个日期范围的排班
+    @Query("{'hospitalCode': ?0, 'departmentCode': ?1, 'workDate': {$gte: ?2, $lt: ?3}}")
     List<Schedule> findByHospitalCodeAndDepartmentCodeAndWorkDateBetween(String hospitalCode, String departmentCode, Date startDate, Date endDate);
 
     // 根据医院编号、科室编号、日期查询排班
