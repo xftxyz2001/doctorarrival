@@ -5,7 +5,7 @@ function needAuth(path) {
 export default defineNuxtRouteMiddleware((to, from) => {
   if (needAuth(to.path)) {
     // 没有token
-    if (!useToken().value) {
+    if (process.client && !useToken().value) {
       // 键入网址/刷新页面进入，导向首页
       if (needAuth(from.path)) {
         return navigateTo("/");
