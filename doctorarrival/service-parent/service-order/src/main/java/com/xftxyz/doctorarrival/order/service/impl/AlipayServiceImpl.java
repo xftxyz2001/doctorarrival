@@ -10,6 +10,7 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.exception.BusinessException;
+import com.xftxyz.doctorarrival.order.autoconfigure.AlipayProperties;
 import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
 import com.xftxyz.doctorarrival.order.service.AlipayService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
@@ -24,6 +25,7 @@ public class AlipayServiceImpl implements AlipayService {
     private final OrderInfoMapper orderInfoMapper;
 
     private final AlipayClient alipayClient;
+    private final AlipayProperties alipayProperties;
 
     @Override
     public String getPayPage(Long userId, Long orderId) {
@@ -47,7 +49,7 @@ public class AlipayServiceImpl implements AlipayService {
         model.setSubject(subject);
         model.setProductCode("FAST_INSTANT_TRADE_PAY");
         request.setBizModel(model);
-        request.setReturnUrl("http://localhost:3000/user/order/detail?orderId=" + orderId);
+        request.setReturnUrl(alipayProperties.getSiteOrigin() + "/user/order/detail?orderId=" + orderId);
         try {
             AlipayTradePagePayResponse response = alipayClient.pageExecute(request, "POST");
             return response.getBody();

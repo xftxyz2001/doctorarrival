@@ -1,5 +1,7 @@
 package com.xftxyz.doctorarrival.helper;
 
+import com.xftxyz.doctorarrival.constant.Constants;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -32,5 +34,9 @@ public class DateTimeHelper {
     public static String getDayOfWeek(Date workDate) {
         String[] dayOfWeekArray = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
         return dayOfWeekArray[workDate.getDay()];
+    }
+
+    public static Date addDays(Date today, Integer days) {
+        return new Date(today.getTime() + days * Constants.DAY_IN_MILLIS);
     }
 }

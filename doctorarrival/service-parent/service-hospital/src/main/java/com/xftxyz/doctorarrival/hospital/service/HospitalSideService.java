@@ -1,5 +1,6 @@
 package com.xftxyz.doctorarrival.hospital.service;
 
+import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 import org.springframework.core.io.Resource;
@@ -26,4 +27,8 @@ public interface HospitalSideService {
     String deleteDepartments(EncryptionRequest encryptionRequest);
 
     String deleteSchedules(EncryptionRequest encryptionRequest);
+
+    Boolean submitOrder(OrderInfo orderInfo);
+
+    Boolean updateOrder(OrderInfo orderInfo);
 }

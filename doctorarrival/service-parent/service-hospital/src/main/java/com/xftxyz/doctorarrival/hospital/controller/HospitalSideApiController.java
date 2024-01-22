@@ -1,6 +1,9 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
+import com.xftxyz.doctorarrival.annotation.NoWrap;
+import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
+import com.xftxyz.doctorarrival.sdk.constant.ApiUrls;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 import jakarta.validation.constraints.NotNull;
@@ -89,5 +92,20 @@ public class HospitalSideApiController {
     @PostMapping("/remove/schedules")
     public String deleteSchedules(@RequestBody @NotNull EncryptionRequest encryptionRequest) {
         return hospitalSideService.deleteSchedules(encryptionRequest);
+    }
+
+    // 内部接口
+    // 提交订单
+    @NoWrap
+    @PostMapping("/order")
+    public Boolean submitOrderInner(@RequestBody @NotNull OrderInfo orderInfo) {
+        return hospitalSideService.submitOrder(orderInfo);
+    }
+
+    // 更新订单
+    @NoWrap
+    @PostMapping("/order/status")
+    public Boolean updateOrderInner(@RequestBody @NotNull OrderInfo orderInfo) {
+        return hospitalSideService.updateOrder(orderInfo);
     }
 }

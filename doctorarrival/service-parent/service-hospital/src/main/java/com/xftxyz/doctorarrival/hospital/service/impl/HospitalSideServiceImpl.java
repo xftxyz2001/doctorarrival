@@ -2,6 +2,7 @@ package com.xftxyz.doctorarrival.hospital.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xftxyz.doctorarrival.domain.hospital.*;
+import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.exception.BusinessException;
 import com.xftxyz.doctorarrival.helper.Base64Helper;
 import com.xftxyz.doctorarrival.helper.CipherHelper;
@@ -14,6 +15,7 @@ import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
 import com.xftxyz.doctorarrival.processor.EncryptionRequestProcessor;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.sdk.api.*;
+import com.xftxyz.doctorarrival.sdk.callback.UpdateOrderRequest;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 import lombok.RequiredArgsConstructor;
@@ -365,6 +367,16 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         } catch (Exception e) {
             throw new BusinessException(ResultEnum.REQUEST_ERROR);
         }
+    }
+
+    @Override
+    public Boolean submitOrder(OrderInfo orderInfo) {
+        return null;
+    }
+
+    @Override
+    public Boolean updateOrder(OrderInfo orderInfo) {
+        return null;
     }
 
 }

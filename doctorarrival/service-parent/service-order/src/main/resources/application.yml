@@ -34,3 +34,4 @@ pay:
     app-id: <<支付宝应用ID>>
     private-key: <<应用私钥>>
     alipay-public-key: <<支付宝公钥>>
+    site-origin: <<站点域名>>

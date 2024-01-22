@@ -1,6 +1,7 @@
 package com.xftxyz.doctorarrival.hospital.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalQueryVO;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalVO;
 
@@ -12,4 +13,6 @@ public interface HospitalService {
     HospitalVO findHospitalByHospitalCode(String hospitalCode);
 
     IPage<HospitalVO> findHospitalPage(HospitalQueryVO hospitalQueryVO, Long current, Long size);
+
+    BookingRule getBookingRule(String hospitalCode);
 }

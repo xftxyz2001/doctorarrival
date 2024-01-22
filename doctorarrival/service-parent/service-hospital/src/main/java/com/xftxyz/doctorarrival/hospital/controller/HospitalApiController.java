@@ -1,6 +1,8 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
+import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
 import com.xftxyz.doctorarrival.hospital.service.HospitalService;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalQueryVO;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalVO;
@@ -41,5 +43,10 @@ public class HospitalApiController {
         return hospitalService.findHospitalPage(hospitalQueryVO, current, size);
     }
 
-
+    // 获取预约规则
+    @NoWrap
+    @GetMapping("/rule/{hospitalCode}")
+    public BookingRule getBookingRuleInner(@PathVariable("hospitalCode") @NotBlank String hospitalCode) {
+        return hospitalService.getBookingRule(hospitalCode);
+    }
 }

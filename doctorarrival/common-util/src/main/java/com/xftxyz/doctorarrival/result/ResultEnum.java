@@ -24,6 +24,9 @@ public enum ResultEnum {
     HOSPITAL_SIGN_ERROR(205, "签名错误"),
     REQUEST_ERROR(206, "请求错误"),
     RESPONSE_ERROR(207, "响应错误"),
+    HOSPITAL_RULE_ERROR(208, "预约规则获取错误"),
+
+    SCHEDULE_NOT_FOUND(230, "排班不存在"),
 
     // 3用户相关
     USER_NOT_LOGIN(300, "用户未登录"),
@@ -40,8 +43,6 @@ public enum ResultEnum {
     PATIENT_REMOVE_FAIL(321, "就诊人删除失败"),
     PATIENT_ADD_FAIL(322, "就诊人添加失败"),
     PATIENT_UPDATE_FAIL(323, "就诊人更新失败"),
-
-    SCHEDULE_NOT_FOUND(330, "排班不存在"),
 
     // 4参数错误
     PARAM_ERROR(400, "非法参数"),
@@ -67,6 +68,10 @@ public enum ResultEnum {
     ORDER_UPDATE_FAILED(704, "订单更新失败"),
     ORDER_STATUS_UPDATE_FAILED(705, "订单状态更新失败"),
     ORDER_STATUS_NOT_ALLOW(706, "订单状态不允许"),
+    NO_AVAILABLE_SCHEDULE(707, "没有可用排班"),
+    NOT_IN_RESERVATION_TIME(708, "当前不在预约时间段内"),
+    RESERVATION_FULL(709, "当前预约人数已满"),
+    NOT_IN_CANCEL_TIME(710, "当前不在退号时间段内"),
 
     ORDER_STATUS_CANNOT_CANCEL(707, "订单状态不允许取消"),
     ALIPAY_ERROR(708, "支付信息获取失败"),

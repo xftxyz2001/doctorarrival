@@ -3,6 +3,7 @@ package com.xftxyz.doctorarrival.hospital.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xftxyz.doctorarrival.common.client.DictApiClient;
+import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
 import com.xftxyz.doctorarrival.domain.hospital.Hospital;
 import com.xftxyz.doctorarrival.enumeration.DictCodeEnum;
 import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
@@ -45,6 +46,12 @@ public class HospitalServiceImpl implements HospitalService {
         List<Hospital> hospitalListPart = hospitalList.stream().skip(start).limit(size).toList();
         List<HospitalVO> hospitalVOList = warptoHospitalVO(hospitalListPart);
         return hospitalPage.setRecords(hospitalVOList);
+    }
+
+    @Override
+    public BookingRule getBookingRule(String hospitalCode) {
+        Hospital hospital = hospitalRepository.findByHospitalCode(hospitalCode);
+        return hospital.getBookingRule();
     }
 
     private List<HospitalVO> warptoHospitalVO(List<Hospital> hospitalList) {

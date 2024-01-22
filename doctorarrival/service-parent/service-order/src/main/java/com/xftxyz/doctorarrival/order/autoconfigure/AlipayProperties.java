@@ -11,4 +11,6 @@ public class AlipayProperties {
     private String privateKey;
     private String alipayPublicKey;
 
+    private String siteOrigin;
+
 }

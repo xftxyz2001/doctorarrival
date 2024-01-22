@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.domain.user.Patient;
 import com.xftxyz.doctorarrival.exception.BusinessException;
+import com.xftxyz.doctorarrival.helper.DateTimeHelper;
+import com.xftxyz.doctorarrival.hospital.client.HospitalApiClient;
+import com.xftxyz.doctorarrival.hospital.client.HospitalSideApiClient;
 import com.xftxyz.doctorarrival.hospital.client.ScheduleApiClient;
 import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
@@ -21,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +38,9 @@ import java.util.List;
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo>
         implements OrderInfoService {
 
+    private final HospitalApiClient hospitalApiClient;
     private final ScheduleApiClient scheduleApiClient;
+    private final HospitalSideApiClient hospitalSideApiClient;
 
     private final PatientApiClient patientApiClient;
 
@@ -128,7 +135,21 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         Long patientId = submitOrderParam.getPatientId();
 
         ScheduleVO schedule = scheduleApiClient.getScheduleByIdInner(scheduleId);
+        if (ObjectUtils.isEmpty(schedule)) {
+            throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
+        }
+
+        BookingRule bookingRule = hospitalApiClient.getBookingRuleInner(schedule.getHospitalCode());
+        if (ObjectUtils.isEmpty(bookingRule)) {
+            throw new BusinessException(ResultEnum.HOSPITAL_RULE_ERROR);
+        }
+        // 检查预约信息
+        checkOrderInfo(schedule, bookingRule);
+
         Patient patient = patientApiClient.getPatientDetailInner(patientId);
+        if (ObjectUtils.isEmpty(patient)) {
+            throw new BusinessException(ResultEnum.PATIENT_NOT_EXIST);
+        }
 
         // 构造订单
         OrderInfo orderInfo = new OrderInfo();
@@ -148,10 +169,41 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setAmount(schedule.getAmount());
         orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_UNPAID);
 
+        // 通知医院
+        hospitalSideApiClient.submitOrderInner(orderInfo);
+
         if (baseMapper.insert(orderInfo) <= 0) {
             throw new BusinessException(ResultEnum.ORDER_SAVE_FAILED);
         }
         return orderInfo.getId();
+    }
+
+    private void checkOrderInfo(ScheduleVO schedule, BookingRule bookingRule) {
+        Date workDate = schedule.getWorkDate();
+        Integer availableNumber = schedule.getAvailableNumber();
+
+        String stopTime = bookingRule.getStopTime();
+        String releaseTime = bookingRule.getReleaseTime();
+        Integer cycle = bookingRule.getCycle();
+
+        Date today = DateTimeHelper.getTodayStartDate();
+        // 过去的日期
+        if (workDate.before(today)) {
+            throw new BusinessException(ResultEnum.NOT_IN_RESERVATION_TIME);
+        }
+        String now = DateTimeHelper.getCurrentTime("hh:mm");
+        // 今天已过停挂时间
+        if (workDate.equals(today) && now.compareTo(stopTime) > 0) {
+            throw new BusinessException(ResultEnum.NOT_IN_RESERVATION_TIME);
+        }
+        // 预约周期最后一天，未到放号时间
+        if (workDate.equals(DateTimeHelper.addDays(today, cycle)) && now.compareTo(releaseTime) < 0) {
+            throw new BusinessException(ResultEnum.NOT_IN_RESERVATION_TIME);
+        }
+
+        if (availableNumber <= 0) {
+            throw new BusinessException(ResultEnum.RESERVATION_FULL);
+        }
     }
 
     @Override
@@ -191,10 +243,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderStatus)) {
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
         } else if (OrderInfo.ORDER_STATUS_PAID.equals(orderStatus)) {
+            // TODO 退款
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
         } else {
             throw new BusinessException(ResultEnum.ORDER_STATUS_CANNOT_CANCEL);
         }
+
+        // 通知医院
+        hospitalSideApiClient.updateOrderInner(orderInfo);
         if (baseMapper.updateById(orderInfo) <= 0) {
             throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
         }
