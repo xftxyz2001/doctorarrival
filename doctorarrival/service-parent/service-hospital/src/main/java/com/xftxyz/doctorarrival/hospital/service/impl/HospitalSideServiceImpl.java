@@ -1,6 +1,7 @@
 package com.xftxyz.doctorarrival.hospital.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xftxyz.doctorarrival.domain.hospital.*;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.exception.BusinessException;
@@ -13,9 +14,12 @@ import com.xftxyz.doctorarrival.hospital.repository.HospitalRepository;
 import com.xftxyz.doctorarrival.hospital.repository.ScheduleRepository;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
 import com.xftxyz.doctorarrival.processor.EncryptionRequestProcessor;
+import com.xftxyz.doctorarrival.result.Result;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.sdk.api.*;
 import com.xftxyz.doctorarrival.sdk.callback.UpdateOrderRequest;
+import com.xftxyz.doctorarrival.sdk.callback.UpdateOrderResponse;
+import com.xftxyz.doctorarrival.sdk.constant.ApiUrls;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +28,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -39,6 +45,8 @@ public class HospitalSideServiceImpl implements HospitalSideService {
 
     // RedisTemplate
     private final StringRedisTemplate stringRedisTemplate;
+    // RestTemplate
+    private final RestTemplate restTemplate;
 
     // MyBatisPlusMapper
     private final HospitalSetMapper hospitalSetMapper;
@@ -369,14 +377,113 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         }
     }
 
+    private EncryptionRequest beforeRequest(EncryptionRequestProcessor encryptionRequestProcessor, String hospitalCode, Object request) {
+        EncryptionRequest encryptionRequest = new EncryptionRequest();
+        encryptionRequest.setHospitalCode(hospitalCode);
+        String encryptedRequestData = null;
+        try {
+            encryptedRequestData = encryptionRequestProcessor.encrypt(request);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("请求加密失败");
+        }
+        encryptionRequest.setData(encryptedRequestData);
+        return encryptionRequest;
+    }
+
+    private <T> T afterResponse(EncryptionRequestProcessor encryptionRequestProcessor, Result result, Class<T> clazz) {
+        if (ObjectUtils.isEmpty(result)) {
+            throw new RuntimeException("响应接受失败");
+        } else if (!ResultEnum.SUCCESS.getCode().equals(result.getCode())) {
+            throw new RuntimeException(result.getMessage());
+        }
+        Object data = result.getData();
+        if (ObjectUtils.isEmpty(data)) {
+            return null;
+        }
+        String encryptedResponseData = data.toString();
+        try {
+            return encryptionRequestProcessor.decrypt(encryptedResponseData, clazz);
+        } catch (IOException e) {
+            throw new RuntimeException("响应解密失败");
+        }
+    }
+
     @Override
     public Boolean submitOrder(OrderInfo orderInfo) {
-        return null;
+        // 获取医院编码，加密请求数据
+        String hospitalCode = orderInfo.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(HospitalSet::getHospitalCode, hospitalCode);
+        HospitalSet hospitalSet = hospitalSetMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(hospitalSet)) {
+            throw new BusinessException(ResultEnum.HOSPITAL_NOT_EXIST);
+        }
+        String apiUrl = hospitalSet.getApiUrl();
+
+        String departmentCode = orderInfo.getDepartmentCode();
+        String scheduleId = orderInfo.getScheduleId();
+
+        UpdateOrderRequest request = new UpdateOrderRequest();
+        request.setId(orderInfo.getId());
+        request.setDepartmentCode(departmentCode);
+        request.setDepartmentName(orderInfo.getDepartmentName());
+        request.setDoctorName(orderInfo.getDoctorName());
+        request.setScheduleId(scheduleId);
+        request.setReserveDate(orderInfo.getReserveDate());
+        request.setPatientName(orderInfo.getPatientName());
+        request.setPatientPhone(orderInfo.getPatientPhone());
+        request.setAmount(orderInfo.getAmount());
+        request.setOrderStatus(orderInfo.getOrderStatus());
+        request.setCreateTime(orderInfo.getCreateTime());
+
+        try {
+            EncryptionRequest encryptionRequest = beforeRequest(encryptionRequestProcessor, hospitalCode, request);
+            Result result = restTemplate.postForObject(apiUrl + ApiUrls.ORDER, encryptionRequest, Result.class);
+            UpdateOrderResponse updateOrderResponse = afterResponse(encryptionRequestProcessor, result, UpdateOrderResponse.class);
+            if (!Boolean.TRUE.equals(updateOrderResponse.getSuccess())) {
+                throw new BusinessException(ResultEnum.ORDER_SUBMIT_FAILED);
+            }
+
+            Schedule schedule = scheduleRepository.findByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode, departmentCode, scheduleId);
+            if (ObjectUtils.isEmpty(schedule)) {
+                throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
+            }
+            schedule.setAvailableNumber(updateOrderResponse.getAvailableNumber());
+            scheduleRepository.save(schedule);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public Boolean updateOrder(OrderInfo orderInfo) {
-        return null;
+        // 获取医院编码，加密请求数据
+        String hospitalCode = orderInfo.getHospitalCode();
+        EncryptionRequestProcessor encryptionRequestProcessor = getEncryptionRequestProcessor(hospitalCode);
+
+        LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(HospitalSet::getHospitalCode, hospitalCode);
+        HospitalSet hospitalSet = hospitalSetMapper.selectOne(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(hospitalSet)) {
+            throw new BusinessException(ResultEnum.HOSPITAL_NOT_EXIST);
+        }
+        String apiUrl = hospitalSet.getApiUrl();
+
+        UpdateOrderRequest request = new UpdateOrderRequest();
+        request.setId(orderInfo.getId());
+        request.setOrderStatus(orderInfo.getOrderStatus());
+
+        try {
+            EncryptionRequest encryptionRequest = beforeRequest(encryptionRequestProcessor, hospitalCode, request);
+            Result result = restTemplate.postForObject(apiUrl + ApiUrls.ORDER, encryptionRequest, Result.class);
+            UpdateOrderResponse updateOrderResponse = afterResponse(encryptionRequestProcessor, result, UpdateOrderResponse.class);
+            return updateOrderResponse.getSuccess();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

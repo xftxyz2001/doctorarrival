@@ -2,6 +2,7 @@ package com.xftxyz.doctorarrival.sdk.callback;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -39,7 +40,7 @@ public class UpdateOrderRequest {
     /**
      * 排班id
      */
-    private Long scheduleId;
+    private String scheduleId;
 
     /**
      * 预约时间
@@ -59,7 +60,7 @@ public class UpdateOrderRequest {
     /**
      * 订单金额
      */
-    private Integer amount;
+    private BigDecimal amount;
 
     /**
      * 订单状态（-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成）

@@ -27,6 +27,7 @@ public enum ResultEnum {
     HOSPITAL_RULE_ERROR(208, "预约规则获取错误"),
 
     SCHEDULE_NOT_FOUND(230, "排班不存在"),
+    ORDER_SUBMIT_FAILED(231, "订单提交失败"),
 
     // 3用户相关
     USER_NOT_LOGIN(300, "用户未登录"),
