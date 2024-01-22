@@ -446,12 +446,14 @@ public class HospitalSideServiceImpl implements HospitalSideService {
                 throw new BusinessException(ResultEnum.ORDER_SUBMIT_FAILED);
             }
 
-            Schedule schedule = scheduleRepository.findByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode, departmentCode, scheduleId);
-            if (ObjectUtils.isEmpty(schedule)) {
-                throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
+            if (!ObjectUtils.isEmpty(updateOrderResponse.getAvailableNumber())) {
+                Schedule schedule = scheduleRepository.findByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode, departmentCode, scheduleId);
+                if (ObjectUtils.isEmpty(schedule)) {
+                    throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
+                }
+                schedule.setAvailableNumber(updateOrderResponse.getAvailableNumber());
+                scheduleRepository.save(schedule);
             }
-            schedule.setAvailableNumber(updateOrderResponse.getAvailableNumber());
-            scheduleRepository.save(schedule);
             return true;
         } catch (Exception e) {
             return false;
@@ -472,6 +474,9 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         }
         String apiUrl = hospitalSet.getApiUrl();
 
+        String departmentCode = orderInfo.getDepartmentCode();
+        String scheduleId = orderInfo.getScheduleId();
+
         UpdateOrderRequest request = new UpdateOrderRequest();
         request.setId(orderInfo.getId());
         request.setOrderStatus(orderInfo.getOrderStatus());
@@ -480,7 +485,19 @@ public class HospitalSideServiceImpl implements HospitalSideService {
             EncryptionRequest encryptionRequest = beforeRequest(encryptionRequestProcessor, hospitalCode, request);
             Result result = restTemplate.postForObject(apiUrl + ApiUrls.ORDER, encryptionRequest, Result.class);
             UpdateOrderResponse updateOrderResponse = afterResponse(encryptionRequestProcessor, result, UpdateOrderResponse.class);
-            return updateOrderResponse.getSuccess();
+            if (!Boolean.TRUE.equals(updateOrderResponse.getSuccess())) {
+                throw new BusinessException(ResultEnum.ORDER_SUBMIT_FAILED);
+            }
+
+            if (!ObjectUtils.isEmpty(updateOrderResponse.getAvailableNumber())) {
+                Schedule schedule = scheduleRepository.findByHospitalCodeAndDepartmentCodeAndHospitalScheduleId(hospitalCode, departmentCode, scheduleId);
+                if (ObjectUtils.isEmpty(schedule)) {
+                    throw new BusinessException(ResultEnum.SCHEDULE_NOT_FOUND);
+                }
+                schedule.setAvailableNumber(updateOrderResponse.getAvailableNumber());
+                scheduleRepository.save(schedule);
+            }
+            return true;
         } catch (Exception e) {
             return false;
         }

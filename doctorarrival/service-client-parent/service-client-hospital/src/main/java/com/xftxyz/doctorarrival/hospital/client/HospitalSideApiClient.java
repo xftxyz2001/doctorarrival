@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "service-hospital", path = "/api/hospital/side")
+@FeignClient(value = "service-hospital", path = "/api/hospital/side", contextId = "hospitalSide")
 @Repository
 public interface HospitalSideApiClient {
 

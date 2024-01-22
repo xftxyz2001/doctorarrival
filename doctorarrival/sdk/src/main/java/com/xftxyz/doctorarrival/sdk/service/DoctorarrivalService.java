@@ -7,6 +7,8 @@ import com.xftxyz.doctorarrival.helper.KeyHelper;
 import com.xftxyz.doctorarrival.result.Result;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.sdk.api.*;
+import com.xftxyz.doctorarrival.sdk.callback.UpdateOrderRequest;
+import com.xftxyz.doctorarrival.sdk.callback.UpdateOrderResponse;
 import com.xftxyz.doctorarrival.sdk.constant.ApiUrls;
 import com.xftxyz.doctorarrival.sdk.processor.EncryptionRequestProcessor;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
@@ -16,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.security.PrivateKey;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 @SuppressWarnings("rawtypes")
 public class DoctorarrivalService {
@@ -139,6 +143,42 @@ public class DoctorarrivalService {
     // 批量删除排班信息
     public Boolean deleteSchedules(BatchUpdateScheduleRequest updateHospitalRequest) {
         return sendPost(ApiUrls.DELETE_SCHEDULES, updateHospitalRequest, Boolean.class);
+    }
+
+    // ----------
+    // 解密请求
+    public <T> T decryptRequest(EncryptionRequest encryptedRequest, Class<T> clazz) {
+        if (!Objects.equals(hospitalCode, encryptedRequest.getHospitalCode())) {
+            throw new RuntimeException("医院编码不匹配");
+        }
+        try {
+            return encryptionRequestProcessor.decrypt(encryptedRequest.getData(), clazz);
+        } catch (IOException e) {
+            throw new RuntimeException("请求解密失败");
+        }
+    }
+
+    // 加密响应
+    public String encryptResponse(Object response) {
+        try {
+            return encryptionRequestProcessor.encrypt(response);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("响应加密失败");
+        }
+    }
+
+    public String processSubmitOrder(EncryptionRequest encryptionRequest, BiConsumer<UpdateOrderRequest, UpdateOrderResponse> consumer) {
+        UpdateOrderRequest updateOrderRequest = decryptRequest(encryptionRequest, UpdateOrderRequest.class);
+        UpdateOrderResponse updateOrderResponse = new UpdateOrderResponse();
+        consumer.accept(updateOrderRequest, updateOrderResponse);
+        return encryptResponse(updateOrderResponse);
+    }
+
+    public String processUpdateOrderStatus(EncryptionRequest encryptionRequest, BiConsumer<UpdateOrderRequest, UpdateOrderResponse> consumer) {
+        UpdateOrderRequest updateOrderRequest = decryptRequest(encryptionRequest, UpdateOrderRequest.class);
+        UpdateOrderResponse updateOrderResponse = new UpdateOrderResponse();
+        consumer.accept(updateOrderRequest, updateOrderResponse);
+        return encryptResponse(updateOrderResponse);
     }
 
 }

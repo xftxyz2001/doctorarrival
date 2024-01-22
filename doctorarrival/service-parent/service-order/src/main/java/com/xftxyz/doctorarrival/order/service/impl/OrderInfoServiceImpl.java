@@ -243,8 +243,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderStatus)) {
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
         } else if (OrderInfo.ORDER_STATUS_PAID.equals(orderStatus)) {
-            // TODO 退款
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
+            // 退款相关逻辑
         } else {
             throw new BusinessException(ResultEnum.ORDER_STATUS_CANNOT_CANCEL);
         }
