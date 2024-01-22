@@ -2,11 +2,18 @@ package com.xftxyz.mock.mockhospital.listener;
 
 import com.xftxyz.doctorarrival.constant.Constants;
 import com.xftxyz.doctorarrival.helper.DateTimeHelper;
+import com.xftxyz.doctorarrival.sdk.api.BatchUpdateDepartmentRequest;
+import com.xftxyz.doctorarrival.sdk.api.BatchUpdateScheduleRequest;
+import com.xftxyz.doctorarrival.sdk.api.UpdateDepartmentRequest;
+import com.xftxyz.doctorarrival.sdk.api.UpdateScheduleRequest;
+import com.xftxyz.doctorarrival.sdk.service.DoctorarrivalService;
 import com.xftxyz.mock.mockhospital.domain.Department;
 import com.xftxyz.mock.mockhospital.domain.Schedule;
 import com.xftxyz.mock.mockhospital.repository.DepartmentRepository;
 import com.xftxyz.mock.mockhospital.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -21,30 +28,31 @@ import java.util.UUID;
  * 初始化Mock数据
  */
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class ApplicationStartedEventListener implements ApplicationListener<ApplicationStartedEvent> {
+
+    private final DoctorarrivalService doctorarrivalService;
 
     private final DepartmentRepository departmentRepository;
     private final ScheduleRepository scheduleRepository;
 
     private final Random random = new Random();
 
-    private final int primaryDepartmentMax = 20;
-    private final int primaryDepartmentMin = 10;
-    private final int departmentMax = 50;
-    private final int departmentMin = 10;
-
-    private final int scheduleCount = 20;
-
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        int primaryDepartmentCount = random.nextInt(primaryDepartmentMin, primaryDepartmentMax);
+        int primaryDepartmentCount = 5;
+        int departmentCount = 10;
+        int scheduleCount = 20;
+
+        log.info("init...");
         // 大科室
         for (int i = 0; i < primaryDepartmentCount; i++) {
             String primaryDepartmentCode = UUID.randomUUID().toString();
             String primaryDepartmentName = "科室-" + i;
             // 小科室
-            int departmentCount = random.nextInt(departmentMin, departmentMax);
+            BatchUpdateDepartmentRequest batchUpdateDepartmentRequest = new BatchUpdateDepartmentRequest();
+            // BatchUpdateScheduleRequest batchUpdateScheduleRequest = new BatchUpdateScheduleRequest();
             for (int j = 0; j < departmentCount; j++) {
                 String departmentCode = UUID.randomUUID().toString();
                 String departmentName = primaryDepartmentName + "-" + j;
@@ -57,6 +65,14 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
                 department.setPrimaryDepartmentCode(primaryDepartmentCode);
                 department.setPrimaryDepartmentName(primaryDepartmentName);
                 departmentRepository.save(department);
+
+                UpdateDepartmentRequest updateDepartmentRequest = new UpdateDepartmentRequest();
+                updateDepartmentRequest.setDepartmentCode(departmentCode);
+                updateDepartmentRequest.setDepartmentName(departmentName);
+                updateDepartmentRequest.setIntro(intro);
+                updateDepartmentRequest.setPrimaryDepartmentCode(primaryDepartmentCode);
+                updateDepartmentRequest.setPrimaryDepartmentName(primaryDepartmentName);
+                batchUpdateDepartmentRequest.add(updateDepartmentRequest);
 
                 // 排班
                 Date workDate = DateTimeHelper.getTodayStartDate();
@@ -81,6 +97,20 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
                     schedule.setId(UUID.randomUUID().toString());
                     scheduleRepository.save(schedule);
 
+                    UpdateScheduleRequest updateScheduleRequest = new UpdateScheduleRequest();
+                    updateScheduleRequest.setDepartmentCode(departmentCode);
+                    updateScheduleRequest.setDoctorTitle(doctorTitle);
+                    updateScheduleRequest.setDoctorName(doctorName);
+                    updateScheduleRequest.setSkill(skill);
+                    updateScheduleRequest.setWorkDate(schedule.getWorkDate());
+                    updateScheduleRequest.setWorkTime(schedule.getWorkTime());
+                    updateScheduleRequest.setReservedNumber(schedule.getReservedNumber());
+                    updateScheduleRequest.setAvailableNumber(schedule.getAvailableNumber());
+                    updateScheduleRequest.setAmount(schedule.getAmount());
+                    updateScheduleRequest.setStatus(schedule.getStatus());
+                    updateScheduleRequest.setHospitalScheduleId(schedule.getId());
+                    // batchUpdateScheduleRequest.add(updateScheduleRequest);
+
                     if (workTime.compareTo(1) == 0) {
                         workTime = 0;
                         workDate = new Date(workDate.getTime() + Constants.DAY_IN_MILLIS);
@@ -89,7 +119,10 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
                     }
                 }
             }
-
+            doctorarrivalService.updateDepartments(batchUpdateDepartmentRequest);
+            // doctorarrivalService.updateSchedules(batchUpdateScheduleRequest);
+            log.info("progress: {}%", (i + 1) * 100.0 / primaryDepartmentCount);
         }
+        log.info("done.");
     }
 }
