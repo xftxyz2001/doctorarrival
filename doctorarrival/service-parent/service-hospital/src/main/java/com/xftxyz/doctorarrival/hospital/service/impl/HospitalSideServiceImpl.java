@@ -483,7 +483,7 @@ public class HospitalSideServiceImpl implements HospitalSideService {
 
         try {
             EncryptionRequest encryptionRequest = beforeRequest(encryptionRequestProcessor, hospitalCode, request);
-            Result result = restTemplate.postForObject(apiUrl + ApiUrls.ORDER, encryptionRequest, Result.class);
+            Result result = restTemplate.postForObject(apiUrl + ApiUrls.UPDATE_ORDER_STATUS, encryptionRequest, Result.class);
             UpdateOrderResponse updateOrderResponse = afterResponse(encryptionRequestProcessor, result, UpdateOrderResponse.class);
             if (!Boolean.TRUE.equals(updateOrderResponse.getSuccess())) {
                 throw new BusinessException(ResultEnum.ORDER_SUBMIT_FAILED);

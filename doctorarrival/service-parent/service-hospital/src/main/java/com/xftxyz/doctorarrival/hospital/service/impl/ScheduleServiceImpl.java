@@ -120,7 +120,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleVO.setAvailableNumber(schedule.getAvailableNumber());
         scheduleVO.setAmount(schedule.getAmount());
         scheduleVO.setStatus(schedule.getStatus());
-        scheduleVO.setHospitalScheduleId(schedule.getId());
+        scheduleVO.setHospitalScheduleId(schedule.getHospitalScheduleId());
 
         return scheduleVO;
     }

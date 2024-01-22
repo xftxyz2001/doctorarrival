@@ -169,13 +169,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setAmount(schedule.getAmount());
         orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_UNPAID);
 
-        // 通知医院
-        hospitalSideApiClient.submitOrderInner(orderInfo);
-
         if (baseMapper.insert(orderInfo) <= 0) {
             throw new BusinessException(ResultEnum.ORDER_SAVE_FAILED);
         }
-        return orderInfo.getId();
+        Long id = orderInfo.getId();
+        // 通知医院
+        hospitalSideApiClient.submitOrderInner(orderInfo);
+        return id;
     }
 
     private void checkOrderInfo(ScheduleVO schedule, BookingRule bookingRule) {
@@ -249,11 +249,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             throw new BusinessException(ResultEnum.ORDER_STATUS_CANNOT_CANCEL);
         }
 
-        // 通知医院
-        hospitalSideApiClient.updateOrderInner(orderInfo);
         if (baseMapper.updateById(orderInfo) <= 0) {
             throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
         }
+        // 通知医院
+        hospitalSideApiClient.updateOrderInner(orderInfo);
         return true;
     }
 }
