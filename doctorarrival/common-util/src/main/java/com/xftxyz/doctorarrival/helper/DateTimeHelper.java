@@ -38,8 +38,8 @@ public class DateTimeHelper {
         return dayOfWeekArray[workDate.getDay()];
     }
 
-    public static Date addDays(Date today, Integer days) {
-        return new Date(today.getTime() + days * Constants.DAY_IN_MILLIS);
+    public static Date addDays(Date date, int days) {
+        return new Date(date.getTime() + days * Constants.DAY_IN_MILLIS);
     }
 
     public static String formatDate(Date date, String pattern) {
@@ -47,5 +47,9 @@ public class DateTimeHelper {
         calendar.setTime(date);
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         return dateFormat.format(calendar.getTime());
+    }
+
+    public static Object addMinutes(Date date, int minutes) {
+        return new Date(date.getTime() + minutes * Constants.MINUTE_IN_MILLIS);
     }
 }

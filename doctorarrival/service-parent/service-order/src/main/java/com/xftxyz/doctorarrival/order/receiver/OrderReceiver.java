@@ -25,4 +25,13 @@ public class OrderReceiver {
     public void visitNotificationListener(Date date) {
         orderInfoService.visitNotification();
     }
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = RabbitMQConfig.QUEUE_TASK_ORDER_STATUS, durable = "true"),
+            exchange = @Exchange(value = RabbitMQConfig.EXCHANGE_DIRECT_TASK),
+            key = RabbitMQConfig.ROUTING_TASK_ORDER_STATUS)
+    )
+    public void updateOrderStatusListener(Date date) {
+        orderInfoService.updateOrderStatus();
+    }
 }

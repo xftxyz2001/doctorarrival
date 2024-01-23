@@ -14,12 +14,22 @@ public class ScheduledTask {
 
     private final RabbitTemplate rabbitTemplate;
 
+    // 生成cron表达式 https://cron.qqe2.com/
+
     /**
      * 就诊通知
      */
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0 0 8 * * ?") // 每天8点执行一次
     public void visitNotification() {
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_TASK, RabbitMQConfig.ROUTING_TASK_NOTIFICATION, new Date());
+    }
+
+    /**
+     * 更新订单状态
+     */
+    @Scheduled(cron = "0 * * * * ?") // 每分钟执行一次
+    public void updateOrderStatus() {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_TASK, RabbitMQConfig.ROUTING_TASK_ORDER_STATUS, new Date());
     }
 
     /**

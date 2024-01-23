@@ -290,4 +290,20 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                     RabbitMQConfig.ROUTING_SMS, notificationVO);
         });
     }
+
+    @Override
+    public void updateOrderStatus() {
+        // 查询出三十分钟前创建但未支付的订单
+        LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrderInfo::getOrderStatus, OrderInfo.ORDER_STATUS_UNPAID);
+        lambdaQueryWrapper.lt(OrderInfo::getCreateTime, DateTimeHelper.addMinutes(new Date(), -30));
+        List<OrderInfo> orderInfoList = baseMapper.selectList(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(orderInfoList)) {
+            return;
+        }
+        // 关闭订单
+        orderInfoList.forEach(orderInfo -> {
+            cancelOrder(orderInfo.getUserId(), orderInfo.getId());
+        });
+    }
 }

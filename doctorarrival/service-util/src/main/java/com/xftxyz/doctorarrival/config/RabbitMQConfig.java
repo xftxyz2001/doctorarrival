@@ -28,6 +28,9 @@ public class RabbitMQConfig {
     public static final String ROUTING_TASK_NOTIFICATION = "task.notification";
     public static final String QUEUE_TASK_NOTIFICATION = "queue.task.notification";
 
+    public static final String ROUTING_TASK_ORDER_STATUS = "task.order.status";
+    public static final String QUEUE_TASK_ORDER_STATUS = "queue.task.order.status";
+
     // 交换机
     @Bean
     public DirectExchange exchangeDirectOrder() {
