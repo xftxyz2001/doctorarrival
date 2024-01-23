@@ -1,14 +1,13 @@
-package com.xftxyz.doctorarrival.common.config;
+package com.xftxyz.doctorarrival.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@MapperScan("com.xftxyz.doctorarrival.common.mapper")
+// @Configuration
+@MapperScan("com.xftxyz.doctorarrival")
 public class MybatisPlusConfig {
     /**
      * 添加分页插件

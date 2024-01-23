@@ -3,11 +3,10 @@ package com.xftxyz.doctorarrival.task;
 import com.xftxyz.doctorarrival.config.RabbitMQConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(scanBasePackages = "com.xftxyz.doctorarrival", exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication(scanBasePackages = "com.xftxyz.doctorarrival")
 @EnableScheduling // 开启定时任务
 @Import(RabbitMQConfig.class)
 public class ServiceTaskApplication {

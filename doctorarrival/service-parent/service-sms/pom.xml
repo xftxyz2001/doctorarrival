@@ -19,16 +19,19 @@
     </properties>
 
     <dependencies>
+        <!-- 阿里云短信 -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>alibabacloud-dysmsapi20170525</artifactId>
         </dependency>
 
+        <!-- Redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!-- RabbitMQ -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
