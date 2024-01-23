@@ -46,3 +46,10 @@ export function queryOrder(orderId) {
     method: "get"
   });
 }
+
+export function queryRefundOrder(orderId) {
+  return request({
+    url: `/api/order/alipay/auth/refund/query/${orderId}`,
+    method: "get"
+  });
+}

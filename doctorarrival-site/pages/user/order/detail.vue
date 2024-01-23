@@ -129,28 +129,59 @@
 </template>
 
 <script setup>
-import { getOrderDetail, cancelOrder, getPayPage, queryOrder } from "@/api/order";
+import { getOrderDetail, cancelOrder, getPayPage, queryOrder, queryRefundOrder } from "@/api/order";
 
 const route = useRoute();
-const { orderId, out_trade_no } = route.query;
+const { orderId } = route.query;
 
 const orderInfo = ref({});
+
+let firstRequest = true;
 
 function getOrderDetailData() {
   getOrderDetail(orderId).then(res => {
     orderInfo.value = res;
-  });
-}
 
-// 如果orderId不为空，且等于out_trade_no，说明是从支付页面跳转过来的，需要查询订单状态
-if (orderId && orderId === out_trade_no) {
-  queryOrder(orderId).then(res => {
-    if (res) {
-      getOrderDetailData();
+    if (res.orderStatus == 0) {
+      if (firstRequest) {
+        firstRequest = false;
+        queryOrder(orderId).then(res => {
+          if (res != 0) {
+            getOrderDetailData();
+          }
+        });
+      }
+    } else if (res.orderStatus == 2) {
+      if (firstRequest) {
+        queryRefundOrder(orderId).then(res => {
+          if (res != 2) {
+            getOrderDetailData();
+          }
+        });
+      }
     }
   });
-} else {
-  getOrderDetailData();
+}
+getOrderDetailData();
+
+function callCancelOrder() {
+  cancelOrder(orderId).then(res => {
+    if (res == -1) {
+      // 取消成功
+      ElMessage({
+        type: "success",
+        message: "预约已取消"
+      });
+    } else if (res == 2) {
+      // 转入退款
+      ElMessage({
+        type: "info",
+        message: "预约已取消，正在转入退款中，请稍后刷新查看结果"
+      });
+      queryRefundOrder(orderId);
+    }
+    getOrderDetailData();
+  });
 }
 
 function cancelOrderButtonClicked() {
@@ -162,11 +193,7 @@ function cancelOrderButtonClicked() {
     cancelButtonText: "取消",
     callback: action => {
       if (action === "confirm") {
-        cancelOrder(orderId).then(res => {
-          if (res) {
-            getOrderDetailData();
-          }
-        });
+        callCancelOrder();
       }
     }
   });
