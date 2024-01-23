@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>service-order</artifactId>
-    <name>订单服务</name>
+    <name>微服务-订单</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

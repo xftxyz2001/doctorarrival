@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>service-user</artifactId>
-    <name>用户服务</name>
+    <name>微服务-用户</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

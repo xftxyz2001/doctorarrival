@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>service-util</artifactId>
-    <name>服务工具包</name>
+    <name>工具包（服务）</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

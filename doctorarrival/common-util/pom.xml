@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>common-util</artifactId>
-    <name>公共工具包</name>
+    <name>工具包（普通）</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

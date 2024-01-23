@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>model4sdk</artifactId>
-    <name>数据模型（对接医院）</name>
+    <name>数据模型（SDK）</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>service-client-hospital</artifactId>
-    <name>医院服务客户端</name>
+    <name>微服务客户端-医院</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
