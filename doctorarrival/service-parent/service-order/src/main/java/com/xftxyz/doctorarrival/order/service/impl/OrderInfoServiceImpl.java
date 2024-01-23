@@ -14,6 +14,7 @@ import com.xftxyz.doctorarrival.helper.DateTimeHelper;
 import com.xftxyz.doctorarrival.hospital.client.HospitalApiClient;
 import com.xftxyz.doctorarrival.hospital.client.ScheduleApiClient;
 import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
+import com.xftxyz.doctorarrival.order.service.AlipayService;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.user.client.PatientApiClient;
@@ -44,6 +45,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private final ScheduleApiClient scheduleApiClient;
 
     private final PatientApiClient patientApiClient;
+
+    private final AlipayService alipayService;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -245,10 +248,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         // 未支付->取消；支付->退款；其他状态->不可取消
         Integer orderStatus = orderInfo.getOrderStatus();
         if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderStatus)) {
-            orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
+            alipayService.closeOrder4Cancel(orderInfo);
         } else if (OrderInfo.ORDER_STATUS_PAID.equals(orderStatus)) {
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
-            // TODO 退款相关逻辑
+            alipayService.refundOrder4Cancel(orderInfo);
         } else {
             throw new BusinessException(ResultEnum.ORDER_STATUS_CANNOT_CANCEL);
         }

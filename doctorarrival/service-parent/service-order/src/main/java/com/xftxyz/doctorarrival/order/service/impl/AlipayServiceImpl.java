@@ -7,9 +7,7 @@ import com.alipay.api.domain.AlipayTradeFastpayRefundQueryModel;
 import com.alipay.api.domain.AlipayTradePagePayModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.request.*;
-import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
-import com.alipay.api.response.AlipayTradePagePayResponse;
-import com.alipay.api.response.AlipayTradeQueryResponse;
+import com.alipay.api.response.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xftxyz.doctorarrival.config.RabbitMQConfig;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
@@ -114,6 +112,27 @@ public class AlipayServiceImpl implements AlipayService {
         return orderInfo.getOrderStatus();
     }
 
+    @Override
+    public boolean closeOrder4Cancel(OrderInfo orderInfo) {
+        AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
+        AlipayTradeCloseModel model = new AlipayTradeCloseModel();
+        model.setOutTradeNo(orderInfo.getId().toString());
+        request.setBizModel(model);
+        try {
+            AlipayTradeCloseResponse response = alipayClient.execute(request);
+            orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
+            if (orderInfoMapper.updateById(orderInfo) <= 0) {
+                throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
+            }
+            // 通知医院
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                    RabbitMQConfig.ROUTING_ORDER, orderInfo);
+            return response.isSuccess();
+        } catch (AlipayApiException e) {
+            throw new BusinessException(ResultEnum.ALIPAY_ERROR);
+        }
+    }
+
     // https://opendocs.alipay.com/apis/009zi3
     @Override
     public Integer refundOrder(Long userId, Long orderId) {
@@ -139,6 +158,28 @@ public class AlipayServiceImpl implements AlipayService {
             }
         }
         return orderInfo.getOrderStatus();
+    }
+
+    @Override
+    public boolean refundOrder4Cancel(OrderInfo orderInfo) {
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        AlipayTradeRefundModel model = new AlipayTradeRefundModel();
+        model.setOutTradeNo(orderInfo.getId().toString());
+        model.setRefundAmount(orderInfo.getAmount().toString());
+        request.setBizModel(model);
+        try {
+            AlipayTradeRefundResponse response = alipayClient.execute(request);
+            orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
+            if (orderInfoMapper.updateById(orderInfo) <= 0) {
+                throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
+            }
+            // 通知医院
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                    RabbitMQConfig.ROUTING_ORDER, orderInfo);
+            return response.isSuccess();
+        } catch (AlipayApiException e) {
+            throw new BusinessException(ResultEnum.ALIPAY_ERROR);
+        }
     }
 
     // https://opendocs.alipay.com/apis/009zi4
