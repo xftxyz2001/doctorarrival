@@ -2,9 +2,12 @@ package com.xftxyz.doctorarrival.order.service.impl;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.domain.AlipayTradeCloseModel;
+import com.alipay.api.domain.AlipayTradeFastpayRefundQueryModel;
 import com.alipay.api.domain.AlipayTradePagePayModel;
-import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.alipay.api.request.AlipayTradeQueryRequest;
+import com.alipay.api.domain.AlipayTradeRefundModel;
+import com.alipay.api.request.*;
+import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -31,15 +34,10 @@ public class AlipayServiceImpl implements AlipayService {
 
     private final RabbitTemplate rabbitTemplate;
 
+    // https://opendocs.alipay.com/apis/009zih
     @Override
     public String getPayPage(Long userId, Long orderId) {
-        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(OrderInfo::getUserId, userId);
-        wrapper.eq(OrderInfo::getId, orderId);
-        OrderInfo orderInfo = orderInfoMapper.selectOne(wrapper);
-        if (ObjectUtils.isEmpty(orderInfo)) {
-            throw new BusinessException(ResultEnum.ORDER_NOT_EXIST);
-        }
+        OrderInfo orderInfo = getOrderInfo(userId, orderId);
         if (!OrderInfo.ORDER_STATUS_UNPAID.equals(orderInfo.getOrderStatus())) {
             throw new BusinessException(ResultEnum.ORDER_STATUS_NOT_ALLOW);
         }
@@ -62,15 +60,10 @@ public class AlipayServiceImpl implements AlipayService {
         }
     }
 
+    // https://opendocs.alipay.com/apis/009zir
     @Override
     public Integer queryOrder(Long userId, Long orderId) {
-        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(OrderInfo::getUserId, userId);
-        wrapper.eq(OrderInfo::getId, orderId);
-        OrderInfo orderInfo = orderInfoMapper.selectOne(wrapper);
-        if (ObjectUtils.isEmpty(orderInfo)) {
-            throw new BusinessException(ResultEnum.ORDER_NOT_EXIST);
-        }
+        OrderInfo orderInfo = getOrderInfo(userId, orderId);
         // 待支付
         if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderInfo.getOrderStatus())) {
             AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
@@ -95,18 +88,95 @@ public class AlipayServiceImpl implements AlipayService {
         return orderInfo.getOrderStatus();
     }
 
+    // https://opendocs.alipay.com/apis/009zhm
     @Override
     public Integer closeOrder(Long userId, Long orderId) {
-        return null;
+        OrderInfo orderInfo = getOrderInfo(userId, orderId);
+        // 待支付
+        if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderInfo.getOrderStatus())) {
+            AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
+            AlipayTradeCloseModel model = new AlipayTradeCloseModel();
+            model.setOutTradeNo(orderId.toString());
+            request.setBizModel(model);
+            try {
+                alipayClient.execute(request);
+                orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
+                if (orderInfoMapper.updateById(orderInfo) <= 0) {
+                    throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
+                }
+                // 通知医院
+                rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                        RabbitMQConfig.ROUTING_ORDER, orderInfo);
+            } catch (AlipayApiException e) {
+                throw new BusinessException(ResultEnum.ALIPAY_ERROR);
+            }
+        }
+        return orderInfo.getOrderStatus();
     }
 
+    // https://opendocs.alipay.com/apis/009zi3
     @Override
     public Integer refundOrder(Long userId, Long orderId) {
-        return null;
+        OrderInfo orderInfo = getOrderInfo(userId, orderId);
+        // 已支付
+        if (OrderInfo.ORDER_STATUS_PAID.equals(orderInfo.getOrderStatus())) {
+            AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+            AlipayTradeRefundModel model = new AlipayTradeRefundModel();
+            model.setOutTradeNo(orderId.toString());
+            model.setRefundAmount(orderInfo.getAmount().toString());
+            request.setBizModel(model);
+            try {
+                alipayClient.execute(request);
+                orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
+                if (orderInfoMapper.updateById(orderInfo) <= 0) {
+                    throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
+                }
+                // 通知医院
+                rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                        RabbitMQConfig.ROUTING_ORDER, orderInfo);
+            } catch (AlipayApiException e) {
+                throw new BusinessException(ResultEnum.ALIPAY_ERROR);
+            }
+        }
+        return orderInfo.getOrderStatus();
     }
 
+    // https://opendocs.alipay.com/apis/009zi4
     @Override
     public Integer queryRefundOrder(Long userId, Long orderId) {
-        return null;
+        OrderInfo orderInfo = getOrderInfo(userId, orderId);
+        // 退款中
+        if (OrderInfo.ORDER_STATUS_REFUNDING.equals(orderInfo.getOrderStatus())) {
+            AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
+            AlipayTradeFastpayRefundQueryModel model = new AlipayTradeFastpayRefundQueryModel();
+            model.setOutTradeNo(orderId.toString());
+            try {
+                AlipayTradeFastpayRefundQueryResponse response = alipayClient.execute(request);
+                if ("REFUND_SUCCESS".equals(response.getRefundStatus())) {
+                    orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDED);
+                    if (orderInfoMapper.updateById(orderInfo) <= 0) {
+                        throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
+                    }
+                    // 通知医院
+                    rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                            RabbitMQConfig.ROUTING_ORDER, orderInfo);
+                }
+            } catch (AlipayApiException e) {
+                throw new BusinessException(ResultEnum.ALIPAY_ERROR);
+            }
+        }
+        return orderInfo.getOrderStatus();
     }
+
+    private OrderInfo getOrderInfo(Long userId, Long orderId) {
+        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(OrderInfo::getUserId, userId);
+        wrapper.eq(OrderInfo::getId, orderId);
+        OrderInfo orderInfo = orderInfoMapper.selectOne(wrapper);
+        if (ObjectUtils.isEmpty(orderInfo)) {
+            throw new BusinessException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        return orderInfo;
+    }
+
 }

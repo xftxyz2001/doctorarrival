@@ -171,8 +171,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setPatientPhone(patient.getPhone());
         orderInfo.setAmount(schedule.getAmount());
         orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_UNPAID);
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
-                RabbitMQConfig.ROUTING_ORDER, orderInfo);
 
         if (baseMapper.insert(orderInfo) <= 0) {
             throw new BusinessException(ResultEnum.ORDER_SAVE_FAILED);
