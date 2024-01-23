@@ -12,3 +12,7 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
+  rabbitmq:
+    host: <<rabbitmq地址>>
+    username: <<rabbitmq用户名>>
+    password: <<rabbitmq密码>>

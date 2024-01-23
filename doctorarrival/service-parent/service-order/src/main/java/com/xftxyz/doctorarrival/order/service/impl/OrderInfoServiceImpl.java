@@ -256,6 +256,27 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         hospitalSideApiClient.updateOrderInner(orderInfo);
         return true;
     }
+
+    @Override
+    public void visitNotification() {
+        // 查询出今天已付款的订单
+        LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(OrderInfo::getOrderStatus, OrderInfo.ORDER_STATUS_PAID);
+        lambdaQueryWrapper.eq(OrderInfo::getReserveDate, DateTimeHelper.getTodayStartDate());
+        List<OrderInfo> orderInfoList = baseMapper.selectList(lambdaQueryWrapper);
+        if (ObjectUtils.isEmpty(orderInfoList)) {
+            return;
+        }
+        // 通知就诊人
+        orderInfoList.forEach(orderInfo -> {
+            String patientName = orderInfo.getPatientName();
+            String patientPhone = orderInfo.getPatientPhone();
+
+            // TODO: 通知就诊人
+            System.out.println("通知就诊人：" + patientName + " " + patientPhone);
+        });
+
+    }
 }
 
 

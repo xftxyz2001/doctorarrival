@@ -37,4 +37,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     IPage<OrderInfo> getOrderList(Long userId, OrderInfoQueryParam orderInfoQueryParam, Long current, Long size);
 
     Boolean cancelOrder(Long userId, Long orderId);
+
+    void visitNotification();
 }

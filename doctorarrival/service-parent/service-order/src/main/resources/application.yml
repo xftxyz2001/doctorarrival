@@ -22,6 +22,12 @@ spring:
     username: <<数据库用户名>>
     password: <<数据库密码>>
 
+  rabbitmq:
+    host: <<rabbitmq地址>>
+    username: <<rabbitmq用户名>>
+    password: <<rabbitmq密码>>
+
+
 pay:
   wx:
     merchant-id: <<商户号>>
