@@ -33,3 +33,8 @@ spring:
       username: <<mongodb用户名>>
       password: <<mongodb密码>>
       authentication-database: admin
+
+  rabbitmq:
+    host: <<rabbitmq地址>>
+    username: <<rabbitmq用户名>>
+    password: <<rabbitmq密码>>
