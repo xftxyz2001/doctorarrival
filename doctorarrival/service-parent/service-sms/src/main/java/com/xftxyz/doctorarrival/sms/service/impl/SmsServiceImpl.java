@@ -9,15 +9,15 @@ import com.xftxyz.doctorarrival.helper.RandomHelper;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.sms.autoconfigure.SmsProperties;
 import com.xftxyz.doctorarrival.sms.service.SmsService;
+import com.xftxyz.doctorarrival.vo.sms.NotificationVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-@Service
+// @Service
 @RequiredArgsConstructor
 public class SmsServiceImpl implements SmsService {
 
@@ -27,6 +27,7 @@ public class SmsServiceImpl implements SmsService {
 
     private final SmsProperties smsProperties;
 
+    // 【医来】您的验证码为(code)，请于5分钟内填写。如非本人操作，请忽略本短信。
     @Override
     public Boolean sendVerificationCode(String phoneNumber) {
         // Redis对应的key
@@ -36,7 +37,8 @@ public class SmsServiceImpl implements SmsService {
             Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.SECONDS);
             if (!ObjectUtils.isEmpty(expire)) {
                 // 获取剩余等待时间
-                long waitTime = Constants.SMS_VERIFICATION_CODE_REQUEST_INTERVAL - (Constants.SMS_VERIFICATION_CODE_REDIS_KEY_EXPIRE - expire);
+                long waitTime = Constants.SMS_VERIFICATION_CODE_REQUEST_INTERVAL
+                        - (Constants.SMS_VERIFICATION_CODE_REDIS_KEY_EXPIRE - expire);
                 if (waitTime > 0) {
                     throw new BusinessException(ResultEnum.SMS_VERIFICATION_CODE_REQUEST_TOO_FREQUENT);
                 }
@@ -69,12 +71,16 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public Boolean sendAppointmentReminder(String phoneNumber, String patientName, String appointmentDescription) {
+    public Boolean sendAppointmentReminder(NotificationVO notificationVO) {
         SendSmsRequest sendSmsRequest = SendSmsRequest.builder()
-                .phoneNumbers(phoneNumber)
+                .phoneNumbers(notificationVO.getPhoneNumber())
                 .signName(smsProperties.getSignName())
                 .templateCode(smsProperties.getTemplateCodeForAppointmentReminder())
-                .templateParam("{\"name\":\"" + patientName + "\",\"description\":\"" + appointmentDescription + "\"}")
+                .templateParam("{\"patientName\":\"" + notificationVO.getPatientName() +
+                        "\",\"hospitalName\":\"" + notificationVO.getHospitalName() +
+                        "\",\"departmentName\":\"" + notificationVO.getDepartmentName() +
+                        "\",\"doctorName\":\"" + notificationVO.getDoctorName() +
+                        "\",\"reserveDate\":\"" + notificationVO.getReserveDate() + "\"}")
                 .build();
 
         CompletableFuture<SendSmsResponse> response = client.sendSms(sendSmsRequest);

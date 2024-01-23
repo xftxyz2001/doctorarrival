@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xftxyz.doctorarrival.config.RabbitMQConfig;
 import com.xftxyz.doctorarrival.domain.hospital.BookingRule;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.domain.user.Patient;
@@ -21,7 +22,9 @@ import com.xftxyz.doctorarrival.vo.hospital.ScheduleVO;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
+import com.xftxyz.doctorarrival.vo.sms.NotificationVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -43,6 +46,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private final HospitalSideApiClient hospitalSideApiClient;
 
     private final PatientApiClient patientApiClient;
+
+    private final RabbitTemplate rabbitTemplate;
 
     @Override
     public Boolean saveWarp(OrderInfo orderInfo) {
@@ -269,16 +274,17 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         }
         // 通知就诊人
         orderInfoList.forEach(orderInfo -> {
-            String patientName = orderInfo.getPatientName();
-            String patientPhone = orderInfo.getPatientPhone();
+            NotificationVO notificationVO = new NotificationVO();
+            notificationVO.setPhoneNumber(orderInfo.getPatientPhone());
+            notificationVO.setPatientName(orderInfo.getPatientName());
+            notificationVO.setHospitalName(orderInfo.getHospitalName());
+            notificationVO.setDepartmentName(orderInfo.getDepartmentName());
+            notificationVO.setDoctorName(orderInfo.getDoctorName());
+            // notificationVO.setReserveDate(DateTimeHelper.formatDate(orderInfo.getReserveDate(), "yyyy-MM-dd HH:mm"));
+            notificationVO.setReserveDate(DateTimeHelper.formatDate(orderInfo.getReserveDate(), "yyyy-MM-dd"));
 
-            // TODO: 通知就诊人
-            System.out.println("通知就诊人：" + patientName + " " + patientPhone);
+            rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_SMS,
+                    RabbitMQConfig.ROUTING_SMS, notificationVO);
         });
-
     }
 }
-
-
-
-

@@ -2,8 +2,10 @@ package com.xftxyz.doctorarrival.helper;
 
 import com.xftxyz.doctorarrival.constant.Constants;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateTimeHelper {
@@ -38,5 +40,12 @@ public class DateTimeHelper {
 
     public static Date addDays(Date today, Integer days) {
         return new Date(today.getTime() + days * Constants.DAY_IN_MILLIS);
+    }
+
+    public static String formatDate(Date date, String pattern) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(calendar.getTime());
     }
 }

@@ -2,10 +2,6 @@ package com.xftxyz.doctorarrival.task.scheduled;
 
 import com.xftxyz.doctorarrival.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

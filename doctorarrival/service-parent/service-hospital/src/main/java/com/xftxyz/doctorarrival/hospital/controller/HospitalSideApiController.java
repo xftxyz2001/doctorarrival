@@ -3,7 +3,6 @@ package com.xftxyz.doctorarrival.hospital.controller;
 import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSideService;
-import com.xftxyz.doctorarrival.sdk.constant.ApiUrls;
 import com.xftxyz.doctorarrival.sdk.vo.EncryptionRequest;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalJoinVO;
 import jakarta.validation.constraints.NotNull;

@@ -17,6 +17,11 @@ spring:
       host: <<redis地址>>
       password: <<redis密码>>
 
+  rabbitmq:
+    host: <<rabbitmq地址>>
+    username: <<rabbitmq用户名>>
+    password: <<rabbitmq密码>>
+
 aliyun:
   sms:
     endpoint: <<your endpoint>>
