@@ -7,7 +7,10 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 
 // @Configuration
-@MapperScan("com.xftxyz.doctorarrival")
+@MapperScan({"com.xftxyz.doctorarrival.common.mapper",
+        "com.xftxyz.doctorarrival.hospital.mapper",
+        "com.xftxyz.doctorarrival.user.mapper",
+        "com.xftxyz.doctorarrival.order.mapper"})
 public class MybatisPlusConfig {
     /**
      * 添加分页插件

@@ -43,7 +43,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     private final HospitalApiClient hospitalApiClient;
     private final ScheduleApiClient scheduleApiClient;
-    private final HospitalSideApiClient hospitalSideApiClient;
 
     private final PatientApiClient patientApiClient;
 
@@ -179,7 +178,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         }
         Long id = orderInfo.getId();
         // 通知医院
-        hospitalSideApiClient.submitOrderInner(orderInfo);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                RabbitMQConfig.ROUTING_ORDER, orderInfo);
         return id;
     }
 
@@ -249,7 +249,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_CLOSED);
         } else if (OrderInfo.ORDER_STATUS_PAID.equals(orderStatus)) {
             orderInfo.setOrderStatus(OrderInfo.ORDER_STATUS_REFUNDING);
-            // 退款相关逻辑
+            // TODO 退款相关逻辑
         } else {
             throw new BusinessException(ResultEnum.ORDER_STATUS_CANNOT_CANCEL);
         }
@@ -258,7 +258,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
         }
         // 通知医院
-        hospitalSideApiClient.updateOrderInner(orderInfo);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                RabbitMQConfig.ROUTING_ORDER, orderInfo);
         return true;
     }
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 public class RabbitMQConfig {
 
     /**
-     * 预约下单
+     * 预约下单/订单状态变更
      */
     public static final String EXCHANGE_DIRECT_ORDER = "exchange.direct.order";
     public static final String ROUTING_ORDER = "order";

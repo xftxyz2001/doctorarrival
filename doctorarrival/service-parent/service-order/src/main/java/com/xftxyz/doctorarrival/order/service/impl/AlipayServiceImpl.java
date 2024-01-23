@@ -8,14 +8,15 @@ import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xftxyz.doctorarrival.config.RabbitMQConfig;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.exception.BusinessException;
-import com.xftxyz.doctorarrival.hospital.client.HospitalSideApiClient;
 import com.xftxyz.doctorarrival.order.autoconfigure.AlipayProperties;
 import com.xftxyz.doctorarrival.order.mapper.OrderInfoMapper;
 import com.xftxyz.doctorarrival.order.service.AlipayService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -28,7 +29,7 @@ public class AlipayServiceImpl implements AlipayService {
     private final AlipayClient alipayClient;
     private final AlipayProperties alipayProperties;
 
-    private final HospitalSideApiClient hospitalSideApiClient;
+    private final RabbitTemplate rabbitTemplate;
 
     @Override
     public String getPayPage(Long userId, Long orderId) {
@@ -83,7 +84,9 @@ public class AlipayServiceImpl implements AlipayService {
                     if (orderInfoMapper.updateById(orderInfo) <= 0) {
                         throw new BusinessException(ResultEnum.ORDER_STATUS_UPDATE_FAILED);
                     }
-                    hospitalSideApiClient.updateOrderInner(orderInfo);
+                    // 通知医院
+                    rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_ORDER,
+                            RabbitMQConfig.ROUTING_ORDER, orderInfo);
                 }
             } catch (AlipayApiException e) {
                 throw new BusinessException(ResultEnum.ALIPAY_ERROR);
