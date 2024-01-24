@@ -187,7 +187,7 @@ function joinButtonClicked() {
   ElMessage({
     message: "提交中...",
     type: "info"
-  })
+  });
   join(formModel.value).then(res => {
     formModel.value = { ...defaultFormModel };
 
