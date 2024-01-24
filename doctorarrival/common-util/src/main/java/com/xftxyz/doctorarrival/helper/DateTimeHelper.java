@@ -38,10 +38,7 @@ public class DateTimeHelper {
         return dayOfWeekArray[workDate.getDay()];
     }
 
-    public static Date addDays(Date date, int days) {
-        return new Date(date.getTime() + days * Constants.DAY_IN_MILLIS);
-    }
-
+    // 格式化
     public static String formatDate(Date date, String pattern) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -49,7 +46,54 @@ public class DateTimeHelper {
         return dateFormat.format(calendar.getTime());
     }
 
-    public static Object addMinutes(Date date, int minutes) {
+    // public static Date parseDate(String dateString, String pattern) {
+    //     SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+    //     try {
+    //         return dateFormat.parse(dateString);
+    //     } catch (Exception e) {
+    //         return null;
+    //     }
+    // }
+
+    // 修改时间
+    public static Date addMinutes(Date date, int minutes) {
         return new Date(date.getTime() + minutes * Constants.MINUTE_IN_MILLIS);
     }
+
+    public static Date addDays(Date date, int days) {
+        return new Date(date.getTime() + days * Constants.DAY_IN_MILLIS);
+    }
+
+    public static Date addMonths(Date date, int months) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, months);
+        return new Date(calendar.getTimeInMillis());
+    }
+
+    public static Date addYears(Date date, int years) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.YEAR, years);
+        return new Date(calendar.getTimeInMillis());
+    }
+
+    public static Date getTheDayEndDate(Date date) {
+        return new Date(date.getYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+    }
+
+    public static Date getTheMonthEnd(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return new Date(calendar.getTimeInMillis());
+    }
+
+    public static Date getTheYearEnd(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.getActualMaximum(Calendar.DAY_OF_YEAR));
+        return new Date(calendar.getTimeInMillis());
+    }
+
 }
