@@ -1,18 +1,15 @@
 package com.xftxyz.doctorarrival.task.scheduled;
 
-import com.xftxyz.doctorarrival.config.RabbitMQConfig;
+import com.xftxyz.doctorarrival.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class ScheduledTask {
 
-    private final RabbitTemplate rabbitTemplate;
+    private final TaskService taskService;
 
     // 生成cron表达式 https://cron.qqe2.com/
 
@@ -21,7 +18,7 @@ public class ScheduledTask {
      */
     @Scheduled(cron = "0 0 8 * * ?") // 每天8点执行一次
     public void visitNotification() {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_TASK, RabbitMQConfig.ROUTING_TASK_NOTIFICATION, new Date());
+        taskService.visitNotification();
     }
 
     /**
@@ -29,7 +26,7 @@ public class ScheduledTask {
      */
     @Scheduled(cron = "0 * * * * ?") // 每分钟执行一次
     public void updateOrderStatus() {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_DIRECT_TASK, RabbitMQConfig.ROUTING_TASK_ORDER_STATUS, new Date());
+        taskService.updateOrderStatus();
     }
 
     /**

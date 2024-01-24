@@ -1,19 +1,31 @@
 <template>
-  <div>
-    <h1>任务管理</h1>
+  <div class="layout-container">
+    <div style="margin-top: 10%;">
+      <el-button type="primary" @click="visitNotification">发送就诊通知</el-button>
+      <el-button type="primary" @click="updateOrderStatus">更新订单状态</el-button>
+    </div>
   </div>
-
-  <!-- 按钮：返回首页 -->
-  <router-link to="/">
-    <el-button>返回首页</el-button>
-  </router-link>
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus';
+import { visitNotificationApi, updateOrderStatusApi } from "@/api/task";
+import { ElMessage } from "element-plus";
 
-ElMessage({
-  message: '该功能暂未开放',
-  type: 'warning'
-})
+function visitNotification() {
+  visitNotificationApi().then(() => {
+    ElMessage({
+      message: "就诊通知将在稍后发送",
+      type: "success",
+    });
+  });
+}
+
+function updateOrderStatus() {
+  updateOrderStatusApi().then(() => {
+    ElMessage({
+      message: "订单状态将在稍后更新",
+      type: "success",
+    });
+  });
+}
 </script>
