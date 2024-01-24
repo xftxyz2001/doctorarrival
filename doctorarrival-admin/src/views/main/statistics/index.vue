@@ -2,7 +2,7 @@
   <div class="layout-container">
     <div class="layout-container-form flex space-between">
       <div class="layout-container-form-handle">
-        <el-select v-model="selectModule" placeholder="请选择统计模块">
+        <el-select v-model="selectModule" placeholder="请选择统计模块" @change="somethingChange">
           <el-option v-for="t in chartModules" :key="t.value" :label="t.label" :value="t.value"></el-option>
         </el-select>
       </div>
@@ -15,6 +15,7 @@
           v-model="queryForm.from"
           :type="queryForm.unit"
           :disabled-date="disabledDate"
+          @change="somethingChange"
           placeholder="开始时间"
           value-format="YYYY-MM-DD"
         ></el-date-picker>
@@ -22,6 +23,7 @@
           v-model="queryForm.to"
           :type="queryForm.unit"
           :disabled-date="disabledDate"
+          @change="somethingChange"
           placeholder="结束时间"
           value-format="YYYY-MM-DD"
         ></el-date-picker>
@@ -85,6 +87,47 @@ function dateUnitChange(unit) {
     queryForm.from = fromDate.toISOString().split("T")[0];
     queryForm.to = toDate.toISOString().split("T")[0];
   }
+}
+
+function check(warning = false) {
+  if (!selectModule.value) {
+    if (warning)
+      ElMessage({
+        type: "warning",
+        message: "请选择统计模块"
+      });
+    return false;
+  }
+  if (!queryForm.from) {
+    if (warning)
+      ElMessage({
+        type: "warning",
+        message: "请选择开始时间"
+      });
+    return false;
+  }
+  if (!queryForm.to) {
+    if (warning)
+      ElMessage({
+        type: "warning",
+        message: "请选择结束时间"
+      });
+    return false;
+  }
+  // 转化为Date
+  const from = new Date(queryForm.from);
+  const to = new Date(queryForm.to);
+  // 判断时间范围
+  if (from > to) {
+    if (warning)
+      ElMessage({
+        type: "warning",
+        message: "开始时间需在结束时间之前"
+      });
+    return false;
+  }
+
+  return true;
 }
 
 const activeOption = ref({});
@@ -289,38 +332,11 @@ function handleOrderStatistics(amount = false) {
   });
 }
 
-function handleSearch() {
-  if (!selectModule.value) {
-    ElMessage({
-      type: "warning",
-      message: "请选择统计模块"
-    });
-    return;
-  }
-  if (!queryForm.from) {
-    ElMessage({
-      type: "warning",
-      message: "请选择开始时间"
-    });
-    return;
-  }
-  if (!queryForm.to) {
-    ElMessage({
-      type: "warning",
-      message: "请选择结束时间"
-    });
-    return;
-  }
-  // 转化为Date
-  const from = new Date(queryForm.from);
-  const to = new Date(queryForm.to);
-  // 判断时间范围
-  if (from > to) {
-    ElMessage({
-      type: "warning",
-      message: "开始时间需在结束时间之前"
-    });
-    return;
+function handleSearch(checked = false) {
+  if (!checked) {
+    if (!check(true)) {
+      return;
+    }
   }
 
   switch (selectModule.value) {
@@ -337,5 +353,12 @@ function handleSearch() {
       handleOrderStatistics(true);
       break;
   }
+}
+
+function somethingChange() {
+  if (!check()) {
+    return;
+  }
+  handleSearch(true);
 }
 </script>
