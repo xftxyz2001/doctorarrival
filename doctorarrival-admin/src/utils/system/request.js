@@ -1,7 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios'
 import store from '@/store'
 import { ElMessage } from 'element-plus'
-const baseURL = import.meta.env.VITE_BASE_URL
+// const baseURL = import.meta.env.VITE_BASE_URL
+const baseURL = 'http://localhost'
 
 const service = axios.create({
   baseURL: baseURL,
