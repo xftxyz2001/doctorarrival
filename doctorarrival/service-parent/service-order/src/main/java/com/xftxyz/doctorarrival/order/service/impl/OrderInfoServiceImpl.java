@@ -21,6 +21,7 @@ import com.xftxyz.doctorarrival.user.client.PatientApiClient;
 import com.xftxyz.doctorarrival.vo.hospital.ScheduleVO;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.order.OrderStatisticVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 import com.xftxyz.doctorarrival.vo.sms.NotificationVO;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -305,5 +307,75 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfoList.forEach(orderInfo -> {
             cancelOrder(orderInfo.getUserId(), orderInfo.getId());
         });
+    }
+
+    @Override
+    public OrderStatisticVO statistic(OrderStatisticVO orderStatisticVO) {
+        LambdaQueryWrapper<OrderInfo> lambdaQueryWrapper = null;
+        Date from = orderStatisticVO.getFrom();
+        Date to = orderStatisticVO.getTo();
+
+        if (ObjectUtils.isEmpty(from) && ObjectUtils.isEmpty(to)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        } else if (!ObjectUtils.isEmpty(from) && !ObjectUtils.isEmpty(to)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.between(OrderInfo::getCreateTime, from, to);
+        } else if (!ObjectUtils.isEmpty(from)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.ge(OrderInfo::getCreateTime, from);
+        } else {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.le(OrderInfo::getCreateTime, to);
+        }
+        List<OrderInfo> orderInfoList = baseMapper.selectList(lambdaQueryWrapper);
+
+        // 初始化OrderStatisticVO
+        zero(orderStatisticVO);
+
+        orderInfoList.forEach(orderInfo -> {
+            Integer orderStatus = orderInfo.getOrderStatus();
+            BigDecimal amount = orderInfo.getAmount();
+            if (OrderInfo.ORDER_STATUS_CLOSED.equals(orderStatus)) {
+                orderStatisticVO.setClosed(orderStatisticVO.getClosed() + 1);
+                orderStatisticVO.setClosedAmount(orderStatisticVO.getClosedAmount().add(amount));
+            } else if (OrderInfo.ORDER_STATUS_UNPAID.equals(orderStatus)) {
+                orderStatisticVO.setUnpaid(orderStatisticVO.getUnpaid() + 1);
+                orderStatisticVO.setUnpaidAmount(orderStatisticVO.getUnpaidAmount().add(amount));
+            } else if (OrderInfo.ORDER_STATUS_PAID.equals(orderStatus)) {
+                orderStatisticVO.setPaid(orderStatisticVO.getPaid() + 1);
+                orderStatisticVO.setPaidAmount(orderStatisticVO.getPaidAmount().add(amount));
+            } else if (OrderInfo.ORDER_STATUS_REFUNDING.equals(orderStatus)) {
+                orderStatisticVO.setRefunding(orderStatisticVO.getRefunding() + 1);
+                orderStatisticVO.setRefundingAmount(orderStatisticVO.getRefundingAmount().add(amount));
+            } else if (OrderInfo.ORDER_STATUS_REFUNDED.equals(orderStatus)) {
+                orderStatisticVO.setRefunded(orderStatisticVO.getRefunded() + 1);
+                orderStatisticVO.setRefundedAmount(orderStatisticVO.getRefundedAmount().add(amount));
+            } else if (OrderInfo.ORDER_STATUS_COMPLETED.equals(orderStatus)) {
+                orderStatisticVO.setCompleted(orderStatisticVO.getCompleted() + 1);
+                orderStatisticVO.setCompletedAmount(orderStatisticVO.getCompletedAmount().add(amount));
+            }
+
+            orderStatisticVO.setTotal(orderStatisticVO.getTotal() + 1);
+            orderStatisticVO.setTotalAmount(orderStatisticVO.getTotalAmount().add(amount));
+        });
+
+        return orderStatisticVO;
+    }
+
+    private static void zero(OrderStatisticVO orderStatisticVO) {
+        orderStatisticVO.setClosed(0L);
+        orderStatisticVO.setClosedAmount(BigDecimal.ZERO);
+        orderStatisticVO.setUnpaid(0L);
+        orderStatisticVO.setUnpaidAmount(BigDecimal.ZERO);
+        orderStatisticVO.setPaid(0L);
+        orderStatisticVO.setPaidAmount(BigDecimal.ZERO);
+        orderStatisticVO.setRefunding(0L);
+        orderStatisticVO.setRefundingAmount(BigDecimal.ZERO);
+        orderStatisticVO.setRefunded(0L);
+        orderStatisticVO.setRefundedAmount(BigDecimal.ZERO);
+        orderStatisticVO.setCompleted(0L);
+        orderStatisticVO.setCompletedAmount(BigDecimal.ZERO);
+        orderStatisticVO.setTotal(0L);
+        orderStatisticVO.setTotalAmount(BigDecimal.ZERO);
     }
 }

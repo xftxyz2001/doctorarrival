@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.order.OrderStatisticVO;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
 
 import java.util.List;
@@ -41,4 +42,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     void visitNotification();
 
     void updateOrderStatus();
+
+    OrderStatisticVO statistic(OrderStatisticVO orderStatisticVO);
 }

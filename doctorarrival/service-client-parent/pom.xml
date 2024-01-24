@@ -16,6 +16,7 @@
         <module>service-client-hospital</module>
         <module>service-client-user</module>
         <module>service-client-common</module>
+        <module>service-client-order</module>
     </modules>
 
     <properties>

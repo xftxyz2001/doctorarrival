@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(value = "service-user", path = "/api/user/patient")
+@FeignClient(value = "service-user", path = "/api/user/patient", contextId = "userPatient")
 @Repository
 public interface PatientApiClient {
     @GetMapping("/inner/detail/{patientId}")

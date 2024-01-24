@@ -1,9 +1,11 @@
 package com.xftxyz.doctorarrival.user.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.user.UserInfo;
 import com.xftxyz.doctorarrival.user.service.UserInfoService;
 import com.xftxyz.doctorarrival.vo.user.UserInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.user.UserStatisticVO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -64,6 +66,12 @@ public class UserInfoAdminController {
                                 @RequestParam(value = "current", defaultValue = "1") @Min(1) Long current,
                                 @RequestParam(value = "size", defaultValue = "20") @Min(1) Long size) {
         return userInfoService.find(userInfoQueryVO, current, size);
+    }
+
+    @NoWrap
+    @PostMapping("/inner/statistic")
+    public UserStatisticVO statistic(@RequestBody UserStatisticVO userStatisticVO) {
+        return userInfoService.statistic(userStatisticVO);
     }
 
 }

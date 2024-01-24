@@ -1,9 +1,11 @@
 package com.xftxyz.doctorarrival.order.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryVO;
+import com.xftxyz.doctorarrival.vo.order.OrderStatisticVO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -64,5 +66,11 @@ public class OrderInfoAdminController {
                                  @RequestParam(value = "current", defaultValue = "1") @Min(1) Long current,
                                  @RequestParam(value = "size", defaultValue = "20") @Min(1) Long size) {
         return orderInfoService.find(orderInfoQueryVO, current, size);
+    }
+
+    @NoWrap
+    @PostMapping("/inner/statistic")
+    public OrderStatisticVO statistic(@RequestBody OrderStatisticVO orderStatisticVO) {
+        return orderInfoService.statistic(orderStatisticVO);
     }
 }

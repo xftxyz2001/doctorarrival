@@ -1,9 +1,11 @@
 package com.xftxyz.doctorarrival.hospital.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSetService;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalSetQueryVO;
+import com.xftxyz.doctorarrival.vo.hospital.HospitalStatisticVO;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -66,5 +68,10 @@ public class HospitalSetAdminController {
         return hospitalSetService.setStatus(id, status);
     }
 
+    @NoWrap
+    @PostMapping("/inner/statistic")
+    public HospitalStatisticVO statistic(@RequestBody HospitalStatisticVO hospitalStatisticVO) {
+        return hospitalSetService.statistic(hospitalStatisticVO);
+    }
 
 }

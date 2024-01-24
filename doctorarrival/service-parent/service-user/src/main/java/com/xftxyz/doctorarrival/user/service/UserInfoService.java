@@ -39,4 +39,6 @@ public interface UserInfoService extends IService<UserInfo> {
     Boolean updatePhone(String userId, LoginParam loginParam);
 
     Boolean updateNickname(String userId, String nickName);
+
+    UserStatisticVO statistic(UserStatisticVO userStatisticVO);
 }

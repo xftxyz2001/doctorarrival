@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalSetQueryVO;
+import com.xftxyz.doctorarrival.vo.hospital.HospitalStatisticVO;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface HospitalSetService extends IService<HospitalSet> {
     Boolean removeByIdsWarp(List<Long> idList);
 
     HospitalSet getByIdWarp(Long id);
+
+    HospitalStatisticVO statistic(HospitalStatisticVO hospitalStatisticVO);
 }

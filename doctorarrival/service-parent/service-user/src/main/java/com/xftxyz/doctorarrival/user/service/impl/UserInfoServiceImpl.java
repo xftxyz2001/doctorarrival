@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -256,5 +257,38 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
             throw new BusinessException(ResultEnum.USER_UPDATE_FAILED);
         }
         return true;
+    }
+
+    @Override
+    public UserStatisticVO statistic(UserStatisticVO userStatisticVO) {
+        LambdaQueryWrapper<UserInfo> lambdaQueryWrapper = null;
+        Date from = userStatisticVO.getFrom();
+        Date to = userStatisticVO.getTo();
+
+        if (ObjectUtils.isEmpty(from) && ObjectUtils.isEmpty(to)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        } else if (!ObjectUtils.isEmpty(from) && !ObjectUtils.isEmpty(to)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.between(UserInfo::getCreateTime, from, to);
+        } else if (!ObjectUtils.isEmpty(from)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.ge(UserInfo::getCreateTime, from);
+        } else {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.le(UserInfo::getCreateTime, to);
+        }
+        userStatisticVO.setTotal(baseMapper.selectCount(lambdaQueryWrapper));
+
+        // 手机用户
+        LambdaQueryWrapper<UserInfo> phoneQueryWrapper = lambdaQueryWrapper.clone();
+        phoneQueryWrapper.isNotNull(UserInfo::getPhone);
+        userStatisticVO.setPhone(baseMapper.selectCount(phoneQueryWrapper));
+
+        // 微信用户
+        LambdaQueryWrapper<UserInfo> openidQueryWrapper = lambdaQueryWrapper.clone();
+        openidQueryWrapper.isNotNull(UserInfo::getOpenid);
+        userStatisticVO.setWx(baseMapper.selectCount(openidQueryWrapper));
+
+        return userStatisticVO;
     }
 }

@@ -10,10 +10,12 @@ import com.xftxyz.doctorarrival.hospital.mapper.HospitalSetMapper;
 import com.xftxyz.doctorarrival.hospital.service.HospitalSetService;
 import com.xftxyz.doctorarrival.result.ResultEnum;
 import com.xftxyz.doctorarrival.vo.hospital.HospitalSetQueryVO;
+import com.xftxyz.doctorarrival.vo.hospital.HospitalStatisticVO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -104,5 +106,26 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
             throw new BusinessException(ResultEnum.HOSPITAL_NOT_EXIST);
         }
         return hospitalSet;
+    }
+
+    @Override
+    public HospitalStatisticVO statistic(HospitalStatisticVO hospitalStatisticVO) {
+        LambdaQueryWrapper<HospitalSet> lambdaQueryWrapper = null;
+        Date from = hospitalStatisticVO.getFrom();
+        Date to = hospitalStatisticVO.getTo();
+        if (ObjectUtils.isEmpty(from) && ObjectUtils.isEmpty(to)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        } else if (!ObjectUtils.isEmpty(from) && !ObjectUtils.isEmpty(to)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.between(HospitalSet::getCreateTime, from, to);
+        } else if (!ObjectUtils.isEmpty(from)) {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.ge(HospitalSet::getCreateTime, from);
+        } else {
+            lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.le(HospitalSet::getCreateTime, to);
+        }
+        hospitalStatisticVO.setCount(baseMapper.selectCount(lambdaQueryWrapper));
+        return hospitalStatisticVO;
     }
 }
