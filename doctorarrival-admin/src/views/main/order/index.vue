@@ -3,7 +3,12 @@
     <div class="layout-container-form flex space-between">
       <div class="layout-container-form-handle">
         <el-button type="primary" :icon="Plus" @click="openAddDialog">添加</el-button>
-        <el-popconfirm title="确定删除选中的数据吗？" @confirm="deleteChoose" confirm-button-text="确定" cancel-button-text="取消">
+        <el-popconfirm
+          title="确定删除选中的数据吗？"
+          @confirm="deleteChoose"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+        >
           <template #reference>
             <el-button type="danger" :icon="Delete" :disabled="chooseData.length === 0">删除选中</el-button>
           </template>
@@ -14,7 +19,7 @@
         <el-input v-model="query.departmentCodeOrName" placeholder="科室编号或名称"></el-input>
         <el-input v-model="query.doctorName" placeholder="医生名称"></el-input>
         <el-input v-model="query.patientIdOrName" placeholder="就诊人编号或名称"></el-input>
-        <el-select v-model="query.orderStatus" placeholder="订单状态" style="width: 100%;">
+        <el-select v-model="query.orderStatus" placeholder="订单状态" style="width: 100%">
           <el-option label="已关闭" :value="-1"></el-option>
           <el-option label="待支付" :value="0"></el-option>
           <el-option label="已支付" :value="1"></el-option>
@@ -28,14 +33,22 @@
     </div>
 
     <div class="layout-container-table">
-      <Table ref="table" v-model:page="page" v-loading="loading" row-key="id" :showSelection="true" :data="tableData"
-        @getTableData="getTableData" @selection-change="handleSelectionChange">
+      <Table
+        ref="table"
+        v-model:page="page"
+        v-loading="loading"
+        row-key="id"
+        :showSelection="true"
+        :data="tableData"
+        @getTableData="getTableData"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column label="订单号" prop="id" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="用户id" prop="userId" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="描述" :show-overflow-tooltip="true">
           <template v-slot="scope">
-            {{ scope.row.hospitalName }} - {{ scope.row.departmentName }} - {{ scope.row.doctorName }} - {{
-              scope.row.reserveDate }}
+            {{ scope.row.hospitalName }} - {{ scope.row.departmentName }} - {{ scope.row.doctorName }} -
+            {{ scope.row.reserveDate }}
           </template>
         </el-table-column>
         <el-table-column label="就诊人" prop="patientName"></el-table-column>
@@ -58,8 +71,12 @@
         <el-table-column label="操作">
           <template v-slot="scope">
             <el-button type="primary" @click="openEditDialog(scope.row)">修改</el-button>
-            <el-popconfirm title="确定删除吗？" @confirm="deleteOne(scope.row)" confirm-button-text="确定"
-              cancel-button-text="取消">
+            <el-popconfirm
+              title="确定删除吗？"
+              @confirm="deleteOne(scope.row)"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+            >
               <template #reference>
                 <el-button type="danger">删除</el-button>
               </template>
@@ -125,140 +142,140 @@
     </Layer>
   </div>
 </template>
-  
+
 <script setup>
-import { findApi, getByIdApi, removeApi, removeBatchApi, saveApi, updateApi } from '@/api/order'
-import Layer from '@/components/layer/index.vue'
-import Table from '@/components/table/index.vue'
-import { Delete, Plus, Search } from '@element-plus/icons'
-import { ElMessage } from 'element-plus'
-import { onBeforeMount, reactive, ref } from 'vue'
+import { findApi, getByIdApi, removeApi, removeBatchApi, saveApi, updateApi } from "@/api/order";
+import Layer from "@/components/layer/index.vue";
+import Table from "@/components/table/index.vue";
+import { Delete, Plus, Search } from "@element-plus/icons";
+import { ElMessage } from "element-plus";
+import { onBeforeMount, reactive, ref } from "vue";
 
 // 搜索相关
 const query = reactive({
-  hospitalCodeOrName: '',
-  departmentCodeOrName: '',
-  doctorName: '',
-  patientIdOrName: '',
+  hospitalCodeOrName: "",
+  departmentCodeOrName: "",
+  doctorName: "",
+  patientIdOrName: "",
   orderStatus: null
-})
+});
 
 // 弹窗控制器
 const layer = reactive({
   show: false,
-  title: '新增',
+  title: "新增",
   showButton: true
-})
+});
 
 const formModel = ref({
-  userId: '',
-  hospitalCode: '',
-  hospitalName: '',
-  departmentCode: '',
-  departmentName: '',
-  doctorName: '',
-  doctorTitle: '',
-  scheduleId: '',
-  reserveDate: '',
-  patientId: '',
-  patientName: '',
-  patientPhone: '',
-  amount: '',
+  userId: "",
+  hospitalCode: "",
+  hospitalName: "",
+  departmentCode: "",
+  departmentName: "",
+  doctorName: "",
+  doctorTitle: "",
+  scheduleId: "",
+  reserveDate: "",
+  patientId: "",
+  patientName: "",
+  patientPhone: "",
+  amount: "",
   orderStatus: 0
-})
+});
 
 // 分页参数, 供table使用
 const page = reactive({
   index: 1,
   size: 20,
   total: 0
-})
+});
 
-const loading = ref(true)
-const tableData = ref([])
-const chooseData = ref([])
+const loading = ref(true);
+const tableData = ref([]);
+const chooseData = ref([]);
 const handleSelectionChange = val => {
-  chooseData.value = val
-}
+  chooseData.value = val;
+};
 
 // 获取表格数据
 function getTableData() {
   findApi(query, page.index, page.size).then(res => {
-    tableData.value = res.records
+    tableData.value = res.records;
     // page.index = res.current
     // page.size = res.size
-    page.total = res.total
-    loading.value = false
-  })
+    page.total = res.total;
+    loading.value = false;
+  });
 }
 
 onBeforeMount(() => {
-  getTableData()
-})
+  getTableData();
+});
 
 // 删除选中数据
 function deleteChoose() {
   removeBatchApi(chooseData.value.map(item => item.id)).then(res => {
-    ElMessage.success('删除成功')
-    getTableData()
-  })
+    ElMessage.success("删除成功");
+    getTableData();
+  });
 }
 
 // 删除单条数据
 function deleteOne(row) {
   removeApi(row.id).then(res => {
-    ElMessage.success('删除成功')
-    getTableData()
-  })
+    ElMessage.success("删除成功");
+    getTableData();
+  });
 }
 
 // 新增/编辑弹窗
 function openAddDialog() {
   formModel.value = {
-    userId: '',
-    hospitalCode: '',
-    hospitalName: '',
-    departmentCode: '',
-    departmentName: '',
-    doctorName: '',
-    doctorTitle: '',
-    scheduleId: '',
-    reserveDate: '',
-    patientId: '',
-    patientName: '',
-    patientPhone: '',
-    amount: '',
+    userId: "",
+    hospitalCode: "",
+    hospitalName: "",
+    departmentCode: "",
+    departmentName: "",
+    doctorName: "",
+    doctorTitle: "",
+    scheduleId: "",
+    reserveDate: "",
+    patientId: "",
+    patientName: "",
+    patientPhone: "",
+    amount: "",
     orderStatus: 0
-  }
+  };
 
-  layer.title = '新增记录'
-  layer.show = true
-  layer.showButton = true
+  layer.title = "新增记录";
+  layer.show = true;
+  layer.showButton = true;
 }
 
 function openEditDialog(row) {
   getByIdApi(row.id).then(res => {
-    formModel.value = JSON.parse(JSON.stringify(res))
-  })
-  layer.title = '编辑记录'
-  layer.show = true
-  layer.showButton = true
+    formModel.value = JSON.parse(JSON.stringify(res));
+  });
+  layer.title = "编辑记录";
+  layer.show = true;
+  layer.showButton = true;
 }
 
 // 提交新增/修改
 function submit() {
   if (formModel.value.id) {
     updateApi(formModel.value).then(res => {
-      ElMessage.success('修改成功')
-      layer.show = false
-      getTableData()
-    })
+      ElMessage.success("修改成功");
+      layer.show = false;
+      getTableData();
+    });
   } else {
     saveApi(formModel.value).then(res => {
-      ElMessage.success('新增成功')
-      layer.show = false
-      getTableData()
-    })
+      ElMessage.success("新增成功");
+      layer.show = false;
+      getTableData();
+    });
   }
 }
 </script>

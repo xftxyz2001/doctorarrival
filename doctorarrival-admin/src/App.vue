@@ -5,18 +5,18 @@
 </template>
 
 <script lang="js">
-import { defineComponent, computed } from 'vue'
-import { useStore } from 'vuex'
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
 export default defineComponent({
-  name: 'App',
+  name: "App",
   setup() {
-    const store = useStore()
-    const size = computed(() => store.state.app.elementSize)
+    const store = useStore();
+    const size = computed(() => store.state.app.elementSize);
     return {
-      size,
-    }
+      size
+    };
   }
-})
+});
 </script>
 
 <style>

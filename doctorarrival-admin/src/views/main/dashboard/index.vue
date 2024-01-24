@@ -7,15 +7,15 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-import Card from './components/card/index.vue'
+import { defineComponent } from "vue";
+import Card from "./components/card/index.vue";
 // import Charts from './components/charts/index.vue'
 export default defineComponent({
   components: {
-    Card,
+    Card
     // Charts,
-  },
-})
+  }
+});
 </script>
 
 <style lang="scss" scoped>

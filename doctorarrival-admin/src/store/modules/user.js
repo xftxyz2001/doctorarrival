@@ -1,25 +1,25 @@
-import { checkAuthorizationApi } from '@/api/user'
+import { checkAuthorizationApi } from "@/api/user";
 const state = () => ({
-  token: '', // 登录token
-  info: {},  // 用户信息
-})
+  token: "", // 登录token
+  info: {} // 用户信息
+});
 
 // getters
 const getters = {
   token(state) {
-    return state.token
+    return state.token;
   }
-}
+};
 
 // mutations
 const mutations = {
   tokenChange(state, token) {
-    state.token = token
+    state.token = token;
   },
   infoChange(state, info) {
-    state.info = info
+    state.info = info;
   }
-}
+};
 
 // actions
 const actions = {
@@ -36,14 +36,16 @@ const actions = {
       // }).catch(err => {
       //   reject(err)
       // })
-      commit('tokenChange', params.password)
-      checkAuthorizationApi().then(res => {
-        commit('infoChange', params)
-        resolve(res)
-      }).catch(err => {
-        reject(err)
-      })
-    })
+      commit("tokenChange", params.password);
+      checkAuthorizationApi()
+        .then(res => {
+          commit("infoChange", params);
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   },
   // get user info after user logined
   // getInfo({ commit }, params) {
@@ -66,13 +68,13 @@ const actions = {
 
     // })
     // .finally(() => {
-      localStorage.removeItem('tabs')
-      localStorage.removeItem('vuex')
-      sessionStorage.removeItem('vuex')
-      location.reload()
+    localStorage.removeItem("tabs");
+    localStorage.removeItem("vuex");
+    sessionStorage.removeItem("vuex");
+    location.reload();
     // })
   }
-}
+};
 
 export default {
   namespaced: true,
@@ -80,4 +82,4 @@ export default {
   actions,
   getters,
   mutations
-}
+};

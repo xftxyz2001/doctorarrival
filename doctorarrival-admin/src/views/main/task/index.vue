@@ -1,6 +1,6 @@
 <template>
   <div class="layout-container">
-    <div style="margin-top: 10%;">
+    <div style="margin-top: 10%">
       <el-button type="primary" @click="visitNotification">发送就诊通知</el-button>
       <el-button type="primary" @click="updateOrderStatus">更新订单状态</el-button>
     </div>
@@ -15,7 +15,7 @@ function visitNotification() {
   visitNotificationApi().then(() => {
     ElMessage({
       message: "就诊通知将在稍后发送",
-      type: "success",
+      type: "success"
     });
   });
 }
@@ -24,7 +24,7 @@ function updateOrderStatus() {
   updateOrderStatusApi().then(() => {
     ElMessage({
       message: "订单状态将在稍后更新",
-      type: "success",
+      type: "success"
     });
   });
 }

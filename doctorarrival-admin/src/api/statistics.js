@@ -4,7 +4,7 @@ export function hospitalStatistics(data = {}) {
   return request({
     url: "/admin/statistics/analysis/hospital",
     method: "post",
-    data,
+    data
   });
 }
 
@@ -12,7 +12,7 @@ export function userStatistics(data = {}) {
   return request({
     url: "/admin/statistics/analysis/user",
     method: "post",
-    data,
+    data
   });
 }
 
@@ -20,6 +20,6 @@ export function orderStatistics(data = {}) {
   return request({
     url: "/admin/statistics/analysis/order",
     method: "post",
-    data,
+    data
   });
 }

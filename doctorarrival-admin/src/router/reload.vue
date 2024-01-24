@@ -1,13 +1,18 @@
 <template>
   <div class="ok-loading">
-    <div class="ball-loader"> <span></span><span></span><span></span><span></span> </div>
+    <div class="ball-loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 export default defineComponent({
-  name: 'routerReload',
+  name: "routerReload",
   setup() {}
 });
 </script>
@@ -19,7 +24,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color:  var(--system-page-background);
+  background-color: var(--system-page-background);
   margin: 15px;
 }
 .ok-loading.close {
@@ -28,7 +33,6 @@ export default defineComponent({
   animation-fill-mode: forwards;
 }
 .ball-loader {
-
 }
 .ball-loader > span,
 .signal-loader > span {

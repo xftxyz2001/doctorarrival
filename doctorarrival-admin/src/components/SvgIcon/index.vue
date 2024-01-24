@@ -4,20 +4,20 @@
 
 <script lang="js">
 /** 使用参照文档：https://gitee.com/webxrd/vite-plugin-svg?_from=gitee_search */
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed } from "vue";
 export default defineComponent({
-  name: 'SvgIcon',
+  name: "SvgIcon",
   props: {
     name: {
       type: String,
-      required: true,
+      required: true
     }
   },
   setup(props) {
-    const symbolId = computed(() => `#icon-${props.name}`)
-    return { symbolId }
+    const symbolId = computed(() => `#icon-${props.name}`);
+    return { symbolId };
   }
-})
+});
 </script>
 
 <style scoped>

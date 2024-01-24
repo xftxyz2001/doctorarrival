@@ -1,14 +1,14 @@
 <template>
-  <component :is="type" v-bind="linkProps(to)" @click="hideMenu" >
+  <component :is="type" v-bind="linkProps(to)" @click="hideMenu">
     <slot></slot>
   </component>
 </template>
 
 <script lang="js">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 export default defineComponent({
-  name: 'appLink',
+  name: "appLink",
   props: {
     to: {
       type: String,
@@ -18,11 +18,11 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const isCollapse = computed(() => store.state.app.isCollapse);
-    const linkProps = (to) => {
-     return {
-       to: to
-     } 
-    }
+    const linkProps = to => {
+      return {
+        to: to
+      };
+    };
     const hideMenu = () => {
       if (document.body.clientWidth <= 1000 && !isCollapse.value) {
         store.commit("app/isCollapseChange", true);
@@ -32,10 +32,8 @@ export default defineComponent({
       type: "router-link",
       linkProps,
       hideMenu
-    }
+    };
   }
-})
+});
 </script>
-<style lang="">
-  
-</style>
+<style lang=""></style>

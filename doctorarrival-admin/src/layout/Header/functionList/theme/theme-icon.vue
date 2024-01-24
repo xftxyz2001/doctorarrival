@@ -9,122 +9,121 @@
         <div class="theme-icon-content-header" :style="{ 'background-color': header }"></div>
         <div class="theme-icon-content-main" :style="{ 'background-color': main }">
           <div class="active" v-if="active === name">
-            <i class="sfont system-success" :style="{'color': activeColor}"></i>
+            <i class="sfont system-success" :style="{ color: activeColor }"></i>
           </div>
         </div>
       </div>
-      
     </div>
-  </el-tooltip> 
-  
+  </el-tooltip>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 export default defineComponent({
   props: {
     name: {
       type: String,
-      default: 'default'
+      default: "default"
     },
     active: {
       type: String,
-      default: ''
+      default: ""
     },
     menu: {
       type: String,
-      defualt: ''
+      defualt: ""
     },
     logo: {
       type: String,
-      defualt: ''
+      defualt: ""
     },
     header: {
       type: String,
-      defualt: ''
+      defualt: ""
     },
     main: {
       type: String,
-      defualt: ''
+      defualt: ""
     },
     tip: {
       type: String,
-      default: '默认菜单风格'
+      default: "默认菜单风格"
     },
     activeColor: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   setup(props, ctx) {
     // 点击事件，触发v-model修改active值
     const handleClick = () => {
-      ctx.emit('update:active', props.name)
-    }
+      ctx.emit("update:active", props.name);
+    };
     return {
       handleClick
-    }
+    };
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
-  .theme-icon {
-    display: inline-flex;
-    width: 50px;
-    height: 50px;
-    box-shadow: 0 1px 2.5px 0 rgba(0,0,0,.18);
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.12),0 0 6px rgba(0,0,0,0.04);
-    outline: none;
-    border-radius: 4px;
-    overflow: hidden;
-    &-sidebar{
-      width: 18px;
-      display: flex;
-      flex-direction: column;
-      &-logo{
-        width: 20px;
-        height: 10px;
-        background-color: #263445;
-      }
-      &-menu{
-        flex: 1;
-        background-color: rgb(40, 65, 90);
-      }
+.theme-icon {
+  display: inline-flex;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.04);
+  outline: none;
+  border-radius: 4px;
+  overflow: hidden;
+  &-sidebar {
+    width: 18px;
+    display: flex;
+    flex-direction: column;
+    &-logo {
+      width: 20px;
+      height: 10px;
+      background-color: #263445;
     }
-    &-content{
+    &-menu {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      &-header{
-        height: 10px;
-        background-color: #fff;
-      }
-      &-main{
-        flex: 1;
-        background-color: #f0f2f5;
-        position: relative;
-        .active {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          i {
-            color: #000;
-            font-weight: bold;
-            font-size: 22px;
-          }
+      background-color: rgb(40, 65, 90);
+    }
+  }
+  &-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    &-header {
+      height: 10px;
+      background-color: #fff;
+    }
+    &-main {
+      flex: 1;
+      background-color: #f0f2f5;
+      position: relative;
+      .active {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        i {
+          color: #000;
+          font-weight: bold;
+          font-size: 22px;
         }
       }
     }
-
   }
-  .theme-icon+.theme-icon{
-    margin-left: 12px;
-  }
+}
+.theme-icon + .theme-icon {
+  margin-left: 12px;
+}
 </style>

@@ -1,10 +1,6 @@
 <template>
   <el-container style="height: 100vh">
-    <div
-      class="mask"
-      v-show="!isCollapse && !contentFullScreen"
-      @click="hideMenu"
-    ></div>
+    <div class="mask" v-show="!isCollapse && !contentFullScreen" @click="hideMenu"></div>
     <el-aside
       :width="isCollapse ? '60px' : '250px'"
       :class="isCollapse ? 'hide-aside' : 'show-side'"
@@ -20,14 +16,8 @@
       <Tabs v-show="showTabs" />
       <el-main>
         <router-view v-slot="{ Component, route }">
-          <transition
-            :name="route.meta.transition || 'fade-transform'"
-            mode="out-in"
-          >
-            <keep-alive
-              v-if="keepAliveComponentsName"
-              :include="keepAliveComponentsName"
-            >
+          <transition :name="route.meta.transition || 'fade-transform'" mode="out-in">
+            <keep-alive v-if="keepAliveComponentsName" :include="keepAliveComponentsName">
               <component :is="Component" :key="route.fullPath" />
             </keep-alive>
             <component v-else :is="Component" :key="route.fullPath" />
@@ -52,7 +42,7 @@ export default defineComponent({
     Menu,
     Logo,
     Header,
-    Tabs,
+    Tabs
   },
   setup() {
     const store = useStore();
@@ -61,7 +51,7 @@ export default defineComponent({
     const contentFullScreen = computed(() => store.state.app.contentFullScreen);
     const showLogo = computed(() => store.state.app.showLogo);
     const showTabs = computed(() => store.state.app.showTabs);
-    const keepAliveComponentsName = computed(() => store.getters['keepAlive/keepAliveComponentsName']);
+    const keepAliveComponentsName = computed(() => store.getters["keepAlive/keepAliveComponentsName"]);
     // 页面宽度变化监听后执行的方法
     const resizeHandler = () => {
       if (document.body.clientWidth <= 1000 && !isCollapse.value) {
@@ -88,9 +78,9 @@ export default defineComponent({
       showTabs,
       contentFullScreen,
       keepAliveComponentsName,
-      hideMenu,
+      hideMenu
     };
-  },
+  }
 });
 </script>
 

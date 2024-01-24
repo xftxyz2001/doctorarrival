@@ -29,13 +29,12 @@
       :page-sizes="pageSizes"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    >
-    </el-pagination>
+    ></el-pagination>
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent, ref, onActivated } from 'vue'
+import { defineComponent, ref, onActivated } from "vue";
 export default defineComponent({
   props: {
     data: { type: Array, default: () => [] }, // 数据源
@@ -43,68 +42,69 @@ export default defineComponent({
     showIndex: { type: Boolean, default: false }, // 是否展示index选择，默认否
     showSelection: { type: Boolean, default: false }, // 是否展示选择框，默认否
     showPage: { type: Boolean, default: true }, // 是否展示页级组件，默认是
-    page: { // 分页参数
+    page: {
+      // 分页参数
       type: Object,
       default: () => {
-        return { index: 1, size: 20, total: 0 }
+        return { index: 1, size: 20, total: 0 };
       }
     },
     pageLayout: { type: String, default: "total, sizes, prev, pager, next, jumper" }, // 分页需要显示的东西，默认全部
     pageSizes: { type: Array, default: [10, 20, 50, 100] }
   },
   setup(props, context) {
-    const table = ref(null)
-    let timer = null
+    const table = ref(null);
+    let timer = null;
     // 分页相关：监听页码切换事件
-    const handleCurrentChange = (val) => {
+    const handleCurrentChange = val => {
       if (timer) {
-        props.page.index = 1
+        props.page.index = 1;
       } else {
-        props.page.index = val
-        context.emit("getTableData")
+        props.page.index = val;
+        context.emit("getTableData");
       }
-    }
+    };
     // 分页相关：监听单页显示数量切换事件
-    const handleSizeChange = (val) => {
-      timer = 'work'
+    const handleSizeChange = val => {
+      timer = "work";
       setTimeout(() => {
-        timer = null
-      }, 100)
-      props.page.size = val
-      context.emit("getTableData", true)
-    }
+        timer = null;
+      }, 100);
+      props.page.size = val;
+      context.emit("getTableData", true);
+    };
     // 选择监听器
-    const handleSelectionChange = (val) =>{
-      context.emit("selection-change", val)
-    }
+    const handleSelectionChange = val => {
+      context.emit("selection-change", val);
+    };
     // 解决BUG：keep-alive组件使用时，表格浮层高度不对的问题
     onActivated(() => {
-      table.value.doLayout()
-    })
+      table.value.doLayout();
+    });
     return {
       table,
       handleCurrentChange,
       handleSizeChange,
       handleSelectionChange
-    }
+    };
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
-  .system-table-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+.system-table-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  .system-table {
+    flex: 1;
     height: 100%;
-    .system-table {
-      flex: 1;
-      height: 100%;
-    }
-    
-    .system-page {
-      margin-top: 20px;
-    }
   }
+
+  .system-page {
+    margin-top: 20px;
+  }
+}
 </style>

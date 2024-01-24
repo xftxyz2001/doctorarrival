@@ -1,1 +1,1 @@
-import request from '@/utils/system/request'
+import request from "@/utils/system/request";

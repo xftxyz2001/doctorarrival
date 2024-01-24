@@ -10,10 +10,10 @@
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus';
+import { ElMessage } from "element-plus";
 
 ElMessage({
-  message: '该功能暂未开放',
-  type: 'warning'
-})
+  message: "该功能暂未开放",
+  type: "warning"
+});
 </script>

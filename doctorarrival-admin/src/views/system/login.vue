@@ -2,7 +2,7 @@
   <div class="container">
     <div class="box">
       <div class="login-content-left">
-        <img :src="loginLeftPng"/>
+        <img :src="loginLeftPng" />
         <div class="login-content-left-mask">
           <div>{{ systemTitle }}</div>
           <div>{{ systemSubTitle }}</div>
@@ -12,37 +12,33 @@
       <div class="box-inner">
         <h1>欢迎登录</h1>
         <el-form class="form">
-          <el-input
-              size="large"
-              v-model="form.name"
-              readonly
-              placeholder="用户名"
-              type="text"
-              maxlength="50"
-          >
+          <el-input size="large" v-model="form.name" readonly placeholder="用户名" type="text" maxlength="50">
             <template #prepend>
               <i class="sfont system-xingmingyonghumingnicheng"></i>
             </template>
           </el-input>
           <el-input
-              size="large"
-              ref="password"
-              v-model="form.password"
-              :type="passwordType"
-              placeholder="密码"
-              name="password"
-              maxlength="50"
+            size="large"
+            ref="password"
+            v-model="form.password"
+            :type="passwordType"
+            placeholder="密码"
+            name="password"
+            maxlength="50"
           >
             <template #prepend>
               <i class="sfont system-mima"></i>
             </template>
             <template #append>
-              <i class="sfont password-icon" :class="passwordType ? 'system-yanjing-guan': 'system-yanjing'"
-                 @click="passwordTypeChange"></i>
+              <i
+                class="sfont password-icon"
+                :class="passwordType ? 'system-yanjing-guan' : 'system-yanjing'"
+                @click="passwordTypeChange"
+              ></i>
             </template>
           </el-input>
 
-          <el-button type="primary" :loading="form.loading" @click="submit" style="width: 100%;" size="medium">
+          <el-button type="primary" :loading="form.loading" @click="submit" style="width: 100%" size="medium">
             登录
           </el-button>
         </el-form>
@@ -52,69 +48,70 @@
 </template>
 
 <script lang="js">
-import { systemTitle, systemSubTitle } from '@/config'
-import { defineComponent, ref, reactive } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
-import { getAuthRoutes } from '@/router/permission'
-import { ElMessage } from 'element-plus'
-import loginLeftPng from '@/assets/login/left.jpg';
+import { systemTitle, systemSubTitle } from "@/config";
+import { defineComponent, ref, reactive } from "vue";
+import { useStore } from "vuex";
+import { useRouter, useRoute } from "vue-router";
+import { getAuthRoutes } from "@/router/permission";
+import { ElMessage } from "element-plus";
+import loginLeftPng from "@/assets/login/left.jpg";
 
 export default defineComponent({
   setup() {
-    const store = useStore()
-    const router = useRouter()
-    const route = useRoute()
+    const store = useStore();
+    const router = useRouter();
+    const route = useRoute();
     const form = reactive({
-      name: 'admin',
-      password: 'admin',
+      name: "admin",
+      password: "admin",
       loading: false
-    })
-    const passwordType = ref('password')
+    });
+    const passwordType = ref("password");
     const passwordTypeChange = () => {
-      passwordType.value === '' ? passwordType.value = 'password' : passwordType.value = ''
-    }
+      passwordType.value === "" ? (passwordType.value = "password") : (passwordType.value = "");
+    };
     const checkForm = () => {
       return new Promise((resolve, reject) => {
-        if (form.name === '') {
+        if (form.name === "") {
           ElMessage({
-            message: '用户名不能为空',
-            type: 'warning'
+            message: "用户名不能为空",
+            type: "warning"
           });
           return;
         }
-        if (form.password === '') {
+        if (form.password === "") {
           ElMessage({
-            message: '密码不能为空',
-            type: 'warning'
-          })
+            message: "密码不能为空",
+            type: "warning"
+          });
           return;
         }
-        resolve(true)
-      })
-    }
+        resolve(true);
+      });
+    };
     const submit = () => {
-      checkForm()
-      .then(() => {
-        form.loading = true
+      checkForm().then(() => {
+        form.loading = true;
         let params = {
           name: form.name,
           password: form.password
-        }
-        store.dispatch('user/login', params)
-        .then(async () => {
-          ElMessage({
-            message: '登录成功',
-            type: 'success'
+        };
+        store
+          .dispatch("user/login", params)
+          .then(async () => {
+            ElMessage({
+              message: "登录成功",
+              type: "success"
+            });
+            location.reload();
+            // await getAuthRoutes()
+            // await router.push(route.query.redirect || '/')
           })
-          location.reload()
-          // await getAuthRoutes()
-          // await router.push(route.query.redirect || '/')
-        }).finally(() => {
-          form.loading = false
-        })
-      })
-    }
+          .finally(() => {
+            form.loading = false;
+          });
+      });
+    };
     return {
       loginLeftPng,
       systemTitle,
@@ -123,9 +120,9 @@ export default defineComponent({
       passwordType,
       passwordTypeChange,
       submit
-    }
+    };
   }
-})
+});
 </script>
 
 <style lang="scss" scoped>
@@ -133,7 +130,7 @@ export default defineComponent({
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #fff url('@/assets/login/bg.png') no-repeat center;
+  background: #fff url("@/assets/login/bg.png") no-repeat center;
   overflow: hidden;
   background-size: cover;
   cursor: pointer;
@@ -150,8 +147,9 @@ export default defineComponent({
     transform: translate(-50%, -50%);
     height: 440px;
     overflow: hidden;
-    box-shadow: 0 6px 20px 5px rgba(152, 152, 152, 0.1),
-    0 16px 24px 2px rgba(117, 117, 117, 0.14);
+    box-shadow:
+      0 6px 20px 5px rgba(152, 152, 152, 0.1),
+      0 16px 24px 2px rgba(117, 117, 117, 0.14);
 
     .login-content-left {
       position: relative;
@@ -166,7 +164,7 @@ export default defineComponent({
         top: 0;
         width: 100%;
         height: 100%;
-        background-image: linear-gradient(rgba(0,204,222,0.8), rgba(51,132,224,0.8));
+        background-image: linear-gradient(rgba(0, 204, 222, 0.8), rgba(51, 132, 224, 0.8));
         text-align: center;
         color: #fff;
         font-size: 1.8rem;
@@ -224,7 +222,8 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 750px) {
-  .container .box, .container .box-inner {
+  .container .box,
+  .container .box-inner {
     width: 100vw !important;
     height: 100vh;
     box-shadow: none;

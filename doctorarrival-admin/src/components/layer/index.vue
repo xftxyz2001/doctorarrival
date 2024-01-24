@@ -1,11 +1,6 @@
 <template>
   <div v-drag="layer.show">
-    <el-dialog
-      v-model="layer.show"
-      :title="layer.title"
-      :width="layer.width"
-      center
-    >
+    <el-dialog v-model="layer.show" :title="layer.title" :width="layer.width" center>
       <slot></slot>
       <template #footer v-if="layer.showButton">
         <div>
@@ -18,8 +13,8 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-import drag from '@/directive/drag/index'
+import { defineComponent } from "vue";
+import drag from "@/directive/drag/index";
 export default defineComponent({
   props: {
     layer: {
@@ -27,9 +22,9 @@ export default defineComponent({
       default: () => {
         return {
           show: false,
-          title: '',
+          title: "",
           showButton: false
-        }
+        };
       },
       required: true
     }
@@ -39,19 +34,17 @@ export default defineComponent({
   },
   setup(props, ctx) {
     function confirm() {
-      ctx.emit('confirm')
+      ctx.emit("confirm");
     }
     function close() {
-      props.layer.show = false
+      props.layer.show = false;
     }
     return {
       confirm,
       close
-    }
+    };
   }
-})
+});
 </script>
 
-<style lang="scss" scoped>
-  
-</style>
+<style lang="scss" scoped></style>

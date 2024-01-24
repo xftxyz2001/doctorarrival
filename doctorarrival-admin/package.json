@@ -6,7 +6,8 @@
     "start": "vite",
     "build": "vite build --mode=production",
     "build:stag": "vite build --mode=staging",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
@@ -26,6 +27,7 @@
     "@vue/compiler-sfc": "^3.2.31",
     "@webxrd/vite-plugin-svg": "^1.0.5",
     "eslint": "^8.11.0",
+    "prettier": "^3.2.4",
     "sass": "^1.49.9",
     "unplugin-auto-import": "^0.6.4",
     "unplugin-vue-components": "^0.18.0",

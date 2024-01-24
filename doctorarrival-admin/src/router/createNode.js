@@ -1,14 +1,14 @@
 // 1. 用于解决keep-alive需要name的问题，动态生成随机name供keep-alive使用
 // 2. 用于解决transition动画内部结点只能为根元素的问题，单文件可写多结点
-import { defineComponent, h, createVNode, ref, nextTick } from 'vue'
-import reload from './reload.vue'
-import NProgress from '@/utils/system/nprogress'
+import { defineComponent, h, createVNode, ref, nextTick } from "vue";
+import reload from "./reload.vue";
+import NProgress from "@/utils/system/nprogress";
 
 export function createNameComponent(component) {
   return () => {
-    return new Promise((resolve) => {
-      component().then((comm) => {
-        const name = (comm.default.name || 'vueAdminBox') + '$' + Date.now();
+    return new Promise(resolve => {
+      component().then(comm => {
+        const name = (comm.default.name || "vueAdminBox") + "$" + Date.now();
         const tempComm = defineComponent({
           name,
           setup() {
@@ -32,15 +32,14 @@ export function createNameComponent(component) {
           },
           render: function () {
             if (this.isReload) {
-              return h('div', { class: 'el-main-box' }, [h(reload)]);
+              return h("div", { class: "el-main-box" }, [h(reload)]);
             } else {
-              return h('div', { class: 'el-main-box' }, [createVNode(comm.default)]);
+              return h("div", { class: "el-main-box" }, [createVNode(comm.default)]);
             }
           }
         });
         resolve(tempComm);
       });
     });
-  }
+  };
 }
-

@@ -13,22 +13,18 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-import barChart from './barChart.vue'
-import pieChart from './pieChart.vue'
-import circleChart from './circleChart.vue'
+import { defineComponent } from "vue";
+import barChart from "./barChart.vue";
+import pieChart from "./pieChart.vue";
+import circleChart from "./circleChart.vue";
 export default defineComponent({
   components: {
     barChart,
     pieChart,
     circleChart
   },
-  setup() {
-
-  }
-})
+  setup() {}
+});
 </script>
 
-<style lang="scss" scoped>
-  
-</style>
+<style lang="scss" scoped></style>
