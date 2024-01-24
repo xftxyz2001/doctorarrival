@@ -20,7 +20,7 @@
       <Table ref="table" v-model:page="page" v-loading="loading" row-key="id" :showSelection="true" :data="tableData"
         @getTableData="getTableData" @selection-change="handleSelectionChange">
         <el-table-column label="手机号" prop="phone"></el-table-column>
-        <el-table-column label="微信id" prop="openid"></el-table-column>
+        <el-table-column label="微信id" prop="openid" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="昵称" prop="nickName"></el-table-column>
         <el-table-column label="实名认证信息" prop="authStatus">
           <template v-slot="scope">
@@ -39,8 +39,8 @@
             <el-button type="danger" @click="setStatus(scope.row)" v-if="scope.row.status === 0">禁用</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="createTime"></el-table-column>
-        <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+        <el-table-column label="创建时间" prop="createTime" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="更新时间" prop="updateTime" :show-overflow-tooltip="true"></el-table-column>
 
         <el-table-column label="操作">
           <template v-slot="scope">

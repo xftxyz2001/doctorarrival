@@ -28,7 +28,7 @@
               <span>{{ scope.row.name }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="文件大小">
+          <el-table-column label="文件大小(B)">
             <template v-slot="{ row }">
               {{ row.size }}
             </template>

@@ -13,7 +13,7 @@
 
         <el-table-column label="名称">
           <template v-slot="scope">
-            <span>{{ scope.row.value }}</span>
+            <span>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="编码">
@@ -23,7 +23,7 @@
         </el-table-column>
         <el-table-column label="值">
           <template v-slot="scope">
-            <span>{{ scope.row.id }}</span>
+            <span>{{ scope.row.value }}</span>
           </template>
         </el-table-column>
       </el-table>

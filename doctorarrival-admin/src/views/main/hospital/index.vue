@@ -21,8 +21,8 @@
         @getTableData="getTableData" @selection-change="handleSelectionChange">
         <el-table-column label="医院编号" prop="hospitalCode"></el-table-column>
         <el-table-column label="医院名称" prop="hospitalName"></el-table-column>
-        <el-table-column label="api基础路径" prop="apiUrl"></el-table-column>
-        <el-table-column label="签名秘钥" prop="signKey"></el-table-column>
+        <el-table-column label="api基础路径" prop="apiUrl" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="签名秘钥" prop="signKey" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="联系人" prop="contactsName"></el-table-column>
         <el-table-column label="联系人手机" prop="contactsPhone"></el-table-column>
         <el-table-column label="状态" prop="status">
@@ -31,8 +31,8 @@
             <el-button type="danger" @click="setStatus(scope.row)" v-if="scope.row.status === 0">禁用</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="createTime"></el-table-column>
-        <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+        <el-table-column label="创建时间" prop="createTime" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="更新时间" prop="updateTime" :show-overflow-tooltip="true"></el-table-column>
 
         <el-table-column label="操作">
           <template v-slot="scope">

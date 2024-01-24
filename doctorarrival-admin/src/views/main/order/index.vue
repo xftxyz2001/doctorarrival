@@ -30,15 +30,9 @@
     <div class="layout-container-table">
       <Table ref="table" v-model:page="page" v-loading="loading" row-key="id" :showSelection="true" :data="tableData"
         @getTableData="getTableData" @selection-change="handleSelectionChange">
-        <!-- 订单号 -->
-        <!-- 用户id -->
-        <!-- 描述 -->
-        <!-- 就诊人 -->
-        <!-- 联系方式 -->
-        <!-- 金额（分） -->
-        <el-table-column label="订单号" prop="id"></el-table-column>
-        <el-table-column label="用户id" prop="userId"></el-table-column>
-        <el-table-column label="描述">
+        <el-table-column label="订单号" prop="id" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="用户id" prop="userId" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="描述" :show-overflow-tooltip="true">
           <template v-slot="scope">
             {{ scope.row.hospitalName }} - {{ scope.row.departmentName }} - {{ scope.row.doctorName }} - {{
               scope.row.reserveDate }}
@@ -46,7 +40,7 @@
         </el-table-column>
         <el-table-column label="就诊人" prop="patientName"></el-table-column>
         <el-table-column label="联系方式" prop="patientPhone"></el-table-column>
-        <el-table-column label="金额（分）" prop="amount"></el-table-column>
+        <el-table-column label="金额" prop="amount"></el-table-column>
         <el-table-column label="订单状态" prop="orderStatus">
           <!-- 订单状态（-1：已关闭，0：待支付，1：已支付，2：待退款，3：已退款，4：已完成） -->
           <template v-slot="scope">
@@ -58,8 +52,8 @@
             <el-tag v-if="scope.row.orderStatus === 4">已完成</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="createTime"></el-table-column>
-        <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+        <el-table-column label="创建时间" prop="createTime" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="更新时间" prop="updateTime" :show-overflow-tooltip="true"></el-table-column>
 
         <el-table-column label="操作">
           <template v-slot="scope">
