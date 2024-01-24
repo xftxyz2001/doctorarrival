@@ -26,7 +26,7 @@ onMounted(() => {
     watch(
       () => props.option,
       newVal => {
-        myChart.setOption(newVal);
+        myChart.setOption(newVal, true);
       },
       { deep: true }
     );
