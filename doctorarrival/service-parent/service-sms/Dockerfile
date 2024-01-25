@@ -6,3 +6,5 @@ WORKDIR /app
 COPY ./service-sms-0.0.1-SNAPSHOT.jar /app/service-sms.jar
 
 ENTRYPOINT ["java", "-jar", "/app/service-sms.jar"]
+
+EXPOSE 8250
