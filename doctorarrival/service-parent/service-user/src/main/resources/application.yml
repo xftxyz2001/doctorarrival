@@ -4,28 +4,26 @@ server:
 spring:
   application:
     name: service-user
-  profiles:
-    active: dev
 
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: <<nacos地址>>
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
-  data:
-    redis:
-      host: <<redis地址>>
-      password: <<redis密码>>
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://<<数据库地址>>/doctorarrival_user?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: <<数据库用户名>>
     password: <<数据库密码>>
+
+  data:
+    redis:
+      host: <<redis地址>>
+      password: <<redis密码>>
 
 wx:
   open:

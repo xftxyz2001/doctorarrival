@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Private Config Files ###
-application-*.yml
+**/config/application.yml
