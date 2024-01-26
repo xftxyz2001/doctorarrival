@@ -93,7 +93,7 @@ services:
   # Application services
   service-gateway:
     build: doctorarrival/service-gateway
-    image: xftxyz/doctorarrival/service-gateway:0.0.1
+    image: xftxyz/doctorarrival-gateway:0.0.1
     container_name: service-gateway
     restart: unless-stopped
     networks:
@@ -106,7 +106,7 @@ services:
 
   service-common:
     build: doctorarrival/service-parent/service-common
-    image: xftxyz/doctorarrival/service-common:0.0.1
+    image: xftxyz/doctorarrival-common:0.0.1
     container_name: service-common
     restart: unless-stopped
     networks:
@@ -119,7 +119,7 @@ services:
 
   service-hospital:
     build: doctorarrival/service-parent/service-hospital
-    image: xftxyz/doctorarrival/service-hospital:0.0.1
+    image: xftxyz/doctorarrival-hospital:0.0.1
     container_name: service-hospital
     restart: unless-stopped
     networks:
@@ -132,7 +132,7 @@ services:
 
   service-user:
     build: doctorarrival/service-parent/service-user
-    image: xftxyz/doctorarrival/service-user:0.0.1
+    image: xftxyz/doctorarrival-user:0.0.1
     container_name: service-user
     restart: unless-stopped
     networks:
@@ -145,7 +145,7 @@ services:
 
   service-sms:
     build: doctorarrival/service-parent/service-sms
-    image: xftxyz/doctorarrival/service-sms:0.0.1
+    image: xftxyz/doctorarrival-sms:0.0.1
     container_name: service-sms
     restart: unless-stopped
     networks:
@@ -158,7 +158,7 @@ services:
 
   service-oss:
     build: doctorarrival/service-parent/service-oss
-    image: xftxyz/doctorarrival/service-oss:0.0.1
+    image: xftxyz/doctorarrival-oss:0.0.1
     container_name: service-oss
     restart: unless-stopped
     networks:
@@ -171,7 +171,7 @@ services:
 
   service-order:
     build: doctorarrival/service-parent/service-order
-    image: xftxyz/doctorarrival/service-order:0.0.1
+    image: xftxyz/doctorarrival-order:0.0.1
     container_name: service-order
     restart: unless-stopped
     networks:
@@ -184,7 +184,7 @@ services:
 
   service-task:
     build: doctorarrival/service-parent/service-task
-    image: xftxyz/doctorarrival/service-task:0.0.1
+    image: xftxyz/doctorarrival-task:0.0.1
     container_name: service-task
     restart: unless-stopped
     networks:
@@ -197,7 +197,7 @@ services:
 
   service-statistics:
     build: doctorarrival/service-parent/service-statistics
-    image: xftxyz/doctorarrival/service-statistics:0.0.1
+    image: xftxyz/doctorarrival-statistics:0.0.1
     container_name: service-statistics
     restart: unless-stopped
     networks:
