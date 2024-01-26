@@ -19,3 +19,6 @@ touch ~/redis7.2.3/redis.conf
 
 # rabbitmq
 mkdir -p ~/rabbitmq3.12
+
+# ---
+mkdir -p ~/appconfig/{service-gateway,service-common,service-hospital,service-order,service-oss,service-sms,service-statistics,service-task,service-user}
