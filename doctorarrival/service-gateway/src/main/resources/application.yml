@@ -8,7 +8,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: <<nacos地址>>
+        server-addr: nacos:8848
 
     gateway:
       globalcors:
@@ -59,4 +59,4 @@ spring:
             - Path=/*/statistics/**
 
 admin:
-  authorization: <<后台管理系统密码>>
+  authorization: admin

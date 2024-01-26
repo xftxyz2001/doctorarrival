@@ -1,5 +1,6 @@
 # 后端
 cd doctorarrival
+chmod +x mvnw
 ./mvnw clean package -DskipTests
 
 # 前端

@@ -8,7 +8,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: <<nacos地址>>
+        server-addr: nacos:8848
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -16,6 +16,6 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://<<数据库地址>>/doctorarrival_common?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
-    username: <<数据库用户名>>
-    password: <<数据库密码>>
+    url: jdbc:mysql://mysql:3306/doctorarrival_common?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456

@@ -8,9 +8,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: <<nacos地址>>
+        server-addr: nacos:8848
 
   rabbitmq:
-    host: <<rabbitmq地址>>
-    username: <<rabbitmq用户名>>
-    password: <<rabbitmq密码>>
+    host: rabbitmq
+    username: admin
+    password: admin

@@ -8,7 +8,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: <<nacos地址>>
+        server-addr: nacos:8848
 
   servlet:
     multipart:
