@@ -1,7 +1,19 @@
 import axios from "axios";
 
+// const service = axios.create({
+//   baseURL: `http://${window.location.hostname}`,
+//   timeout: 5000
+// });
+let baseURL;
+
+if (process.client) {
+  baseURL = `http://${window.location.hostname}`;
+} else {
+  baseURL = "http://service-gateway";
+}
+
 const service = axios.create({
-  baseURL: `http://${window.location.hostname}`,
+  baseURL,
   timeout: 5000
 });
 
