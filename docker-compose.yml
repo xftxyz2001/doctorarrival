@@ -27,6 +27,7 @@ services:
       - "3306:3306"
     privileged: true
     volumes:
+      - ./sql:/docker-entrypoint-initdb.d
       - ~/mysql8.2.0/conf.d:/etc/mysql/conf.d
       - ~/mysql8.2.0/log:/var/log/mysql
       - ~/mysql8.2.0/data:/var/lib/mysql

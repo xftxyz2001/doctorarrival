@@ -1,3 +1,27 @@
+CREATE DATABASE IF NOT EXISTS doctorarrival_common;
+USE doctorarrival_common;
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for dict
+-- ----------------------------
+DROP TABLE IF EXISTS `dict`;
+CREATE TABLE `dict`  (
+  `id` bigint NOT NULL COMMENT 'id',
+  `parent_id` bigint NOT NULL COMMENT '上级id',
+  `name` varchar(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '名称',
+  `value` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '值',
+  `dict_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '编码',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_dict_code`(`dict_code` ASC) USING BTREE,
+  INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '数据字典表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of dict
+-- ----------------------------
 INSERT INTO `dict` VALUES (1, 0, '全部分类', NULL, 'ROOT');
 INSERT INTO `dict` VALUES (2, 1, '行政区划', NULL, 'AdministrativeDivisions');
 INSERT INTO `dict` VALUES (3, 1, '医院等级', NULL, 'HospitalType');
@@ -3428,3 +3452,5 @@ INSERT INTO `dict` VALUES (9000053, 9, '赫哲族', '53', NULL);
 INSERT INTO `dict` VALUES (9000054, 9, '门巴族', '54', NULL);
 INSERT INTO `dict` VALUES (9000055, 9, '珞巴族', '55', NULL);
 INSERT INTO `dict` VALUES (9000056, 9, '基诺族', '56', NULL);
+
+SET FOREIGN_KEY_CHECKS = 1;

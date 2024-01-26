@@ -18,6 +18,7 @@ jobs:
       with:
         distribution: 'oracle'
         java-version: '21'
+        cache: 'maven'
 
     - name: 后端构建
       working-directory: ./doctorarrival
