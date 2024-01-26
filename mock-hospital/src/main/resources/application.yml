@@ -7,5 +7,6 @@ spring:
     time-zone: GMT+8
 
 doctorarrival:
+  serverUrl: http://localhost
   hospitalCode: 8999
   privateKeyLocation: 8999.key

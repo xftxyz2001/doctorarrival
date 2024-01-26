@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyConfig {
 
-
     @Bean
-    public DoctorarrivalService doctorarrivalService(@Value("${doctorarrival.hospitalCode}") String hospitalCode,
+    public DoctorarrivalService doctorarrivalService(@Value("${doctorarrival.serverUrl}") String serverUrl,
+                                                     @Value("${doctorarrival.hospitalCode}") String hospitalCode,
                                                      @Value("${doctorarrival.privateKeyLocation}") String privateKeyLocation) {
-        return DoctorarrivalServiceBuilder.build(hospitalCode, privateKeyLocation);
+        return DoctorarrivalServiceBuilder.build(serverUrl, hospitalCode, privateKeyLocation);
     }
 }

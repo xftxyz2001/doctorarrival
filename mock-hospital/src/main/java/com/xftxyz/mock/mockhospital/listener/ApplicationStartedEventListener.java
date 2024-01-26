@@ -1,5 +1,4 @@
 package com.xftxyz.mock.mockhospital.listener;
-import com.xftxyz.doctorarrival.sdk.api.UpdateHospitalRequest.BookingRule;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +59,7 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
                 departmentRepository.save(department);
             }
             log.info("update departments");
-            // doctorarrivalService.updateDepartments(batchUpdateDepartmentRequest);
+            doctorarrivalService.updateDepartments(batchUpdateDepartmentRequest);
 
             List<Schedule> schedules = objectMapper.readValue(new File("schedules.json"), new TypeReference<>() {
             });
@@ -83,7 +82,7 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
                 scheduleRepository.save(schedule);
             }
             log.info("update schedules");
-            // doctorarrivalService.updateSchedules(batchUpdateScheduleRequest);
+            doctorarrivalService.updateSchedules(batchUpdateScheduleRequest);
             Duration timeTakenToStartup = Duration.ofNanos(System.nanoTime() - startTime);
             log.info("done in {}ms", timeTakenToStartup.toMillis());
         } catch (IOException e) {

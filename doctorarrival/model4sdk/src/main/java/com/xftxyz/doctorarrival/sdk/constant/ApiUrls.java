@@ -2,38 +2,35 @@ package com.xftxyz.doctorarrival.sdk.constant;
 
 public interface ApiUrls {
 
-    // 基础URL
-    String BASE_URL = "http://localhost/api/hospital/side";
-
     // 获取密钥
-    String UPDATE_SECRET_KEY = BASE_URL + "/key/"; // + hospitalCode
+    String UPDATE_SECRET_KEY = "/key/"; // + hospitalCode
 
     // 更新医院信息
-    String UPDATE_HOSPITAL = BASE_URL + "/hospital";
+    String UPDATE_HOSPITAL = "/hospital";
 
     // 更新科室信息
-    String UPDATE_DEPARTMENT = BASE_URL + "/department";
+    String UPDATE_DEPARTMENT = "/department";
 
     // 更新排班信息
-    String UPDATE_SCHEDULE = BASE_URL + "/schedule";
+    String UPDATE_SCHEDULE = "/schedule";
 
     // 删除科室信息
-    String DELETE_DEPARTMENT = BASE_URL + "/remove/department";
+    String DELETE_DEPARTMENT = "/remove/department";
 
     // 删除排班信息
-    String DELETE_SCHEDULE = BASE_URL + "/remove/schedule";
+    String DELETE_SCHEDULE = "/remove/schedule";
 
     // 批量更新科室信息
-    String UPDATE_DEPARTMENTS = BASE_URL + "/departments";
+    String UPDATE_DEPARTMENTS = "/departments";
 
     // 批量更新排班信息
-    String UPDATE_SCHEDULES = BASE_URL + "/schedules";
+    String UPDATE_SCHEDULES = "/schedules";
 
     // 批量删除科室信息
-    String DELETE_DEPARTMENTS = BASE_URL + "/remove/departments";
+    String DELETE_DEPARTMENTS = "/remove/departments";
 
     // 批量删除排班信息
-    String DELETE_SCHEDULES = BASE_URL + "/remove/schedules";
+    String DELETE_SCHEDULES = "/remove/schedules";
 
     // ----------
 

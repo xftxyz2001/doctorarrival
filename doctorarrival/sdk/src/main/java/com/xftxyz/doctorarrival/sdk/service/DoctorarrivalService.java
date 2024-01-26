@@ -24,13 +24,16 @@ import java.util.function.BiConsumer;
 @SuppressWarnings("rawtypes")
 public class DoctorarrivalService {
 
+    private final String serverUrl;
+
     // 医院编码
     private final String hospitalCode;
 
     // 医院私钥
     private final PrivateKey privateKey;
 
-    public DoctorarrivalService(String hospitalCode, PrivateKey privateKey) {
+    public DoctorarrivalService(String serverUrl, String hospitalCode, PrivateKey privateKey) {
+        this.serverUrl = serverUrl;
         this.hospitalCode = hospitalCode;
         this.privateKey = privateKey;
 
@@ -44,7 +47,7 @@ public class DoctorarrivalService {
 
     // 获取AES密钥
     private void updateSecretKey() {
-        String url = ApiUrls.UPDATE_SECRET_KEY + hospitalCode;
+        String url = this.serverUrl + ApiUrls.UPDATE_SECRET_KEY + hospitalCode;
         Result result = restTemplate.getForObject(url, Result.class);
         if (ObjectUtils.isEmpty(result)) {
             throw new RuntimeException("获取AES密钥失败");
@@ -102,47 +105,47 @@ public class DoctorarrivalService {
 
     // 更新医院信息
     public Boolean updateHospital(UpdateHospitalRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.UPDATE_HOSPITAL, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.UPDATE_HOSPITAL, updateHospitalRequest, Boolean.class);
     }
 
     // 更新科室信息
     public Boolean updateDepartment(UpdateDepartmentRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.UPDATE_DEPARTMENT, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.UPDATE_DEPARTMENT, updateHospitalRequest, Boolean.class);
     }
 
     // 更新排班信息
     public Boolean updateSchedule(UpdateScheduleRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.UPDATE_SCHEDULE, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.UPDATE_SCHEDULE, updateHospitalRequest, Boolean.class);
     }
 
     // 删除科室信息
     public Boolean deleteDepartment(UpdateDepartmentRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.DELETE_DEPARTMENT, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.DELETE_DEPARTMENT, updateHospitalRequest, Boolean.class);
     }
 
     // 删除排班信息
     public Boolean deleteSchedule(UpdateScheduleRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.DELETE_SCHEDULE, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.DELETE_SCHEDULE, updateHospitalRequest, Boolean.class);
     }
 
     // 批量更新科室信息
     public Boolean updateDepartments(BatchUpdateDepartmentRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.UPDATE_DEPARTMENTS, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.UPDATE_DEPARTMENTS, updateHospitalRequest, Boolean.class);
     }
 
     // 批量更新排班信息
     public Boolean updateSchedules(BatchUpdateScheduleRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.UPDATE_SCHEDULES, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.UPDATE_SCHEDULES, updateHospitalRequest, Boolean.class);
     }
 
     // 批量删除科室信息
     public Boolean deleteDepartments(BatchUpdateDepartmentRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.DELETE_DEPARTMENTS, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.DELETE_DEPARTMENTS, updateHospitalRequest, Boolean.class);
     }
 
     // 批量删除排班信息
     public Boolean deleteSchedules(BatchUpdateScheduleRequest updateHospitalRequest) {
-        return sendPost(ApiUrls.DELETE_SCHEDULES, updateHospitalRequest, Boolean.class);
+        return sendPost(this.serverUrl + ApiUrls.DELETE_SCHEDULES, updateHospitalRequest, Boolean.class);
     }
 
     // ----------
