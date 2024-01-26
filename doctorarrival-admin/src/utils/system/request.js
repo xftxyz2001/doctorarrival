@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, AxiosInstance } f
 import store from "@/store";
 import { ElMessage } from "element-plus";
 // const baseURL = import.meta.env.VITE_BASE_URL
-const baseURL = "http://service-gateway";
+const baseURL = `http://${window.location.hostname}`;
 
 const service = axios.create({
   baseURL: baseURL,

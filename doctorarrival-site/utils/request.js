@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const service = axios.create({
-  baseURL: "http://service-gateway",
+  baseURL: `http://${window.location.hostname}`,
   timeout: 5000
 });
 
