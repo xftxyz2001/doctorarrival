@@ -1,0 +1,233 @@
+version: '3'
+services:
+  nacos:
+    image: nacos/nacos-server:v2.3.0
+    container_name: nacos
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    privileged: true
+    volumes:
+      - ~/nacos2.3.0/conf:/home/nacos/conf
+      - ~/nacos2.3.0/logs:/home/nacos/logs
+    environment:
+      MODE: standalone
+
+  mysql:
+    image: mysql:8.2.0
+    container_name: mysql
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "3306:3306"
+    privileged: true
+    volumes:
+      - ~/mysql8.2.0/conf.d:/etc/mysql/conf.d
+      - ~/mysql8.2.0/log:/var/log/mysql
+      - ~/mysql8.2.0/data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+
+  mongodb:
+    image: mongo:6.0.12
+    container_name: mongodb
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "27017:27017"
+    privileged: true
+    volumes:
+      - ~/mongo6.0.12/data:/data/db
+      - ~/mongo6.0.12/conf:/data/configdb
+      - ~/mongo6.0.12/backup:/data/backup
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    command: [ "--auth" ]
+
+  redis:
+    image: redis:7.2.3
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "6379:6379"
+    privileged: true
+    volumes:
+      - ~/redis7.2.3/data:/data
+      - ~/redis7.2.3/redis.conf:/etc/redis/redis.conf
+    command:
+      [
+        "redis-server",
+        "/etc/redis/redis.conf",
+        "--appendonly",
+        "yes",
+        "--requirepass",
+        "123456"
+      ]
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    privileged: true
+    volumes:
+      - ~/rabbitmq3.12:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+  # Application services
+  service-gateway:
+    build: doctorarrival/service-gateway
+    image: xftxyz/doctorarrival/service-gateway:0.0.1
+    container_name: service-gateway
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "80:80"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-gateway:/app/config
+
+  service-common:
+    build: doctorarrival/service-parent/service-common
+    image: xftxyz/doctorarrival/service-common:0.0.1
+    container_name: service-common
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8210:8210"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-common:/app/config
+
+  service-hospital:
+    build: doctorarrival/service-parent/service-hospital
+    image: xftxyz/doctorarrival/service-hospital:0.0.1
+    container_name: service-hospital
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8220:8220"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-hospital:/app/config
+
+  service-user:
+    build: doctorarrival/service-parent/service-user
+    image: xftxyz/doctorarrival/service-user:0.0.1
+    container_name: service-user
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8230:8230"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-user:/app/config
+
+  service-sms:
+    build: doctorarrival/service-parent/service-sms
+    image: xftxyz/doctorarrival/service-sms:0.0.1
+    container_name: service-sms
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8250:8250"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-sms:/app/config
+
+  service-oss:
+    build: doctorarrival/service-parent/service-oss
+    image: xftxyz/doctorarrival/service-oss:0.0.1
+    container_name: service-oss
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8260:8260"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-oss:/app/config
+
+  service-order:
+    build: doctorarrival/service-parent/service-order
+    image: xftxyz/doctorarrival/service-order:0.0.1
+    container_name: service-order
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8270:8270"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-order:/app/config
+
+  service-task:
+    build: doctorarrival/service-parent/service-task
+    image: xftxyz/doctorarrival/service-task:0.0.1
+    container_name: service-task
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8280:8280"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-task:/app/config
+
+  service-statistics:
+    build: doctorarrival/service-parent/service-statistics
+    image: xftxyz/doctorarrival/service-statistics:0.0.1
+    container_name: service-statistics
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "8290:8290"
+    privileged: true
+    volumes:
+      - ~/appconfig/service-statistics:/app/config
+
+  doctorarrival-site:
+    build: doctorarrival-site
+    image: xftxyz/doctorarrival-site:0.0.1
+    container_name: doctorarrival-site
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "3000:3000"
+
+  doctorarrival-admin:
+    build: doctorarrival-admin
+    image: xftxyz/doctorarrival-admin:0.0.1
+    container_name: doctorarrival-admin
+    restart: unless-stopped
+    networks:
+      - doctorarrival-network
+    ports:
+      - "3001:3001"
+
+networks:
+  doctorarrival-network:
+    driver: bridge

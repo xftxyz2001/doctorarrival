@@ -1,5 +1,5 @@
 # Dockerfile for service-order
-FROM xftxyz2001/jdk21:latest
+FROM container-registry.oracle.com/java/jdk-no-fee-term:21.0.1
 
 WORKDIR /app
 
