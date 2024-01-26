@@ -16,6 +16,7 @@ jobs:
     - name: 设置Java
       uses: actions/setup-java@v4
       with:
+        distribution: 'oracle'
         java-version: '21'
 
     - name: 后端构建
