@@ -3,7 +3,7 @@ FROM xftxyz2001/jdk21:latest
 
 WORKDIR /app
 
-COPY ./service-hospital-0.0.1-SNAPSHOT.jar /app/service-hospital.jar
+COPY ./target/service-hospital-0.0.1-SNAPSHOT.jar /app/service-hospital.jar
 
 ENTRYPOINT ["java", "-jar", "/app/service-hospital.jar"]
 
