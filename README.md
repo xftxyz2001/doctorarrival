@@ -1,6 +1,8 @@
 # “医来”——基于分布式微服务的预约挂号统一平台
 
 ## 运行
+
+### 步骤
 ```bash
 # 打包（jdk21、nodejs20
 sh build.sh
@@ -12,7 +14,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-## 一些配置项
+### 一些配置项（`~/appconfig/xxx/application.yml`）
 `service-sms`
 ```yml
 aliyun:

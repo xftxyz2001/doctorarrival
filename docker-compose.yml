@@ -231,4 +231,5 @@ services:
 
 networks:
   doctorarrival-network:
+    name: doctorarrival-network
     driver: bridge

@@ -7,6 +7,6 @@ spring:
     time-zone: GMT+8
 
 doctorarrival:
-  serverUrl: http://localhost
+  serverUrl: http://service-gateway/api/hospital/side
   hospitalCode: 8999
-  privateKeyLocation: 8999.key
+  privateKeyLocation: config/8999.key

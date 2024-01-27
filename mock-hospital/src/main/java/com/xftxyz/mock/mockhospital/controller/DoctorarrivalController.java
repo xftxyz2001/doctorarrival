@@ -31,7 +31,7 @@ public class DoctorarrivalController {
     private final OrderInfoRepository orderInfoRepository;
 
     @PostMapping(ApiUrls.ORDER)
-    public Result submitOrder(@RequestBody EncryptionRequest encryptionRequest) {
+    public Result<?> submitOrder(@RequestBody EncryptionRequest encryptionRequest) {
         return Result.success(doctorarrivalService.processSubmitOrder(encryptionRequest, (request, response) -> {
             Long id = request.getId();
             String scheduleId = request.getScheduleId();
@@ -81,7 +81,7 @@ public class DoctorarrivalController {
     }
 
     @PostMapping(ApiUrls.UPDATE_ORDER_STATUS)
-    public Result updateOrderStatus(@RequestBody EncryptionRequest encryptionRequest) {
+    public Result<?> updateOrderStatus(@RequestBody EncryptionRequest encryptionRequest) {
         return Result.success(doctorarrivalService.processUpdateOrderStatus(encryptionRequest, (request, response) -> {
             Long id = request.getId();
             Integer status = request.getOrderStatus();

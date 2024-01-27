@@ -36,15 +36,29 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        try {
-            log.info("init...");
-            long startTime = System.nanoTime();
+        log.info("init...");
+        long startTime = System.nanoTime();
 
-            UpdateHospitalRequest updateHospitalRequest = objectMapper.readValue(new File("hospital.json"), UpdateHospitalRequest.class);
+        File hospitalConfigFile = new File("config/hospital.json");
+        if (!hospitalConfigFile.exists()) {
+            log.info("config/hospital.json not found, skip init");
+            return;
+        }
+        try {
+            UpdateHospitalRequest updateHospitalRequest = objectMapper.readValue(hospitalConfigFile, UpdateHospitalRequest.class);
             log.info("update hospital");
             doctorarrivalService.updateHospital(updateHospitalRequest);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-            List<Department> departments = objectMapper.readValue(new File("departments.json"), new TypeReference<>() {
+        File departmentsConfigFile = new File("config/departments.json");
+        if (!departmentsConfigFile.exists()) {
+            log.info("config/departments.json not found, skip init");
+            return;
+        }
+        try {
+            List<Department> departments = objectMapper.readValue(departmentsConfigFile, new TypeReference<>() {
             });
             BatchUpdateDepartmentRequest batchUpdateDepartmentRequest = new BatchUpdateDepartmentRequest();
             for (Department department : departments) {
@@ -60,8 +74,17 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
             }
             log.info("update departments");
             doctorarrivalService.updateDepartments(batchUpdateDepartmentRequest);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-            List<Schedule> schedules = objectMapper.readValue(new File("schedules.json"), new TypeReference<>() {
+        File schedulesConfigFile = new File("config/schedules.json");
+        if (!schedulesConfigFile.exists()) {
+            log.info("config/schedules.json not found, skip init");
+            return;
+        }
+        try {
+            List<Schedule> schedules = objectMapper.readValue(schedulesConfigFile, new TypeReference<>() {
             });
             BatchUpdateScheduleRequest batchUpdateScheduleRequest = new BatchUpdateScheduleRequest();
             for (Schedule schedule : schedules) {
@@ -83,10 +106,10 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
             }
             log.info("update schedules");
             doctorarrivalService.updateSchedules(batchUpdateScheduleRequest);
-            Duration timeTakenToStartup = Duration.ofNanos(System.nanoTime() - startTime);
-            log.info("done in {}ms", timeTakenToStartup.toMillis());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        Duration timeTakenToStartup = Duration.ofNanos(System.nanoTime() - startTime);
+        log.info("done in {}ms", timeTakenToStartup.toMillis());
     }
 }

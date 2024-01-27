@@ -1,3 +1,4 @@
+#!/bin/sh
 # 后端
 cd doctorarrival
 chmod +x mvnw

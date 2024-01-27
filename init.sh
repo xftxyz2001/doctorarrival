@@ -1,3 +1,4 @@
+#!/bin/sh
 # nacos
 docker run -p 8848:8848 --name nacos -e MODE=standalone -d nacos/nacos-server:v2.3.0
 mkdir -p ~/nacos2.3.0
