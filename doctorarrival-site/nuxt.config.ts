@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     // "assets/css/reset.css",
   ],
   devtools: { enabled: true },
+  telemetry: false,
   modules: [
     '@element-plus/nuxt'
   ],
