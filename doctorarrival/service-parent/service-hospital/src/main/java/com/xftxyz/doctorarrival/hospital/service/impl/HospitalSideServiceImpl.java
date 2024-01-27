@@ -390,7 +390,7 @@ public class HospitalSideServiceImpl implements HospitalSideService {
         return encryptionRequest;
     }
 
-    private <T> T afterResponse(EncryptionRequestProcessor encryptionRequestProcessor, Result result, Class<T> clazz) {
+    private <T> T afterResponse(EncryptionRequestProcessor encryptionRequestProcessor, Result<?> result, Class<T> clazz) {
         if (ObjectUtils.isEmpty(result)) {
             throw new RuntimeException("响应接受失败");
         } else if (!ResultEnum.SUCCESS.getCode().equals(result.getCode())) {
@@ -440,7 +440,7 @@ public class HospitalSideServiceImpl implements HospitalSideService {
 
         try {
             EncryptionRequest encryptionRequest = beforeRequest(encryptionRequestProcessor, hospitalCode, request);
-            Result result = restTemplate.postForObject(apiUrl + ApiUrls.ORDER, encryptionRequest, Result.class);
+            Result<?> result = restTemplate.postForObject(apiUrl + ApiUrls.ORDER, encryptionRequest, Result.class);
             UpdateOrderResponse updateOrderResponse = afterResponse(encryptionRequestProcessor, result, UpdateOrderResponse.class);
             if (!Boolean.TRUE.equals(updateOrderResponse.getSuccess())) {
                 throw new BusinessException(ResultEnum.ORDER_SUBMIT_FAILED);
@@ -483,7 +483,7 @@ public class HospitalSideServiceImpl implements HospitalSideService {
 
         try {
             EncryptionRequest encryptionRequest = beforeRequest(encryptionRequestProcessor, hospitalCode, request);
-            Result result = restTemplate.postForObject(apiUrl + ApiUrls.UPDATE_ORDER_STATUS, encryptionRequest, Result.class);
+            Result<?> result = restTemplate.postForObject(apiUrl + ApiUrls.UPDATE_ORDER_STATUS, encryptionRequest, Result.class);
             UpdateOrderResponse updateOrderResponse = afterResponse(encryptionRequestProcessor, result, UpdateOrderResponse.class);
             if (!Boolean.TRUE.equals(updateOrderResponse.getSuccess())) {
                 throw new BusinessException(ResultEnum.ORDER_SUBMIT_FAILED);

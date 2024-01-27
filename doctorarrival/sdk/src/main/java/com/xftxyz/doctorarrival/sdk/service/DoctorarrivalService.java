@@ -21,7 +21,7 @@ import java.security.PrivateKey;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-@SuppressWarnings("rawtypes")
+// @SuppressWarnings("rawtypes")
 public class DoctorarrivalService {
 
     private final String serverUrl;
@@ -48,7 +48,7 @@ public class DoctorarrivalService {
     // 获取AES密钥
     private void updateSecretKey() {
         String url = this.serverUrl + ApiUrls.UPDATE_SECRET_KEY + hospitalCode;
-        Result result = restTemplate.getForObject(url, Result.class);
+        Result<?> result = restTemplate.getForObject(url, Result.class);
         if (ObjectUtils.isEmpty(result)) {
             throw new RuntimeException("获取AES密钥失败");
         } else if (!ResultEnum.SUCCESS.getCode().equals(result.getCode())) {
@@ -79,7 +79,7 @@ public class DoctorarrivalService {
         return encryptionRequest;
     }
 
-    private <T> T afterResponse(Result result, Class<T> clazz) {
+    private <T> T afterResponse(Result<?> result, Class<T> clazz) {
         if (ObjectUtils.isEmpty(result)) {
             throw new RuntimeException("响应接受失败");
         } else if (!ResultEnum.SUCCESS.getCode().equals(result.getCode())) {
@@ -99,7 +99,7 @@ public class DoctorarrivalService {
 
     private <T> T sendPost(String url, Object request, Class<T> clazz) {
         EncryptionRequest encryptionRequest = beforeRequest(request);
-        Result result = restTemplate.postForObject(url, encryptionRequest, Result.class);
+        Result<?> result = restTemplate.postForObject(url, encryptionRequest, Result.class);
         return afterResponse(result, clazz);
     }
 
