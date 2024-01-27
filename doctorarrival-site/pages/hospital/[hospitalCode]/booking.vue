@@ -188,7 +188,9 @@ initSchedule();
 function initPatientList() {
   getPatientList().then(res => {
     patientList.value = res;
-    activePatient.value = res[0];
+    if (res.length > 0) {
+      activePatient.value = res[0];
+    }
   });
 }
 initPatientList();
