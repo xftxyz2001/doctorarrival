@@ -1192,7 +1192,7 @@ input::-ms-input-placeholder {
   right: 30px;
 }
 
-.el-dialog__headerbtn /deep/ .el-icon-close {
+.el-dialog__headerbtn :deep(.el-icon-close) {
   font-size: 20px;
 }
 

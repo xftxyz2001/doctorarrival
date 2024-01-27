@@ -1054,11 +1054,11 @@
   margin-left: 40px;
 }
 
-.wrap .el-tabs__header /deep/ .el-tabs__item {
+.wrap .el-tabs__header :deep(.el-tabs__item) {
   font-size: 16px;
 }
 
-.wrap .el-tabs__header /deep/ .el-tabs__item.is-active {
+.wrap .el-tabs__header :deep(.el-tabs__item.is-active) {
   color: #333;
   font-size: 18px;
   font-weight: 700;

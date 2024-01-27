@@ -1017,7 +1017,7 @@
   text-align: center;
 }
 
-.el-dialog__body /deep/ .el-form-item__label {
+.el-dialog__body :deep(.el-form-item__label) {
   line-height: 30px;
 }
 

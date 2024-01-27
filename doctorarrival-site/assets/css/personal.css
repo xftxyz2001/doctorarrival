@@ -417,7 +417,7 @@
   width: 400px;
 }
 
-.select-popper /deep/ .el-select-dropdown__wrap {
+.select-popper :deep(.el-select-dropdown__wrap) {
   padding-bottom: 17px;
 }
 
