@@ -19,9 +19,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
-aliyun:
-  oss:
-    endpoint: <<your endpoint>>
-    access-key-id: <<your access-key-id>>
-    access-key-secret: <<your access-key-secret>>
-    bucket-name: <<your bucket-name>>
+#aliyun:
+#  oss:
+#    endpoint: <<your endpoint>>
+#    access-key-id: <<your access-key-id>>
+#    access-key-secret: <<your access-key-secret>>
+#    bucket-name: <<your bucket-name>>

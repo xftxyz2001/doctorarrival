@@ -20,12 +20,12 @@ spring:
     username: admin
     password: admin
 
-aliyun:
-  sms:
-    endpoint: <<your endpoint>>
-    access-key-id: <<your access-key-id>>
-    access-key-secret: <<your access-key-secret>>
-    region: <<your region>>
-    sign-name: <<your sign-name>>
-    template-code-for-verification-code: <<your template-code-for-verification-code>>
-    template-code-for-appointment-reminder: <<your template-code-for-appointment-reminder>>
+#aliyun:
+#  sms:
+#    endpoint: <<your endpoint>>
+#    access-key-id: <<your access-key-id>>
+#    access-key-secret: <<your access-key-secret>>
+#    region: <<your region>>
+#    sign-name: <<your sign-name>>
+#    template-code-for-verification-code: <<your template-code-for-verification-code>>
+#    template-code-for-appointment-reminder: <<your template-code-for-appointment-reminder>>

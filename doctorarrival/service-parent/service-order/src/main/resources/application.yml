@@ -27,15 +27,17 @@ spring:
 
 
 pay:
-  wx:
-    merchant-id: <<商户号>>
-    private-key-path: <<商户API私钥路径>>
-    merchant-serial-number: <<商户证书序列号>>
-    api-v3-key: <<商户APIV3密钥>>
+  #  wx:
+  #    merchant-id: <<商户号>>
+  #    private-key-path: <<商户API私钥路径>>
+  #    merchant-serial-number: <<商户证书序列号>>
+  #    api-v3-key: <<商户APIV3密钥>>
 
   ali:
+  # 沙箱环境: https://openhome.alipay.com/develop/sandbox/app
     server-url: <<支付宝网关地址>>
     app-id: <<支付宝应用ID>>
     private-key: <<应用私钥>>
     alipay-public-key: <<支付宝公钥>>
+
     site-origin: <<站点域名>>

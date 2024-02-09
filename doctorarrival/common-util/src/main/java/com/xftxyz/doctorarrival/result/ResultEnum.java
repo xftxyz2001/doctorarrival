@@ -60,6 +60,8 @@ public enum ResultEnum {
     FILE_DOWNLOAD_FAILED(601, "文件下载失败"),
     FILE_DELETE_FAILED(602, "文件删除失败"),
     FILE_LIST_FAILED(603, "文件列表获取失败"),
+    OPERATION_NOT_SUPPORTED(604, "操作不支持"),
+
 
     // 7订单相关
     ORDER_NOT_EXIST(700, "订单不存在"),
