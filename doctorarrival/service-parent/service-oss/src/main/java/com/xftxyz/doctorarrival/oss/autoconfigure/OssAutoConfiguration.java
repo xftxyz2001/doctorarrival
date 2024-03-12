@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 public class OssAutoConfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "aliyun.oss")
+    @ConditionalOnProperty(prefix = "aliyun.oss", value = "endpoint")
     public OSSClientBuilder ossClientBuilder() {
         return new OSSClientBuilder();
     }

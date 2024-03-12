@@ -21,7 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 public class SmsAutoConfiguration {
 
     @Bean
-    @ConditionalOnProperty(prefix = "aliyun.sms")
+    @ConditionalOnProperty(prefix = "aliyun.sms", value = "endpoint")
     public StaticCredentialProvider staticCredentialProvider(SmsProperties smsProperties) {
         return StaticCredentialProvider.create(Credential.builder()
                 .accessKeyId(smsProperties.getAccessKeyId())
