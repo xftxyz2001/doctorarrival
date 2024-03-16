@@ -152,7 +152,3 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, Patient>
         return baseMapper.selectById(patientId);
     }
 }
-
-
-
-

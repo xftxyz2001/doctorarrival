@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CheckRequestController {
 
-    @Operation(summary = "检查请求是否有权限")
+    @Operation(summary = "检查请求是否有权限",
+               description = "检查当前是否是管理员权限，正常返回表示有权限")
     @PostMapping("/admin/common/check")
     public String checkAuthorization() {
         return "ok";

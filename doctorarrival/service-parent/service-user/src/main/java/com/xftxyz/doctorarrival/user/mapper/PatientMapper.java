@@ -12,7 +12,3 @@ import com.xftxyz.doctorarrival.domain.user.Patient;
 public interface PatientMapper extends BaseMapper<Patient> {
 
 }
-
-
-
-

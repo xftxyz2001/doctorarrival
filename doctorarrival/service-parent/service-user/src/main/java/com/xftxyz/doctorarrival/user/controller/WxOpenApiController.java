@@ -21,14 +21,16 @@ public class WxOpenApiController {
 
     private final WxOpenService wxOpenService;
 
-    @Operation(summary = "获取登陆二维码相关参数")
+    @Operation(summary = "获取登陆二维码相关参数",
+               description = "此接口用于获取微信开放平台登录二维码的相关参数，这些参数可用于生成微信扫码登录二维码。接口返回一个WxLoginQrCodeParam对象，其中包含了生成二维码所需的必要参数，如临时授权码、随机字符串和登录状态标识等。客户端利用返回的参数生成二维码，用户扫描后进入下一步登录流程。")
     @GetMapping("/qrcode")
     @ResponseBody
     public WxLoginQrCodeParam getWxLoginQrCodeParam() {
         return wxOpenService.getWxLoginQrCodeParam();
     }
 
-    @Operation(summary = "登录回调")
+    @Operation(summary = "登录回调",
+               description = "当用户在微信内扫描二维码并完成授权后，微信服务器将跳转至本接口，并携带code和state两个参数。接口接收到这两个参数后，通过wxOpenService处理登录回调逻辑，验证授权信息并完成用户登录流程。最终，该接口通常会返回一个重定向地址或者处理完登录后的相应信息。")
     @GetMapping("/callback")
     public String loginCallback(@RequestParam("code") String code,
                                 @RequestParam("state") String state) {

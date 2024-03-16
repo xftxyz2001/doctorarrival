@@ -16,7 +16,3 @@ public class UserLoginRecordServiceImpl extends ServiceImpl<UserLoginRecordMappe
         implements UserLoginRecordService {
 
 }
-
-
-
-

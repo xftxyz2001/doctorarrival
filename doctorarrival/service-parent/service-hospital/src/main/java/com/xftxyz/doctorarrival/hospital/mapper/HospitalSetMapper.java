@@ -13,7 +13,3 @@ import com.xftxyz.doctorarrival.domain.hospital.HospitalSet;
 public interface HospitalSetMapper extends BaseMapper<HospitalSet> {
 
 }
-
-
-
-

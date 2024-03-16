@@ -12,7 +12,3 @@ import com.xftxyz.doctorarrival.domain.order.OrderInfo;
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
 
 }
-
-
-
-

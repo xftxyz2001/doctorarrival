@@ -12,7 +12,3 @@ import com.xftxyz.doctorarrival.domain.user.UserLoginRecord;
 public interface UserLoginRecordMapper extends BaseMapper<UserLoginRecord> {
 
 }
-
-
-
-

@@ -12,7 +12,3 @@ import com.xftxyz.doctorarrival.domain.common.Dict;
 public interface DictMapper extends BaseMapper<Dict> {
 
 }
-
-
-
-

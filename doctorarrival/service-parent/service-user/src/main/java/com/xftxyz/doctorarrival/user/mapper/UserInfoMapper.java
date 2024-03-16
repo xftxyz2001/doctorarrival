@@ -12,7 +12,3 @@ import com.xftxyz.doctorarrival.domain.user.UserInfo;
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
 }
-
-
-
-
