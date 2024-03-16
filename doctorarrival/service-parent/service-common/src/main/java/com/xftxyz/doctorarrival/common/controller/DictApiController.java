@@ -3,6 +3,8 @@ package com.xftxyz.doctorarrival.common.controller;
 import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.common.service.DictService;
 import com.xftxyz.doctorarrival.domain.common.Dict;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -12,35 +14,41 @@ import java.util.List;
 import java.util.Map;
 
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "数据字典相关")
 @RequestMapping("/api/common/dict")
 public class DictApiController {
 
     private final DictService dictService;
 
+    @Operation(summary = "通过ID获取项")
     @GetMapping("/id/{id}")
     public Dict getDictById(@PathVariable("id") @Min(1) Long id) {
         return dictService.getById(id);
     }
 
+    @Operation(summary = "通过父项ID获取子项")
     @GetMapping("/children/id/{parentId}")
     public List<Dict> getDictChildrenByParentId(@PathVariable("parentId") @Min(1) Long parentId) {
         return dictService.getDictChildrenByParentId(parentId);
     }
 
+    @Operation(summary = "通过字典编码获取子项")
     @GetMapping("/children/code/{dictCode}")
     public List<Dict> getDictChildrenByDictCode(@PathVariable("dictCode") String dictCode) {
         return dictService.getDictChildrenByDictCode(dictCode);
     }
 
     @NoWrap
+    @Operation(summary = "通过字典编码获取子项以Map形式返回")
     @GetMapping("/inner/map/code/{dictCode}")
     public Map<String, String> getDictMapByDictCodeInner(@PathVariable("dictCode") String dictCode) {
         return dictService.getDictMapByDictCodeInner(dictCode);
     }
 
     @NoWrap
+    @Operation(summary = "通过省市区编码获取省市区名称")
     @GetMapping("/inner/administrative/divisions/list")
     public List<String> getAdministrativeDivisionsListInner(@RequestParam("provinceCode") String provinceCode,
                                                             @RequestParam("cityCode") String cityCode,

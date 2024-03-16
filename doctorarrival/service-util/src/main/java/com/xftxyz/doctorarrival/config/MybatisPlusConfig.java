@@ -4,18 +4,17 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-
-import java.util.Date;
-
 import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Date;
+
 // @Configuration
-@MapperScan({ "com.xftxyz.doctorarrival.common.mapper",
-        "com.xftxyz.doctorarrival.hospital.mapper",
-        "com.xftxyz.doctorarrival.user.mapper",
-        "com.xftxyz.doctorarrival.order.mapper" })
+@MapperScan({"com.xftxyz.doctorarrival.common.mapper",
+             "com.xftxyz.doctorarrival.hospital.mapper",
+             "com.xftxyz.doctorarrival.user.mapper",
+             "com.xftxyz.doctorarrival.order.mapper"})
 public class MybatisPlusConfig implements MetaObjectHandler {
     /**
      * 添加分页插件

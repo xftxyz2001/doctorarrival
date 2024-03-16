@@ -1,6 +1,8 @@
 package com.xftxyz.doctorarrival.common.controller;
 
 import com.xftxyz.doctorarrival.common.service.DictService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -17,18 +19,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Validated
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "数据字典管理")
 @RequestMapping("/admin/common/dict")
 public class DictAdminController {
 
     private final DictService dictService;
 
-    // 导入
+    @Operation(summary = "导入数据字典")
     @PostMapping("/import")
     public Boolean importDict(@RequestPart("file") @NotNull MultipartFile file) {
         return dictService.importDict(file);
     }
 
-    // 导出
+    @Operation(summary = "导出数据字典")
     @PostMapping("/export")
     public ResponseEntity<Resource> exportDict() {
         Resource resource = dictService.exportDict();

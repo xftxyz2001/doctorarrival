@@ -5,6 +5,7 @@ import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.domain.hospital.Schedule;
 import com.xftxyz.doctorarrival.hospital.service.ScheduleService;
 import com.xftxyz.doctorarrival.vo.hospital.ScheduleVO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "排班相关")
 @RequestMapping("/api/hospital/schedule")
 public class ScheduleApiController {
 

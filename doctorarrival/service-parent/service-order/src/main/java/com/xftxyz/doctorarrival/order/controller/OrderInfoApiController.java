@@ -6,34 +6,37 @@ import com.xftxyz.doctorarrival.helper.JwtHelper;
 import com.xftxyz.doctorarrival.order.service.OrderInfoService;
 import com.xftxyz.doctorarrival.vo.order.OrderInfoQueryParam;
 import com.xftxyz.doctorarrival.vo.order.SubmitOrderParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Validated
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@Tag(name = "订单相关")
 @RequestMapping("/api/order/info")
 public class OrderInfoApiController {
 
     private final OrderInfoService orderInfoService;
 
-    // 生成订单
+    @Operation(summary = "下单（生成订单）")
     @PostMapping("/auth/submit")
     public Long submitOrder(@RequestHeader(JwtHelper.X_USER_ID) Long userId,
                             @RequestBody @NotNull SubmitOrderParam submitOrderParam) {
         return orderInfoService.submitOrder(userId, submitOrderParam);
     }
 
-    // 根据id查询订单
+    @Operation(summary = "通过ID获取订单")
     @GetMapping("/auth/detail/{orderId}")
     public OrderInfo getOrderDetail(@RequestHeader(JwtHelper.X_USER_ID) Long userId,
                                     @PathVariable("orderId") Long orderId) {
         return orderInfoService.getOrderDetail(userId, orderId);
     }
 
-    // 获取订单列表
+    @Operation(summary = "条件查询订单带分页")
     @PostMapping("/auth/list")
     public IPage<OrderInfo> getOrderList(@RequestHeader(JwtHelper.X_USER_ID) Long userId,
                                          @RequestBody @NotNull OrderInfoQueryParam orderInfoQueryParam,
@@ -42,12 +45,11 @@ public class OrderInfoApiController {
         return orderInfoService.getOrderList(userId, orderInfoQueryParam, current, size);
     }
 
-    // 取消订单
+    @Operation(summary = "取消订单")
     @PutMapping("/auth/cancel/{orderId}")
     public Boolean cancelOrder(@RequestHeader(JwtHelper.X_USER_ID) Long userId,
                                @PathVariable("orderId") Long orderId) {
         return orderInfoService.cancelOrder(userId, orderId);
     }
-
 
 }
