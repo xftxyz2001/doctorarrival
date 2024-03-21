@@ -1,53 +1,54 @@
 name: 构建并发布
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 签出代码
-      uses: actions/checkout@v4
+      - name: 签出代码
+        uses: actions/checkout@v4
 
-    - name: 设置Java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'oracle'
-        java-version: '21'
-        cache: 'maven'
+      - name: 设置Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "oracle"
+          java-version: "21"
+          cache: "maven"
 
-    - name: 后端构建
-      working-directory: ./doctorarrival
-      run: |
-        chmod +x mvnw
-        ./mvnw clean package -DskipTests
+      - name: 后端构建
+        working-directory: ./doctorarrival
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
 
-    - name: 设置Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-    - name: 构建前端（门户）
-      working-directory: ./doctorarrival-site
-      run: |
-        npm install
-        npm run build
+      - name: 构建前端（门户）
+        working-directory: ./doctorarrival-site
+        run: |
+          npm install
+          npm run build
 
-    - name: 构建前端（后台管理）
-      working-directory: ./doctorarrival-admin
-      run: |
-        npm install
-        npm run build
+      - name: 构建前端（后台管理）
+        working-directory: ./doctorarrival-admin
+        run: |
+          npm install
+          npm run build
 
-    - name: 构建镜像并推送
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        docker-compose build
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker-compose push
+      - name: 构建镜像并推送
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker-compose build
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker-compose push
