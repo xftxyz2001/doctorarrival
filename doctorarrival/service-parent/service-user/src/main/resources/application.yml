@@ -25,9 +25,9 @@ spring:
       host: redis
       password: 123456
 
-wx:
-  open:
-    app-id: <<your app-id>>
-    app-secret: <<your app-secret>>
-    redirect-uri: <<your redirect-uri>>
-    site-origin: <<your site-origin>>
+# wx:
+#   open:
+#     app-id: <<your app-id>>
+#     app-secret: <<your app-secret>>
+#     redirect-uri: <<your redirect-uri>>
+#     site-origin: <<your site-origin>>

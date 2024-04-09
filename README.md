@@ -15,6 +15,16 @@ docker-compose up -d
 ```
 
 ### 一些配置项（`~/appconfig/xxx/application.yml`）
+`service-user`
+```yml
+wx:
+  open:
+    app-id: <<your app-id>>
+    app-secret: <<your app-secret>>
+    redirect-uri: <<your redirect-uri>>
+    site-origin: <<your site-origin>>
+```
+
 `service-sms`
 ```yml
 aliyun:

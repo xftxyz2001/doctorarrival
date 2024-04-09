@@ -26,9 +26,10 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getName();
-        log.info("{}.{} 入参: {}", className, methodName, Arrays.toString(args));
         Object result = joinPoint.proceed();
-        log.info("{}.{} 出参: {}", className, methodName, result);
+        log.info("{}.{}\n入参: {}\n出参: {}\n" +
+                "----------------------------------------------------------------------------------------------------",
+                className, methodName, Arrays.toString(args), result);
         return result;
     }
 
