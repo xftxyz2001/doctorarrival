@@ -188,16 +188,20 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         userInfoVO.setPhone(userInfo.getPhone());
         userInfoVO.setOpenid(userInfo.getOpenid());
         userInfoVO.setNickName(userInfo.getNickName());
-        userInfoVO.setName(userInfo.getName());
-        Integer certificatesType = userInfo.getCertificatesType();
-        userInfoVO.setCertificatesType(certificatesType);
-        if (!ObjectUtils.isEmpty(certificatesType)){
-            userInfoVO.setCertificatesTypeName(certificatesTypeMap.get(certificatesType.toString()));
+
+        Integer authStatus = userInfo.getAuthStatus();
+        if (!UserInfo.AUTH_STATUS_UNAUTH.equals(authStatus)) {
+            userInfoVO.setName(userInfo.getName());
+            Integer certificatesType = userInfo.getCertificatesType();
+            userInfoVO.setCertificatesType(certificatesType);
+            if (!ObjectUtils.isEmpty(certificatesType)) {
+                userInfoVO.setCertificatesTypeName(certificatesTypeMap.get(certificatesType.toString()));
+            }
+            userInfoVO.setCertificatesNo(userInfo.getCertificatesNo());
+            userInfoVO.setCertificatesUrl(userInfo.getCertificatesUrl());
+            userInfoVO.setAuthStatus(authStatus);
+            userInfoVO.setAuthTime(userInfo.getAuthTime());
         }
-        userInfoVO.setCertificatesNo(userInfo.getCertificatesNo());
-        userInfoVO.setCertificatesUrl(userInfo.getCertificatesUrl());
-        userInfoVO.setAuthStatus(userInfo.getAuthStatus());
-        userInfoVO.setAuthTime(userInfo.getAuthTime());
         userInfoVO.setStatus(userInfo.getStatus());
         userInfoVO.setCreateTime(userInfo.getCreateTime());
 
