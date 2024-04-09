@@ -21,6 +21,17 @@ public class WxOpenApiController {
 
     private final WxOpenService wxOpenService;
 
+    @Operation(summary = "验证消息签名",
+               description = "此接口用于验证微信服务器推送的消息签名是否合法。微信服务器在推送消息时会携带signature、timestamp、nonce和echostr四个参数，开发者需要验证这些参数是否合法。")
+    @GetMapping("/verify")
+    @ResponseBody
+    public String verifySignature(@RequestParam("signature") String signature,
+                                  @RequestParam("timestamp") String timestamp,
+                                  @RequestParam("nonce") String nonce,
+                                  @RequestParam("echostr") String echostr) {
+        return wxOpenService.verifySignature(signature, timestamp, nonce, echostr);
+    }
+
     @Operation(summary = "获取登陆二维码相关参数",
                description = "此接口用于获取微信开放平台登录二维码的相关参数，这些参数可用于生成微信扫码登录二维码。接口返回一个WxLoginQrCodeParam对象，其中包含了生成二维码所需的必要参数，如临时授权码、随机字符串和登录状态标识等。客户端利用返回的参数生成二维码，用户扫描后进入下一步登录流程。")
     @GetMapping("/qrcode")

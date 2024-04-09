@@ -9,6 +9,7 @@ public class WxOpenProperties {
 
     private String appId;
     private String appSecret;
+    private String token;
     private String redirectUri;
     private String siteOrigin;
 }

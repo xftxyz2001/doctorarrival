@@ -16,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -86,5 +88,44 @@ public class WxOpenServiceImpl implements WxOpenService {
         String token = JwtHelper.generateToken(userInfo.getId());
         String nickName = URLEncoder.encode(userInfo.getNickName(), StandardCharsets.UTF_8);
         return "redirect:" + wxOpenProperties.getSiteOrigin() + "/weixin/callback" + "?token=" + token + "&nickName=" + nickName;
+    }
+
+    @Override
+    public String verifySignature(String signature, String timestamp, String nonce, String echostr) {
+        // 按字典序排序
+        String[] params = {wxOpenProperties.getToken(), timestamp, nonce};
+        Arrays.sort(params);
+
+        // 拼接字符串并进行SHA1加密
+        StringBuilder tmpStrBuilder = new StringBuilder();
+        for (String param : params) {
+            tmpStrBuilder.append(param);
+        }
+        String tmpStr = tmpStrBuilder.toString();
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            byte[] bytes = tmpStr.getBytes(StandardCharsets.UTF_8);
+            byte[] digest = messageDigest.digest(bytes);
+            String sha1Str = bytesToHex(digest);
+
+            // 比较签名是否一致
+            if (sha1Str.equals(signature)) {
+                // 签名校验成功，返回echostr参数内容
+                return echostr;
+            } else {
+                // 签名校验失败
+                return "Invalid signature";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to verify the signature", e);
+        }
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte b : bytes) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
     }
 }

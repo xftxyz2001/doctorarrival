@@ -6,4 +6,6 @@ public interface WxOpenService {
     WxLoginQrCodeParam getWxLoginQrCodeParam();
 
     String loginCallback(String code, String state);
+
+    String verifySignature(String signature, String timestamp, String nonce, String echostr);
 }
