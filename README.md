@@ -17,46 +17,50 @@ docker-compose up -d
 ### 一些配置项（`~/appconfig/xxx/application.yml`）
 `service-user`
 ```yml
+# https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
 wx:
   open:
-    app-id: <<your app-id>>
-    app-secret: <<your app-secret>>
-    redirect-uri: <<your redirect-uri>>
-    site-origin: <<your site-origin>>
+    app-id: <<appID>>
+    app-secret: <<appsecret>>
+    redirect-uri: <<网关（后端）域名+/api/user/wx/callback>>
+    site-origin: <<站点（前端）域名>>
 ```
 
 `service-sms`
 ```yml
+# https://ram.console.aliyun.com/manage/ak
 aliyun:
   sms:
-    endpoint: <<your endpoint>>
-    access-key-id: <<your access-key-id>>
-    access-key-secret: <<your access-key-secret>>
-    region: <<your region>>
-    sign-name: <<your sign-name>>
-    template-code-for-verification-code: <<your template-code-for-verification-code>>
-    template-code-for-appointment-reminder: <<your template-code-for-appointment-reminder>>
+    endpoint: dysmsapi.aliyuncs.com
+    access-key-id: <<AccessKey ID>>
+    access-key-secret: <<AccessKey Secret>>
+    region: cn-hangzhou
+    sign-name: <<短信签名名称>>
+    template-code-for-verification-code: <<验证码的模版代码>>
+    template-code-for-appointment-reminder: <<就诊通知的模版代码>>
 ```
 
 `service-oss`
 ```yml
+# https://oss.console.aliyun.com/bucket
 aliyun:
   oss:
-    endpoint: <<your endpoint>>
-    access-key-id: <<your access-key-id>>
-    access-key-secret: <<your access-key-secret>>
-    bucket-name: <<your bucket-name>>
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: <<AccessKey ID>>
+    access-key-secret: <<AccessKey Secret>>
+    bucket-name: <<Bucket 名称>>
 ```
 
 `service-order`
 ```yml
+# https://open.alipay.com/develop/sandbox/app
 pay:
   ali:
-    server-url: <<支付宝网关地址>>
-    app-id: <<支付宝应用ID>>
+    server-url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+    app-id: <<APPID>>
     private-key: <<应用私钥>>
     alipay-public-key: <<支付宝公钥>>
-    site-origin: <<站点域名>>
+    site-origin: <<站点（前端）域名>>
 ```
 
 

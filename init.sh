@@ -14,47 +14,47 @@ touch ~/redis7.2.3/redis.conf
 # service-user
 mkdir -p ~/appconfig/service-user
 cat << EOF > ~/appconfig/service-user/application.yml
-# wx:
-#   open:
-#     app-id: <<your app-id>>
-#     app-secret: <<your app-secret>>
-#     redirect-uri: <<your redirect-uri>>
-#     site-origin: <<your site-origin>>
+wx:
+  open:
+    app-id: 
+    app-secret: 
+    redirect-uri: 
+    site-origin: 
 EOF
 
 # service-sms
 mkdir -p ~/appconfig/service-sms
 cat << EOF > ~/appconfig/service-sms/application.yml
-# aliyun:
-#   sms:
-#     endpoint: <<your endpoint>>
-#     access-key-id: <<your access-key-id>>
-#     access-key-secret: <<your access-key-secret>>
-#     region: <<your region>>
-#     sign-name: <<your sign-name>>
-#     template-code-for-verification-code: <<your template-code-for-verification-code>>
-#     template-code-for-appointment-reminder: <<your template-code-for-appointment-reminder>>
+aliyun:
+  sms:
+    endpoint: 
+    access-key-id: 
+    access-key-secret: 
+    region: 
+    sign-name: 
+    template-code-for-verification-code: 
+    template-code-for-appointment-reminder: 
 EOF
 
 # service-oss
 mkdir -p ~/appconfig/service-oss
 cat << EOF > ~/appconfig/service-oss/application.yml
-# aliyun:
-#   oss:
-#     endpoint: <<your endpoint>>
-#     access-key-id: <<your access-key-id>>
-#     access-key-secret: <<your access-key-secret>>
-#     bucket-name: <<your bucket-name>>
+aliyun:
+  oss:
+    endpoint: 
+    access-key-id: 
+    access-key-secret: 
+    bucket-name: 
 EOF
 
 # service-order
 mkdir -p ~/appconfig/service-order
 cat << EOF > ~/appconfig/service-order/application.yml
-# pay:
-#   ali:
-#     server-url: <<支付宝网关地址>>
-#     app-id: <<支付宝应用ID>>
-#     private-key: <<应用私钥>>
-#     alipay-public-key: <<支付宝公钥>>
-#     site-origin: <<站点域名>>
+pay:
+  ali:
+    server-url: 
+    app-id: 
+    private-key: 
+    alipay-public-key: 
+    site-origin: 
 EOF

@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class DateTimeHelper {
 
     /**

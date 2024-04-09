@@ -52,10 +52,10 @@ public class WxOpenServiceImpl implements WxOpenService {
     }
 
     // 刷新access_token有效期
-    private WxAccessToken refreshAccessToken(String refreshToken) {
-        return restTemplate.getForObject(WX_OPEN_API_PREFIX + "/oauth2/refresh_token?appid={appid}&grant_type=refresh_token&refresh_token={refreshToken}",
-                WxAccessToken.class, wxOpenProperties.getAppId(), refreshToken);
-    }
+    // private WxAccessToken refreshAccessToken(String refreshToken) {
+    //     return restTemplate.getForObject(WX_OPEN_API_PREFIX + "/oauth2/refresh_token?appid={appid}&grant_type=refresh_token&refresh_token={refreshToken}",
+    //             WxAccessToken.class, wxOpenProperties.getAppId(), refreshToken);
+    // }
 
     // 获取用户个人信息
     private WxUserInfo getUserInfo(String accessToken, String openid) {
