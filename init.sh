@@ -31,6 +31,11 @@ wx:
     site-origin: http://$domain:3000
 EOF
 
+echo "微信公众号接口配置: "
+echo "URL: http://$domain/api/user/wx/verify"
+echo "Token: xftxyz"
+echo "JS接口安全域名: http://$domain:3000"
+
 # service-sms
 mkdir -p ~/appconfig/service-sms
 echo "下面是阿里云相关配置，参考: "

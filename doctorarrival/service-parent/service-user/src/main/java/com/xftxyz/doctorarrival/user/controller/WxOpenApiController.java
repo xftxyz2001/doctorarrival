@@ -1,6 +1,7 @@
 package com.xftxyz.doctorarrival.user.controller;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.xftxyz.doctorarrival.annotation.NoWrap;
 import com.xftxyz.doctorarrival.user.service.WxOpenService;
 import com.xftxyz.doctorarrival.vo.user.WxLoginQrCodeParam;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +26,7 @@ public class WxOpenApiController {
                description = "此接口用于验证微信服务器推送的消息签名是否合法。微信服务器在推送消息时会携带signature、timestamp、nonce和echostr四个参数，开发者需要验证这些参数是否合法。")
     @GetMapping("/verify")
     @ResponseBody
+    @NoWrap
     public String verifySignature(@RequestParam("signature") String signature,
                                   @RequestParam("timestamp") String timestamp,
                                   @RequestParam("nonce") String nonce,
