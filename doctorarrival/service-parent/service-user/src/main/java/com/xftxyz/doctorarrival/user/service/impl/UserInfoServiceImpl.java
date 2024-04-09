@@ -189,8 +189,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         userInfoVO.setOpenid(userInfo.getOpenid());
         userInfoVO.setNickName(userInfo.getNickName());
         userInfoVO.setName(userInfo.getName());
-        userInfoVO.setCertificatesType(userInfo.getCertificatesType());
-        userInfoVO.setCertificatesTypeName(certificatesTypeMap.get(userInfo.getCertificatesType().toString()));
+        Integer certificatesType = userInfo.getCertificatesType();
+        userInfoVO.setCertificatesType(certificatesType);
+        if (!ObjectUtils.isEmpty(certificatesType)){
+            userInfoVO.setCertificatesTypeName(certificatesTypeMap.get(certificatesType.toString()));
+        }
         userInfoVO.setCertificatesNo(userInfo.getCertificatesNo());
         userInfoVO.setCertificatesUrl(userInfo.getCertificatesUrl());
         userInfoVO.setAuthStatus(userInfo.getAuthStatus());
