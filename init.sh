@@ -14,47 +14,57 @@ touch ~/redis7.2.3/redis.conf
 # service-user
 mkdir -p ~/appconfig/service-user
 cat << EOF > ~/appconfig/service-user/application.yml
-wx:
-  open:
-    app-id: 
-    app-secret: 
-    redirect-uri: 
-    site-origin: 
+# https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+
+# wx:
+#   open:
+#     app-id: <<appID>>
+#     app-secret: <<appsecret>>
+#     redirect-uri: http://localhost/api/user/wx/callback
+#     site-origin: http://localhost:3000
 EOF
 
 # service-sms
 mkdir -p ~/appconfig/service-sms
 cat << EOF > ~/appconfig/service-sms/application.yml
-aliyun:
-  sms:
-    endpoint: 
-    access-key-id: 
-    access-key-secret: 
-    region: 
-    sign-name: 
-    template-code-for-verification-code: 
-    template-code-for-appointment-reminder: 
+# https://ram.console.aliyun.com/manage/ak
+# https://dysms.console.aliyun.com/quickstart
+
+# aliyun:
+#   sms:
+#     endpoint: dysmsapi.aliyuncs.com
+#     access-key-id: <<AccessKey ID>>
+#     access-key-secret: <<AccessKey Secret>>
+#     region: cn-hangzhou
+#     sign-name: <<短信签名名称>>
+#     template-code-for-verification-code: <<验证码的模版代码>>
+#     template-code-for-appointment-reminder: <<就诊通知的模版代码>>
 EOF
 
 # service-oss
 mkdir -p ~/appconfig/service-oss
 cat << EOF > ~/appconfig/service-oss/application.yml
-aliyun:
-  oss:
-    endpoint: 
-    access-key-id: 
-    access-key-secret: 
-    bucket-name: 
+# https://ram.console.aliyun.com/manage/ak
+# https://oss.console.aliyun.com/bucket
+
+# aliyun:
+#   oss:
+#     endpoint: oss-cn-hangzhou.aliyuncs.com
+#     access-key-id: <<AccessKey ID>>
+#     access-key-secret: <<AccessKey Secret>>
+#     bucket-name: doctorarrival
 EOF
 
 # service-order
 mkdir -p ~/appconfig/service-order
 cat << EOF > ~/appconfig/service-order/application.yml
-pay:
-  ali:
-    server-url: 
-    app-id: 
-    private-key: 
-    alipay-public-key: 
-    site-origin: 
+# https://open.alipay.com/develop/sandbox/app
+
+# pay:
+#   ali:
+#     server-url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+#     app-id: <<APPID>>
+#     private-key: <<应用私钥>>
+#     alipay-public-key: <<支付宝公钥>>
+#     site-origin: http://localhost:3000
 EOF
