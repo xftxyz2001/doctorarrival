@@ -110,15 +110,19 @@ EOF
     fi
 fi
 
+if ! $service_sms_exists && ! $service_oss_exists; then
+    echo "下面是阿里云相关配置，参考: "
+    echo "https://ram.console.aliyun.com/manage/ak"
+    read -p "请输入阿里云的AccessKey ID: " accesskeyid
+    read -p "请输入阿里云的AccessKey Secret: " accesskeysecret
+fi
+
 ## service-sms
 if ! $service_sms_exists; then
     mkdir -p ~/appconfig/service-sms
-    echo "下面是阿里云相关配置，参考: "
-    echo "https://ram.console.aliyun.com/manage/ak"
+    echo "下面是阿里云短信相关配置，参考: "
     echo "https://dysms.console.aliyun.com/quickstart"
 
-    read -p "请输入阿里云的AccessKey ID: " accesskeyid
-    read -p "请输入阿里云的AccessKey Secret: " accesskeysecret
     read -p "请输入阿里云短信的验证码模版代码: " verificationcode
 
     cat <<EOF >~/appconfig/service-sms/application.yml
