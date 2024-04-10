@@ -11,6 +11,9 @@ sh run_allinone.sh
 - Docker 25+
 - Docker Compose 1.29+
 
+### 运行截图
+[见运行截图](./screenshot/)
+
 
 ### Mock配置项（可选）
 - `~/appconfig/mock/application.yml`
