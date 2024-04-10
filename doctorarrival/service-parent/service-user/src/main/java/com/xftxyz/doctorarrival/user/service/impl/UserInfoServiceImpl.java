@@ -190,6 +190,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
         userInfoVO.setNickName(userInfo.getNickName());
 
         Integer authStatus = userInfo.getAuthStatus();
+        userInfoVO.setAuthStatus(authStatus);
         if (!UserInfo.AUTH_STATUS_UNAUTH.equals(authStatus)) {
             userInfoVO.setName(userInfo.getName());
             Integer certificatesType = userInfo.getCertificatesType();
@@ -199,7 +200,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo>
             }
             userInfoVO.setCertificatesNo(userInfo.getCertificatesNo());
             userInfoVO.setCertificatesUrl(userInfo.getCertificatesUrl());
-            userInfoVO.setAuthStatus(authStatus);
             userInfoVO.setAuthTime(userInfo.getAuthTime());
         }
         userInfoVO.setStatus(userInfo.getStatus());
