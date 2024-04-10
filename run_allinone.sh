@@ -2,6 +2,20 @@
 # 0 清理
 docker rm -f $(docker ps -aq)
 
+docker rmi -f xftxyz/doctorarrival-gateway:0.0.1
+docker rmi -f xftxyz/doctorarrival-common:0.0.1
+docker rmi -f xftxyz/doctorarrival-hospital:0.0.1
+docker rmi -f xftxyz/doctorarrival-user:0.0.1
+docker rmi -f xftxyz/doctorarrival-sms:0.0.1
+docker rmi -f xftxyz/doctorarrival-oss:0.0.1
+docker rmi -f xftxyz/doctorarrival-order:0.0.1
+docker rmi -f xftxyz/doctorarrival-task:0.0.1
+docker rmi -f xftxyz/doctorarrival-statistics:0.0.1
+docker rmi -f xftxyz/doctorarrival-site:0.0.1
+docker rmi -f xftxyz/doctorarrival-admin:0.0.1
+
+docker rmi -f xftxyz/mock:0.0.1
+
 # 1 构建
 ## 后端
 cd doctorarrival
@@ -22,23 +36,10 @@ npm run build
 cd ../mock-hospital
 chmod +x mvnw
 ./mvnw clean package -DskipTests
-docker rmi -f xftxyz/mock:0.0.1
 docker build -t xftxyz/mock:0.0.1 .
 
 ## 构建docker镜像
 cd ..
-docker rmi -f xftxyz/doctorarrival-gateway:0.0.1
-docker rmi -f xftxyz/doctorarrival-common:0.0.1
-docker rmi -f xftxyz/doctorarrival-hospital:0.0.1
-docker rmi -f xftxyz/doctorarrival-user:0.0.1
-docker rmi -f xftxyz/doctorarrival-sms:0.0.1
-docker rmi -f xftxyz/doctorarrival-oss:0.0.1
-docker rmi -f xftxyz/doctorarrival-order:0.0.1
-docker rmi -f xftxyz/doctorarrival-task:0.0.1
-docker rmi -f xftxyz/doctorarrival-statistics:0.0.1
-docker rmi -f xftxyz/doctorarrival-site:0.0.1
-docker rmi -f xftxyz/doctorarrival-admin:0.0.1
-
 docker-compose build
 
 # 2 初始化
@@ -59,17 +60,12 @@ if [ ! -d "~/redis7.2.3" ]; then
 fi
 echo "redis7.2.3已经初始化完成！"
 
-service_user_exists=[ -d "~/appconfig/service-user" ]
-service_sms_exists=[ -d "~/appconfig/service-sms" ]
-service_oss_exists=[ -d "~/appconfig/service-oss" ]
-service_order_exists=[ -d "~/appconfig/service-order" ]
-
-if ! $service_user_exists && ! $service_order_exists; then
+if [ ! -d ~/appconfig/service-user ] && [ ! -d ~/appconfig/service-order ]; then
     read -p "请输入项目部署的域名（eg: doctorarrival.com/localhost/127.0.0.1）: " domain
 fi
 
 ## service-user
-if ! $service_user_exists; then
+if [ ! -d ~/appconfig/service-user ]; then
     mkdir -p ~/appconfig/service-user
     echo "下面是微信相关配置，参考: "
     echo "https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index"
@@ -82,7 +78,7 @@ if ! $service_user_exists; then
         redirect_uri="http://localhost:8160/api/ucenter/wx/callback"
     else
         read -p "请输入微信公众号的AppSecret: " appsecret
-        redirect-uri="http://$domain/api/user/wx/callback"
+        redirect_uri="http://$domain/api/user/wx/callback"
     fi
 
     cat <<EOF >~/appconfig/service-user/application.yml
@@ -110,7 +106,7 @@ EOF
     fi
 fi
 
-if ! $service_sms_exists && ! $service_oss_exists; then
+if [ ! -d ~/appconfig/service-sms ] && [ ! -d ~/appconfig/service-oss ]; then
     echo "下面是阿里云相关配置，参考: "
     echo "https://ram.console.aliyun.com/manage/ak"
     read -p "请输入阿里云的AccessKey ID: " accesskeyid
@@ -118,7 +114,7 @@ if ! $service_sms_exists && ! $service_oss_exists; then
 fi
 
 ## service-sms
-if ! $service_sms_exists; then
+if [ ! -d ~/appconfig/service-sms ]; then
     mkdir -p ~/appconfig/service-sms
     echo "下面是阿里云短信相关配置，参考: "
     echo "https://dysms.console.aliyun.com/quickstart"
@@ -139,7 +135,7 @@ EOF
 fi
 
 ## service-oss
-if ! $service_oss_exists; then
+if [ ! -d ~/appconfig/service-oss ]; then
     mkdir -p ~/appconfig/service-oss
 
     cat <<EOF >~/appconfig/service-oss/application.yml
@@ -153,7 +149,7 @@ EOF
 fi
 
 ## service-order
-if ! $service_order_exists; then
+if [ ! -d ~/appconfig/service-order ]; then
     mkdir -p ~/appconfig/service-order
     echo "下面是支付宝沙箱相关配置，参考: "
     echo "https://open.alipay.com/develop/sandbox/app"
@@ -172,8 +168,12 @@ pay:
     site-origin: http://$domain:3000
 EOF
 fi
-
 echo "微服务已配置完成！"
+
+if [ ! -d ~/appconfig/mock ]; then
+    cp -r mock-hospital/config/* ~/appconfig/mock
+fi
+echo "模拟医院数据已准备！"
 
 # 3 启动
 docker-compose up -d
