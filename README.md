@@ -1,36 +1,18 @@
 # “医来”——基于分布式微服务的预约挂号统一平台
 
 ## 运行
-
-### 步骤
 ```bash
-# 打包/构建（jdk21、nodejs20、docker-compose1.29
-sh build.sh
-# 初始化（仅首次，docker24
-sh init.sh
-
-# 运行
-docker-compose up -d
+sh run_allinone.sh
 ```
 
-### 一些配置项
-运行 `sh init.sh` 后生成在 `~/appconfig/{service-user,service-sms,service-oss,service-order}/application.yml` 。
+### 环境
+- JDK 21+
+- Node.js 20+
+- Docker 25+
+- Docker Compose 1.29+
 
 
-## Mock
-
-### 步骤
-```bash
-cd mock-hospital
-# 打包（jdk21
-sh build.sh
-# 初始化（仅首次，docker24
-sh init.sh
-# 运行
-sh run.sh
-```
-
-### 一些配置项（可选）
+### Mock配置项（可选）
 - `~/appconfig/mock/application.yml`
   ```yml
   doctorarrival:

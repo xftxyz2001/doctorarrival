@@ -97,6 +97,8 @@ EOF
 
     if [ "$appID" = "wxed9954c01bb89b47" ]; then
         echo "接口转发: "
+        echo "listen       8160;"
+        echo "server_name  localhost;"
         echo "location /api/ucenter/wx/callback {"
         echo "    proxy_pass http://$domain/api/user/wx/callback;"
         echo "}"
