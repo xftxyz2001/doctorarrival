@@ -171,7 +171,7 @@ fi
 echo "微服务已配置完成！"
 
 if [ ! -d ~/appconfig/mock ]; then
-    cp -r mock-hospital/config/* ~/appconfig/mock
+    cp -r mock-hospital/config ~/appconfig/mock
 fi
 echo "模拟医院数据已准备！"
 
