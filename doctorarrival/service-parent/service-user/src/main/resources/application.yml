@@ -29,5 +29,6 @@ spring:
 #   open:
 #     app-id: <<your app-id>>
 #     app-secret: <<your app-secret>>
+#     token: <<your token>>
 #     redirect-uri: <<your redirect-uri>>
 #     site-origin: <<your site-origin>>

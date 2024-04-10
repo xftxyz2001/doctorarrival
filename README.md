@@ -4,12 +4,11 @@
 
 ### 步骤
 ```bash
-# 打包（jdk21、nodejs20
+# 打包/构建（jdk21、nodejs20、docker-compose1.29
 sh build.sh
 # 初始化（仅首次，docker24
 sh init.sh
-# 构建（docker-compose1.29
-docker-compose build
+
 # 运行
 docker-compose up -d
 ```
