@@ -14,6 +14,7 @@ services:
     volumes:
       - ~/nacos2.3.0/conf:/home/nacos/conf
       - ~/nacos2.3.0/logs:/home/nacos/logs
+      - /etc/localtime:/etc/localtime
     environment:
       MODE: standalone
 
@@ -48,6 +49,7 @@ services:
       - ~/mongo6.0.12/data:/data/db
       - ~/mongo6.0.12/conf:/data/configdb
       - ~/mongo6.0.12/backup:/data/backup
+      - /etc/localtime:/etc/localtime
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 123456
@@ -65,6 +67,7 @@ services:
     volumes:
       - ~/redis7.2.3/data:/data
       - ~/redis7.2.3/redis.conf:/etc/redis/redis.conf
+      - /etc/localtime:/etc/localtime
     command:
       [
         "redis-server",
@@ -87,6 +90,7 @@ services:
     privileged: true
     volumes:
       - ~/rabbitmq3.12:/var/lib/rabbitmq
+      - /etc/localtime:/etc/localtime
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
@@ -104,6 +108,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-gateway:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-common:
     build: doctorarrival/service-parent/service-common
@@ -117,6 +122,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-common:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-hospital:
     build: doctorarrival/service-parent/service-hospital
@@ -130,6 +136,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-hospital:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-user:
     build: doctorarrival/service-parent/service-user
@@ -143,6 +150,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-user:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-sms:
     build: doctorarrival/service-parent/service-sms
@@ -156,6 +164,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-sms:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-oss:
     build: doctorarrival/service-parent/service-oss
@@ -169,6 +178,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-oss:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-order:
     build: doctorarrival/service-parent/service-order
@@ -182,6 +192,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-order:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-task:
     build: doctorarrival/service-parent/service-task
@@ -195,6 +206,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-task:/app/config
+      - /etc/localtime:/etc/localtime
 
   service-statistics:
     build: doctorarrival/service-parent/service-statistics
@@ -208,6 +220,7 @@ services:
     privileged: true
     volumes:
       - ~/appconfig/service-statistics:/app/config
+      - /etc/localtime:/etc/localtime
 
   doctorarrival-site:
     build: doctorarrival-site
@@ -218,6 +231,9 @@ services:
       - doctorarrival-network
     ports:
       - "3000:3000"
+    privileged: true
+    volumes:
+      - /etc/localtime:/etc/localtime
 
   doctorarrival-admin:
     build: doctorarrival-admin
@@ -228,6 +244,9 @@ services:
       - doctorarrival-network
     ports:
       - "3001:3001"
+    privileged: true
+    volumes:
+      - /etc/localtime:/etc/localtime
 
 networks:
   doctorarrival-network:
