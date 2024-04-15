@@ -2,7 +2,7 @@
 
 ## 运行
 ```bash
-sh run_allinone.sh
+sh run.sh
 ```
 
 ### 环境

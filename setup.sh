@@ -55,4 +55,4 @@ if [[ $(basename "$PWD") != $REPOSITORY_NAME ]]; then
     git clone https://github.com/xftxyz2001/$REPOSITORY_NAME.git
     cd $REPOSITORY_NAME
 fi
-sh run_allinone.sh
+sh run.sh
