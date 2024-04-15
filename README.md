@@ -11,6 +11,9 @@ sh run_allinone.sh
 - Docker 25+
 - Docker Compose 1.29+
 
+> 一种更方便的方式: 
+> `curl -qO- https://raw.githubusercontent.com/xftxyz2001/nwu-graduation-design/main/setup.sh | bash`
+
 ### 运行截图
 [见运行截图](./screenshot/)
 
