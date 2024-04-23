@@ -43,30 +43,13 @@ cd ..
 docker-compose build
 
 # 2 初始化
-## nacos
-if [ ! -d "~/nacos2.3.0" ]; then
-    docker run -p 8848:8848 --name nacos -e MODE=standalone -d nacos/nacos-server:v2.3.0
-    mkdir -p ~/nacos2.3.0
-    docker cp nacos:/home/nacos/conf ~/nacos2.3.0
-    docker cp nacos:/home/nacos/logs ~/nacos2.3.0
-    docker rm -f nacos
-fi
-echo "nacos2.3.0已经初始化完成！"
-
-## redis
-if [ ! -d "~/redis7.2.3" ]; then
-    mkdir -p ~/redis7.2.3
-    touch ~/redis7.2.3/redis.conf
-fi
-echo "redis7.2.3已经初始化完成！"
-
-if [ ! -d ~/appconfig/service-user ] && [ ! -d ~/appconfig/service-order ]; then
+if [ ! -d ./config/service-user ] && [ ! -d ./config/service-order ]; then
     read -p "请输入项目部署的域名（eg: doctorarrival.com/localhost/127.0.0.1）: " domain
 fi
 
 ## service-user
-if [ ! -d ~/appconfig/service-user ]; then
-    mkdir -p ~/appconfig/service-user
+if [ ! -d ./config/service-user ]; then
+    mkdir -p ./config/service-user
     echo "下面是微信相关配置，参考: "
     echo "https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index"
 
@@ -81,7 +64,7 @@ if [ ! -d ~/appconfig/service-user ]; then
         redirect_uri="http://$domain/api/user/wx/callback"
     fi
 
-    cat <<EOF >~/appconfig/service-user/application.yml
+    cat <<EOF >./config/service-user/application.yml
 wx:
   open:
     app-id: $appID
@@ -106,7 +89,7 @@ EOF
     fi
 fi
 
-if [ ! -d ~/appconfig/service-sms ] && [ ! -d ~/appconfig/service-oss ]; then
+if [ ! -d ./config/service-sms ] && [ ! -d ./config/service-oss ]; then
     echo "下面是阿里云相关配置，参考: "
     echo "https://ram.console.aliyun.com/manage/ak"
     read -p "请输入阿里云的AccessKey ID: " accesskeyid
@@ -114,14 +97,14 @@ if [ ! -d ~/appconfig/service-sms ] && [ ! -d ~/appconfig/service-oss ]; then
 fi
 
 ## service-sms
-if [ ! -d ~/appconfig/service-sms ]; then
-    mkdir -p ~/appconfig/service-sms
+if [ ! -d ./config/service-sms ]; then
+    mkdir -p ./config/service-sms
     echo "下面是阿里云短信相关配置，参考: "
     echo "https://dysms.console.aliyun.com/quickstart"
 
     read -p "请输入阿里云短信的验证码模版代码: " verificationcode
 
-    cat <<EOF >~/appconfig/service-sms/application.yml
+    cat <<EOF >./config/service-sms/application.yml
 aliyun:
   sms:
     endpoint: dysmsapi.aliyuncs.com
@@ -135,10 +118,10 @@ EOF
 fi
 
 ## service-oss
-if [ ! -d ~/appconfig/service-oss ]; then
-    mkdir -p ~/appconfig/service-oss
+if [ ! -d ./config/service-oss ]; then
+    mkdir -p ./config/service-oss
 
-    cat <<EOF >~/appconfig/service-oss/application.yml
+    cat <<EOF >./config/service-oss/application.yml
 aliyun:
   oss:
     endpoint: oss-cn-hangzhou.aliyuncs.com
@@ -149,8 +132,8 @@ EOF
 fi
 
 ## service-order
-if [ ! -d ~/appconfig/service-order ]; then
-    mkdir -p ~/appconfig/service-order
+if [ ! -d ./config/service-order ]; then
+    mkdir -p ./config/service-order
     echo "下面是支付宝沙箱相关配置，参考: "
     echo "https://open.alipay.com/develop/sandbox/app"
 
@@ -158,7 +141,7 @@ if [ ! -d ~/appconfig/service-order ]; then
     read -p "请输入支付宝沙箱的应用私钥: " privatekey
     read -p "请输入支付宝沙箱的支付宝公钥: " alipaypublickey
 
-    cat <<EOF >~/appconfig/service-order/application.yml
+    cat <<EOF >./config/service-order/application.yml
 pay:
   ali:
     server-url: https://openapi-sandbox.dl.alipaydev.com/gateway.do
@@ -170,11 +153,6 @@ EOF
 fi
 echo "微服务已配置完成！"
 
-if [ ! -d ~/appconfig/mock ]; then
-    cp -r mock-hospital/config ~/appconfig/mock
-fi
-echo "模拟医院数据已准备！"
-
 # 3 启动
 docker-compose up -d
 
@@ -184,5 +162,5 @@ docker run \
 -p 8999:8999 \
 --network doctorarrival-network \
 --privileged=true \
--v ~/appconfig/mock:/app/config \
+-v ./mock-hospital/config:/app/config \
 -d xftxyz/mock:0.0.1

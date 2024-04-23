@@ -12,8 +12,8 @@ services:
       - "9849:9849"
     privileged: true
     volumes:
-      - ~/nacos2.3.0/conf:/home/nacos/conf
-      - ~/nacos2.3.0/logs:/home/nacos/logs
+      - ./config/nacos/conf:/home/nacos/conf
+      - ./config/nacos/logs:/home/nacos/logs
     environment:
       MODE: standalone
 
@@ -28,9 +28,9 @@ services:
     privileged: true
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
-      - ~/mysql8.2.0/conf.d:/etc/mysql/conf.d
-      - ~/mysql8.2.0/log:/var/log/mysql
-      - ~/mysql8.2.0/data:/var/lib/mysql
+      - ./config/mysql/conf.d:/etc/mysql/conf.d
+      - ./config/mysql/log:/var/log/mysql
+      - ./config/mysql/data:/var/lib/mysql
       - /etc/localtime:/etc/localtime
     environment:
       MYSQL_ROOT_PASSWORD: 123456
@@ -45,9 +45,9 @@ services:
       - "27017:27017"
     privileged: true
     volumes:
-      - ~/mongo6.0.12/data:/data/db
-      - ~/mongo6.0.12/conf:/data/configdb
-      - ~/mongo6.0.12/backup:/data/backup
+      - ./config/mongo/data:/data/db
+      - ./config/mongo/conf:/data/configdb
+      - ./config/mongo/backup:/data/backup
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 123456
@@ -63,8 +63,8 @@ services:
       - "6379:6379"
     privileged: true
     volumes:
-      - ~/redis7.2.3/data:/data
-      - ~/redis7.2.3/redis.conf:/etc/redis/redis.conf
+      - ./config/redis/data:/data
+      - ./config/redis/redis.conf:/etc/redis/redis.conf
     command:
       [
         "redis-server",
@@ -86,10 +86,25 @@ services:
       - "15672:15672"
     privileged: true
     volumes:
-      - ~/rabbitmq3.12:/var/lib/rabbitmq
+      - ./config/rabbitmq:/var/lib/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
+
+  seata-server:
+    image: seataio/seata-server:2.0.0
+    ports:
+      - "7091:7091"
+      - "8091:8091"
+    environment:
+      - STORE_MODE=db
+      # 以SEATA_IP作为host注册seata server
+      # - SEATA_IP=seata_ip
+      # - SEATA_PORT=8091
+    volumes:
+      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/localtime" #设置系统时区
+      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/timezone" #设置时区
+      - "./config/seata/resources:/seata-server/resources"
 
   # Application services
   service-gateway:
@@ -103,7 +118,7 @@ services:
       - "80:80"
     privileged: true
     volumes:
-      - ~/appconfig/service-gateway:/app/config
+      - ./config/service-gateway:/app/config
 
   service-common:
     build: doctorarrival/service-parent/service-common
@@ -116,7 +131,7 @@ services:
       - "8210:8210"
     privileged: true
     volumes:
-      - ~/appconfig/service-common:/app/config
+      - ./config/service-common:/app/config
 
   service-hospital:
     build: doctorarrival/service-parent/service-hospital
@@ -129,7 +144,7 @@ services:
       - "8220:8220"
     privileged: true
     volumes:
-      - ~/appconfig/service-hospital:/app/config
+      - ./config/service-hospital:/app/config
 
   service-user:
     build: doctorarrival/service-parent/service-user
@@ -142,7 +157,7 @@ services:
       - "8230:8230"
     privileged: true
     volumes:
-      - ~/appconfig/service-user:/app/config
+      - ./config/service-user:/app/config
 
   service-sms:
     build: doctorarrival/service-parent/service-sms
@@ -155,7 +170,7 @@ services:
       - "8250:8250"
     privileged: true
     volumes:
-      - ~/appconfig/service-sms:/app/config
+      - ./config/service-sms:/app/config
 
   service-oss:
     build: doctorarrival/service-parent/service-oss
@@ -168,7 +183,7 @@ services:
       - "8260:8260"
     privileged: true
     volumes:
-      - ~/appconfig/service-oss:/app/config
+      - ./config/service-oss:/app/config
 
   service-order:
     build: doctorarrival/service-parent/service-order
@@ -181,7 +196,7 @@ services:
       - "8270:8270"
     privileged: true
     volumes:
-      - ~/appconfig/service-order:/app/config
+      - ./config/service-order:/app/config
 
   service-task:
     build: doctorarrival/service-parent/service-task
@@ -194,7 +209,7 @@ services:
       - "8280:8280"
     privileged: true
     volumes:
-      - ~/appconfig/service-task:/app/config
+      - ./config/service-task:/app/config
 
   service-statistics:
     build: doctorarrival/service-parent/service-statistics
@@ -207,7 +222,7 @@ services:
       - "8290:8290"
     privileged: true
     volumes:
-      - ~/appconfig/service-statistics:/app/config
+      - ./config/service-statistics:/app/config
 
   doctorarrival-site:
     build: doctorarrival-site
