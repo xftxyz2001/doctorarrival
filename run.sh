@@ -164,3 +164,5 @@ docker run \
 --privileged=true \
 -v ./mock-hospital/config:/app/config \
 -d xftxyz/mock:0.0.1
+
+echo "服务已启动，需放行端口：80（网关）、3000（前台）、3001（后台）。
