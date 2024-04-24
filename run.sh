@@ -44,7 +44,8 @@ docker-compose build
 
 # 2 初始化
 if [ ! -d ./config/service-user ] && [ ! -d ./config/service-order ]; then
-    read -p "请输入项目部署的域名（eg: doctorarrival.com/localhost/127.0.0.1）: " domain
+    domain=$(curl -s ip.sb)
+    echo "项目将部署在: $domain"
 fi
 
 ## service-user
