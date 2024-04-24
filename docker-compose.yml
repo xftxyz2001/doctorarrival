@@ -91,20 +91,25 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
 
-  seata-server:
-    image: seataio/seata-server:2.0.0
-    ports:
-      - "7091:7091"
-      - "8091:8091"
-    environment:
-      - STORE_MODE=db
-      # 以SEATA_IP作为host注册seata server
-      # - SEATA_IP=seata_ip
-      # - SEATA_PORT=8091
-    volumes:
-      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/localtime" #设置系统时区
-      - "/usr/share/zoneinfo/Asia/Shanghai:/etc/timezone" #设置时区
-      - "./config/seata/resources:/seata-server/resources"
+  # seata-server:
+  #   image: seataio/seata-server:2.0.0
+  #   container_name: seata-server
+  #   restart: unless-stopped
+  #   networks:
+  #     - doctorarrival-network
+  #   ports:
+  #     - "7091:7091"
+  #     - "8091:8091"
+  #   privileged: true
+  #   volumes:
+  #     - "/usr/share/zoneinfo/Asia/Shanghai:/etc/localtime" #设置系统时区
+  #     - "/usr/share/zoneinfo/Asia/Shanghai:/etc/timezone" #设置时区
+  #     - "./config/seata/resources:/seata-server/resources"
+  #   environment:
+  #     - STORE_MODE=db
+  #     # 以SEATA_IP作为host注册seata server
+  #     # - SEATA_IP=seata_ip
+  #     # - SEATA_PORT=8091
 
   # Application services
   service-gateway:
