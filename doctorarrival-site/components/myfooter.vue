@@ -7,10 +7,10 @@
       </div>
       <div class="right">
         <span class="v-link clickable" @click="go('https://github.com/xftxyz2001')">我的主页</span>
-        <span class="v-link clickable" @click="go('https://github.com/xftxyz2001/nwu-graduation-design')">
+        <span class="v-link clickable" @click="go('https://github.com/xftxyz2001/doctorarrival')">
           项目首页
         </span>
-        <span class="v-link clickable" @click="go('https://github.com/xftxyz2001/nwu-graduation-design/issues/new')">
+        <span class="v-link clickable" @click="go('https://github.com/xftxyz2001/doctorarrival/issues/new')">
           问题反馈
         </span>
         <span class="v-link clickable" @click="$router.push('/joinus')">加入我们</span>

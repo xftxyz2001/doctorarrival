@@ -48,7 +48,7 @@ fi
 echo "docker-compose已安装！"
 
 ## 准备并进入项目目录
-REPOSITORY_NAME="nwu-graduation-design"
+REPOSITORY_NAME="doctorarrival"
 
 if [[ $(basename "$PWD") != $REPOSITORY_NAME ]]; then
     if [ -d $REPOSITORY_NAME ]; then

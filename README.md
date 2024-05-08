@@ -13,7 +13,7 @@ sh run.sh
 
 > 便捷版（自动安装所需的依赖（无需事先clone项目））:   
 > ```
-> curl -qO- https://raw.githubusercontent.com/xftxyz2001/nwu-graduation-design/main/setup.sh | bash
+> curl -qO- https://raw.githubusercontent.com/xftxyz2001/doctorarrival/main/setup.sh | bash
 > ```
 
 ### 运行截图
@@ -21,17 +21,17 @@ sh run.sh
 
 
 ### Mock配置项（可选）
-- `~/appconfig/mock/application.yml`
+- `./mock-hospital/config/application.yml`
   ```yml
   doctorarrival:
     serverUrl: http://service-gateway/api/hospital/side
     hospitalCode: 8999
     privateKeyLocation: config/8999.key
   ```
-- `/appconfig/mock/8999.key`
-- `/appconfig/mock/departments.json`
-- `/appconfig/mock/hospital.json`
-- `/appconfig/mock/schedules.json`
+- `./mock-hospital/config/mock/8999.key`
+- `./mock-hospital/config/mock/departments.json`
+- `./mock-hospital/config/mock/hospital.json`
+- `./mock-hospital/config/mock/schedules.json`
 
 
 ## 开发
